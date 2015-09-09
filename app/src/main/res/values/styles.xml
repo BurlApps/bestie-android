@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar" >
+        <!-- no action bar theme-->
+    </style>
+
 </resources>
