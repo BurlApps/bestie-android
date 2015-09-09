@@ -20,9 +20,10 @@
         android:shadowDx="0"
         android:shadowDy="6"
         android:shadowRadius="1"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginBottom="125dp"
+        android:layout_above="@+id/usernameField"
+        />
 
 
     <Button
@@ -34,16 +35,18 @@
         android:textColor="#AB47BC"
         android:layout_marginBottom="74dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        />
 
     <EditText
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:id="@+id/usernameField"
-        android:layout_below="@+id/loginLabel"
+        android:hint="Username"
+        android:layout_above="@+id/passwordField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:hint="Username"/>
+        android:textColor="#ffffff"
+        android:textColorHint="#8cffffff"/>
 
     <EditText
         android:layout_width="250dp"
@@ -51,9 +54,20 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordField"
-        android:layout_below="@+id/usernameField"
+        android:hint="Password"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:hint="Password"/>
+        android:textColor="#ffffff"
+        android:textColorHint="#8cffffff"
+        android:layout_above="@id/loginButton"
+        android:layout_marginBottom="100dp"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>

@@ -21,15 +21,15 @@
         android:shadowDx="0"
         android:shadowDy="6"
         android:shadowRadius="1"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginBottom="75dp"
+        android:layout_above="@+id/emailField"/>
 
 
     <Button
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:text="Sign Up!"
+        android:text="Let\'s go!"
         android:id="@+id/signUpButton"
         android:background="#FFFFFF"
         android:textColor="#AB47BC"
@@ -41,10 +41,12 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:id="@+id/usernameField"
-        android:layout_below="@+id/signUpLabel"
+        android:hint="Username"
+        android:layout_above="@+id/passwordField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:hint="Username"/>
+        android:textColor="#ffffff"
+        android:textColorHint="#8cffffff"
+        />
 
     <EditText
         android:layout_width="250dp"
@@ -52,9 +54,22 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordField"
-        android:layout_below="@+id/usernameField"
+        android:hint="Password"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:hint="Password"/>
+        android:layout_marginBottom="100dp"
+        android:layout_above="@+id/signUpButton"
+        android:textColor="#ffffff"
+        android:textColorHint="#8cffffff"
+        />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:id="@+id/emailField"
+        android:hint="Email"
+        android:layout_above="@+id/usernameField"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:textColorHint="#8cffffff"/>
 
 </RelativeLayout>
