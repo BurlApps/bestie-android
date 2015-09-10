@@ -14,6 +14,12 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -29,13 +35,45 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.passwordField) EditText mPassword;
     @Bind(R.id.loginButton) Button mLoginButton;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
+    @Bind(R.id.facebookLoginButton) LoginButton mFacebookLoginButton;
+
+    protected CallbackManager mCallbackManager = CallbackManager.Factory.create();;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        mFacebookLoginButton.setReadPermissions("user_photos");
+        mFacebookLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     @Override
     protected void onResume() {
@@ -103,8 +141,12 @@ public class LoginActivity extends AppCompatActivity {
                 .duration(500)
                 .playOn(mPassword);
         mLoginButton.setVisibility(View.VISIBLE);
-        YoYo.with(Techniques.SlideInLeft)
+        YoYo.with(Techniques.FadeInDown)
                 .duration(500)
                 .playOn(mLoginButton);
+        mFacebookLoginButton.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.FadeInDown)
+                .duration(500)
+                .playOn(mFacebookLoginButton);
     }
 }
