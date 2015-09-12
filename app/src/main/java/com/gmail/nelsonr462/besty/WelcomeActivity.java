@@ -37,18 +37,9 @@ import butterknife.OnClick;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private Dialog progressDialog;
-
     @Bind(R.id.logoLabel) TextView mLogoLabel;
     @Bind(R.id.crownImageView) ImageView mCrownImageView;
-    @Bind(R.id.fbLoginButton) LoginButton mLoginButton;
 
-
-    protected CallbackManager mCallbackManager = CallbackManager.Factory.create();;
-
-
-//    @Bind(R.id.loginLabel) TextView mLoginLabel;
-//    @Bind(R.id.signUpButton) Button mSignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +47,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
         getConnection();
-
-//        mLoginButton.setReadPermissions("user_photos");
-//        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                // App code
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                // App code
-//            }
-//
-//            @Override
-//            public void onError(FacebookException exception) {
-//                // App code
-//            }
-//        });
     }
 
 
@@ -82,52 +55,35 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        YoYo.with(Techniques.FadeInDown)
-                .duration(500)
-                .withListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        YoYo.with(Techniques.FadeInDown)
-                                .duration(500)
-                                .playOn(mCrownImageView);
+
+//        YoYo.with(Techniques.FadeInDown)
+//                .duration(500)
+//                .withListener(new Animator.AnimatorListener() {
+//                    @Override
+//                    public void onAnimationStart(Animator animation) {
 //                        YoYo.with(Techniques.FadeInDown)
 //                                .duration(500)
-//                                .playOn(mLoginLabel);
-//                        YoYo.with(Techniques.FadeIn)
-//                                .duration(500)
-//                                .playOn(mSignUpButton);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                    }
-                })
-                .playOn(mLogoLabel);
-    }
-
-//    @OnClick(R.id.signUpButton)
-//    public void signUpUser (View v) {
-//        animateFromWelcome(1);
-//    }
-//    @OnClick(R.id.loginLabel)
-//    public void loginUser (View v) {
-//        animateFromWelcome(0);
+//                                .playOn(mCrownImageView);
+//                    }
 //
-//    }
-
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                    }
+//
+//                    @Override
+//                    public void onAnimationCancel(Animator animation) {
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animator animation) {
+//                    }
+//                })
+//                .playOn(mLogoLabel);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -136,7 +92,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @OnClick(R.id.fbLoginButton)
     public void onLoginClick(View v) {
-//        progressDialog = ProgressDialog.show(WelcomeActivity.this, "", "Logging in...", true);
 
         List<String> permissions = Arrays.asList("public_profile");
         // NOTE: for extended permissions, like "user_about_me", your app must be reviewed by the Facebook team
@@ -145,7 +100,6 @@ public class WelcomeActivity extends AppCompatActivity {
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
-//                progressDialog.dismiss();
                 if (user == null) {
                     Log.d(BestyApplication.TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
@@ -182,46 +136,33 @@ public class WelcomeActivity extends AppCompatActivity {
         return isAvailable;
     }
 
-    private void animateFromWelcome(final int intentType) {
-        final Intent loginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
-        final Intent signUpIntent = new Intent(WelcomeActivity.this, SignUpActivity.class);
-
-        YoYo.with(Techniques.FadeOutUp)
-                .duration(500)
-                .withListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        YoYo.with(Techniques.FadeOutUp)
-                                .duration(500)
-                                .playOn(mCrownImageView);
+//    private void animateFromWelcome() {
+//
+//        YoYo.with(Techniques.FadeOutUp)
+//                .duration(500)
+//                .withListener(new Animator.AnimatorListener() {
+//                    @Override
+//                    public void onAnimationStart(Animator animation) {
 //                        YoYo.with(Techniques.FadeOutUp)
 //                                .duration(500)
-//                                .playOn(mLoginLabel);
-//                        YoYo.with(Techniques.FadeOut)
-//                                .duration(500)
-//                                .playOn(mSignUpButton);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-
-                        if (intentType == 0) {
-                            startActivity(loginIntent);
-                        } else {
-                            startActivity(signUpIntent);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                })
-                .playOn(mLogoLabel);
-    }
+//                                .playOn(mCrownImageView);
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationCancel(Animator animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animator animation) {
+//
+//                    }
+//                })
+//                .playOn(mLogoLabel);
+//    }
 }

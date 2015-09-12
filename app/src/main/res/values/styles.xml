@@ -7,6 +7,7 @@
 
     <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar" >
         <!-- no action bar theme-->
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
@@ -21,7 +22,7 @@
     </style>
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textColor">@color/PrimaryTabTextColor</item>
         <item name="textAllCaps">true</item>
     </style>
 

@@ -20,7 +20,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity implements VoteFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements VoteFragment.OnFragmentInteractionListener,
+BestyRankFragment.OnFragmentInteractionListener, MyPhotoFragment.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -62,11 +63,10 @@ public class MainActivity extends AppCompatActivity implements VoteFragment.OnFr
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
+
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
-
-
+        pager.setCurrentItem(1);
 
     }
 
@@ -77,11 +77,6 @@ public class MainActivity extends AppCompatActivity implements VoteFragment.OnFr
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
