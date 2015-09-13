@@ -2,26 +2,19 @@ package com.gmail.nelsonr462.besty;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.app.ToolbarActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toolbar;
 
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity implements VoteFragment.OnFragmentInteractionListener,
-BestyRankFragment.OnFragmentInteractionListener, MyPhotoFragment.OnFragmentInteractionListener {
+BestyRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 

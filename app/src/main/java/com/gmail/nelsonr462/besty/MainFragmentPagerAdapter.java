@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Vote", "Your Besty", "Add Photos" };
+    private String tabTitles[] = new String[] { "Vote", "Your Besty", "Your Photos" };
     protected Context mContext;
 
     public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -28,7 +28,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
             case 1:
                 return new BestyRankFragment();
             case 2:
-                return new MyPhotoFragment();
+                return new YourPhotosFragment();
         }
         return null;
     }

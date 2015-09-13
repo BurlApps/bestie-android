@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.gmail.nelsonr462.besty.AddPhotosActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.gmail.nelsonr462.besty.AddPhotoFragment"
+        android:id="@+id/addPhotosFragment"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tool_bar"
+        tools:layout="@android:layout/simple_list_item_1"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

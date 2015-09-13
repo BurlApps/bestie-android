@@ -19,4 +19,6 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">BLANK VOTE FRAGMENT</string>
+    <string name="title_activity_add_photos">Add Photos</string>
+    <string name="title_activity_edit_photos">Edit Photos</string>
 </resources>
