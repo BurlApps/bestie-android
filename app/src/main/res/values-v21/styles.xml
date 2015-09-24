@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- no action bar theme-->
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="android:colorEdgeEffect">@color/tabsScrollColor</item>
+    </style>
+</resources>

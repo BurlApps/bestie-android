@@ -1,27 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
+             xmlns:fab="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.gmail.nelsonr462.besty.YourPhotosFragment">
+             tools:context="com.gmail.nelsonr462.bestie.ui.YourPhotosFragment"
+                android:background="@android:color/white">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="Edit Photos"
-        android:id="@+id/editPhotosButton"
-        android:layout_above="@+id/addPhotosButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/photoFragmentListView"
 
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="Add Photos"
-        android:id="@+id/addPhotosButton"
+        />
+
+
+    <com.github.clans.fab.FloatingActionButton
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_colorNormal="@color/tabsScrollColor"
+        fab:fab_colorPressed="@color/ColorPrimaryDark"
+        fab:fab_colorRipple="#00000000"
+        android:src="@mipmap/ic_add_white_24dp"
+        android:layout_margin="16dp"
+        android:id="@+id/fab"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="39dp"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+
+    <!--<Button-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="Edit Photos"-->
+        <!--android:id="@+id/editPhotosButton"-->
+        <!--android:layout_above="@+id/addPhotosButton"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="10dp"/>-->
+
+    <!--<Button-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="Add Photos"-->
+        <!--android:id="@+id/addPhotosButton"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="39dp"/>-->
 
 </RelativeLayout>
