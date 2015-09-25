@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Besty</string>
+    <string name="app_name">Bestie</string>
     <string name="facebook_app_id">1659437797634703</string>
 
     <string name="action_settings">Settings</string>
@@ -20,4 +20,5 @@
     <string name="hello_blank_fragment">BLANK VOTE FRAGMENT</string>
     <string name="title_activity_add_photos">Add Photos</string>
     <string name="title_activity_edit_photos">Edit Photos</string>
+    <string name="versus_circle_text">VS</string>
 </resources>

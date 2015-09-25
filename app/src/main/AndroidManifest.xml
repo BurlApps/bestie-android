@@ -14,7 +14,7 @@
         android:name="com.gmail.nelsonr462.bestie.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.gmail.nelsonr462.besty.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.gmail.nelsonr462.bestie.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -67,7 +67,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.gmail.nelsonr462.besty" />
+                <category android:name="com.gmail.nelsonr462.bestie" />
             </intent-filter>
         </receiver>
 

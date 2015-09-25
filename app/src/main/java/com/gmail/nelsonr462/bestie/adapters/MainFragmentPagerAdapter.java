@@ -14,18 +14,15 @@ import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.VoteFragment;
 import com.gmail.nelsonr462.bestie.ui.YourPhotosFragment;
 
-/**
- * Created by nelson on 9/9/15.
- */
+
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "SETTINGS", "DUCK", "BESTIE" };
 
     private int[] imageResId = {
-            R.drawable.settings_tab,
-            R.drawable.vote_tab,
-            R.drawable.besty_tab
+            R.drawable.tab_settings,
+            R.drawable.tab_vote,
+            R.drawable.tab_bestie
     };
 
 
@@ -56,22 +53,17 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
     }
 
     public int getDrawableId(int position){
-        //Here is only example for getting tab drawables
         return imageResId[position];
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         Drawable image = mContext.getResources().getDrawable(imageResId[position]);
-        image.setBounds(0, 0, 128, 128);
+        if(image != null) image.setBounds(0, 0, 128, 128);
         SpannableString sb = new SpannableString(" ");
         ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
         sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sb;
     }
 
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        return tabTitles[position];
-//    }
 }

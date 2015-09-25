@@ -4,16 +4,24 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
+import com.daimajia.easing.linear.Linear;
+import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -24,13 +32,13 @@ import java.util.List;
 
 
 public class VoteFragment extends android.support.v4.app.Fragment {
+    private String TAG = VoteFragment.class.getSimpleName();
 
-    private View mView;
-    private LinearLayout mVotingLayout;
-    private LinearLayout mVotingLayout2;
-//    private FrameLayout[] mVotingImages;
+
+    private RelativeLayout mRootLayout;
     private List<FrameLayout> mVotingImages = new ArrayList<>();
-    private int mDuration = 450;
+    private ImageView mVoteCounter;
+    private View mView;
 
     Rect outRect = new Rect();
     int[] location = new int[2];
@@ -38,9 +46,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public VoteFragment() {
-        // Required empty public constructor
-    }
+    public VoteFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,236 +57,179 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mView =  inflater.inflate(R.layout.fragment_vote, container, false);
 
-        mVotingLayout = (LinearLayout) mView.findViewById(R.id.votingLayout);
-        mVotingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
+        mView = inflater.inflate(R.layout.fragment_vote, container, false);
+        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+
+        mRootLayout = (RelativeLayout) mView.findViewById(R.id.rootLayout);
+
+        LinearLayout votingLayout = (LinearLayout) mView.findViewById(R.id.votingLayout);
+        LinearLayout votingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
+
+        mVoteCounter = (ImageView) mView.findViewById(R.id.voteCounter);
 
         mVotingImages.add(0, (FrameLayout) mView.findViewById(R.id.voteImage1));
         mVotingImages.add(1, (FrameLayout) mView.findViewById(R.id.voteImage2));
         mVotingImages.add(2, (FrameLayout) mView.findViewById(R.id.voteImage3));
         mVotingImages.add(3, (FrameLayout) mView.findViewById(R.id.voteImage4));
 
-        mVotingLayout.setOnClickListener(new View.OnClickListener() {
+        setListeners(mVotingImages, votingLayout, votingLayout2);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View v) {
-                AnimatorSet set = new AnimatorSet();
-                set.playTogether(
-                        Glider.glide(Skill.ExpoEaseOut, 300, ObjectAnimator.ofFloat(mVotingLayout, "translationY", 0, -1900))
-                );
-                set.setDuration(mDuration);
-                set.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        AnimatorSet set = new AnimatorSet();
-                        set.playTogether(
-                                Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(mVotingLayout2, "translationY", 1900, 0))
-                        );
-                        set.setDuration(mDuration);
-                        set.start();
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-                set.start();
-
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
-        });
 
-
-
-        mVotingLayout2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                AnimatorSet set = new AnimatorSet();
-                set.playTogether(
-                        Glider.glide(Skill.ExpoEaseOut, 300, ObjectAnimator.ofFloat(mVotingLayout2, "translationY", 0, -1900))
-                );
-                set.setDuration(mDuration);
-                set.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        AnimatorSet set = new AnimatorSet();
-                        set.playTogether(
-                                Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(mVotingLayout, "translationY", 1900, 0))
-                        );
-                        set.setDuration(mDuration);
-                        set.start();
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-                set.start();
-
+            public void onPageSelected(int position) {
+                /*RE-ENABLE FOR KEEPING VOTE COUNT BAR UP*/
+//                BestieConstants.VOTE_COUNT = 0;
+//                BestieConstants.ACTIVE_VOTE_COUNT = true;
             }
-        });
 
-
-
-
-
-        mVotingImages.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-            }
-        });
-
-        mVotingImages.get(0).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int x = (int)event.getRawX();
-                int y = (int)event.getRawY();
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(inViewInBounds(mVotingImages.get(1), x, y)) {
-                        mVotingImages.get(1).dispatchTouchEvent(event);
-                    } else if(inViewInBounds(mVotingImages.get(0), x, y)) {
-                        scaleOnTouch(event, mVotingImages.get(0));
-                    }
-                } else if(event.getAction() == MotionEvent.ACTION_UP){
-                    mVotingImages.get(0).setScaleX(1.0f);
-                    mVotingImages.get(0).setScaleY(1.0f);
-                } else if(inViewInBounds(mVotingImages.get(1), x, y)) {
-                    mVotingImages.get(0).setScaleX(1.0f);
-                    mVotingImages.get(0).setScaleY(1.0f);
+            public void onPageScrollStateChanged(int state) {
+                for (int i = 0; i < mVotingImages.size(); i++) {
+                    mVotingImages.get(i).setScaleX(1.0f);
+                    mVotingImages.get(i).setScaleY(1.0f);
+                    mVotingImages.get(i).setEnabled(true);
                 }
-
-                return false;
             }
         });
 
-
-
-
-        mVotingImages.get(1).setOnClickListener(new View.OnClickListener() {
+        mRootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onClick(View v) {
+            public void onGlobalLayout() {
+                BestieConstants.SCREEN_HEIGHT = mRootLayout.getHeight();
+                BestieConstants.VOTE_INCREMENT = BestieConstants.SCREEN_HEIGHT / BestieConstants.VOTES_NEEDED;
             }
         });
-        mVotingImages.get(1).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                onTouchFrame(event, mVotingImages.get(1), mVotingImages.get(0));
-
-                return false;
-            }
-        });
-
-
-
-
-        mVotingImages.get(2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        mVotingImages.get(2).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                int x = (int)event.getRawX();
-                int y = (int)event.getRawY();
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(inViewInBounds(mVotingImages.get(3), x, y)) {
-                        mVotingImages.get(3).dispatchTouchEvent(event);
-                    } else if(inViewInBounds(mVotingImages.get(2), x, y)) {
-                        scaleOnTouch(event, mVotingImages.get(2));
-                    }
-                } else  if(event.getAction() == MotionEvent.ACTION_UP){
-                    mVotingImages.get(2).setScaleX(1.0f);
-                    mVotingImages.get(2).setScaleY(1.0f);
-                } else if(inViewInBounds(mVotingImages.get(3), x, y)) {
-                    mVotingImages.get(2).setScaleX(1.0f);
-                    mVotingImages.get(2).setScaleY(1.0f);
-                }
-
-                return false;
-            }
-        });
-
-
-
-
-        mVotingImages.get(3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        mVotingImages.get(3).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                int x = (int)event.getRawX();
-                int y = (int)event.getRawY();
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(inViewInBounds(mVotingImages.get(2), x, y)) {
-                        mVotingImages.get(2).dispatchTouchEvent(event);
-                    } else if(inViewInBounds(mVotingImages.get(3), x, y)) {
-                        scaleOnTouch(event, mVotingImages.get(3));
-                    }
-                } else  if(event.getAction() == MotionEvent.ACTION_UP){
-                    mVotingImages.get(3).setScaleX(1.0f);
-                    mVotingImages.get(3).setScaleY(1.0f);
-                } else if(inViewInBounds(mVotingImages.get(2), x, y)) {
-                    mVotingImages.get(3).setScaleX(1.0f);
-                    mVotingImages.get(3).setScaleY(1.0f);
-                }
-
-                return false;
-            }
-        });
-
 
         return mView;
     }
 
-    private void onTouchFrame(MotionEvent event, FrameLayout frame1, FrameLayout frame2) {
-        int x = (int)event.getRawX();
-        int y = (int)event.getRawY();
-
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(inViewInBounds(frame2, x, y)) {
-                frame2.dispatchTouchEvent(event);
-            } else if(inViewInBounds(frame1, x, y)) {
-                scaleOnTouch(event, frame1);
+    private void setListeners(List<FrameLayout> votingImages, LinearLayout votingLayout, LinearLayout votingLayout2) {
+        for(int i = 0; i < votingImages.size(); i++) {
+            if(i <= 1) {
+                votingImages.get(i).setOnClickListener(nextImagesTransition(votingLayout, votingLayout2));
+            } else {
+                votingImages.get(i).setOnClickListener(nextImagesTransition(votingLayout2, votingLayout));
             }
-        } else if(event.getAction() == MotionEvent.ACTION_UP) {
-            frame1.setScaleX(1.0f);
-            frame1.setScaleY(1.0f);
-        } else if(inViewInBounds(frame2, x, y)) {
-            frame1.setScaleX(1.0f);
-            frame1.setScaleY(1.0f);
+
+            if(i%2 == 0) {
+                votingImages.get(i).setOnTouchListener(onTouchFrame(votingImages.get(i), votingImages.get(i+1)));
+            } else {
+                votingImages.get(i).setOnTouchListener(onTouchFrame(votingImages.get(i), votingImages.get(i-1)));
+
+            }
         }
+    }
+
+    private void disableVoteImages(boolean isDisabled) {
+        for(int i = 0; i < mVotingImages.size(); i++) {
+            if(isDisabled) mVotingImages.get(i).setEnabled(false);
+            else mVotingImages.get(i).setEnabled(true);
+        }
+    }
+
+    private View.OnClickListener nextImagesTransition(final LinearLayout startLayout, final LinearLayout endLayout) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableVoteImages(true);
+                startLayout.setEnabled(false);
+                endLayout.setEnabled(false);
+                if (BestieConstants.ACTIVE_VOTE_COUNT) BestieConstants.VOTE_COUNT++;
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(
+                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(startLayout, "translationY", 0, -2100))
+                );
+                set.setDuration(BestieConstants.ANIMATION_DURATION);
+                set.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        AnimatorSet set = new AnimatorSet();
+                        if (-BestieConstants.VOTE_COUNTER_POSITION > BestieConstants.SCREEN_HEIGHT) {
+                            set.playTogether(
+                                    Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                            endLayout, "translationY", 1950, 0)),
+                                    Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                            mVoteCounter, "translationY", BestieConstants.VOTE_COUNTER_POSITION,
+                                            0))
+                            );
+                            set.setDuration(BestieConstants.ANIMATION_DURATION);
+                            set.start();
+                            BestieConstants.VOTE_COUNTER_POSITION = 0;
+                            BestieConstants.VOTE_COUNT = 0;
+                        } else {
+                            set.playTogether(
+                                    Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                            endLayout, "translationY", 1950, 0)),
+                                    Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                            mVoteCounter, "translationY", BestieConstants.VOTE_COUNTER_POSITION,
+                                            -(BestieConstants.VOTE_INCREMENT * BestieConstants.VOTE_COUNT)))
+                            );
+                            set.setDuration(BestieConstants.ANIMATION_DURATION);
+                            set.start();
+                            BestieConstants.VOTE_COUNTER_POSITION = -(BestieConstants.VOTE_INCREMENT * BestieConstants.VOTE_COUNT);
+                            /* RE-ENABLE FOR KEEPING VOTE COUNT BAR UP */
+//                            if (-BestieConstants.VOTE_COUNTER_POSITION > BestieConstants.SCREEN_HEIGHT) {
+//                                if (BestieConstants.ACTIVE_VOTE_COUNT)
+//                                    Toast.makeText(getActivity(), "You've reached the minimum number of votes!", Toast.LENGTH_SHORT).show();
+//                                BestieConstants.ACTIVE_VOTE_COUNT = false;
+//                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        disableVoteImages(false);
+                        startLayout.setEnabled(true);
+                        endLayout.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+                });
+                set.start();
+
+            }
+        };
+    }
+
+
+    private View.OnTouchListener onTouchFrame(final FrameLayout frame1, final FrameLayout frame2) {
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int x = (int) event.getRawX();
+                int y = (int) event.getRawY();
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    frame2.setEnabled(false);
+                    if (inViewInBounds(frame2, x, y)) {
+                        frame2.dispatchTouchEvent(event);
+                    } else if (inViewInBounds(frame1, x, y)) {
+                        scaleOnTouch(event, frame1);
+                    }
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    frame2.setEnabled(true);
+                    frame1.setScaleX(1.0f);
+                    frame1.setScaleY(1.0f);
+                } else if (inViewInBounds(frame2, x, y)) {
+                    frame2.setEnabled(true);
+                    frame1.setScaleX(1.0f);
+                    frame1.setScaleY(1.0f);
+                }
+                return false;
+            }
+        };
     }
 
 
@@ -294,18 +243,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
     private void scaleOnTouch(MotionEvent event, FrameLayout frame) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            frame.setScaleX(1.1f);
-            frame.setScaleY(1.1f);
+            frame.setScaleX(1.05f);
+            frame.setScaleY(1.05f);
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             frame.setScaleX(1.0f);
             frame.setScaleY(1.0f);
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
     }
 
@@ -313,7 +255,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -333,16 +274,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);

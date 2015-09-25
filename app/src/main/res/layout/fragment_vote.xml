@@ -2,57 +2,66 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/rootLayout"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="com.gmail.nelsonr462.bestie.ui.VoteFragment"
-                android:background="@android:color/white">
+                android:background="#fad11d">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:src="@drawable/vote_counter"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/voteCounter"
+        android:src="@drawable/vote_counter"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/votingLayout2"
-        android:gravity="center_horizontal">
+        android:layout_centerHorizontal="true">
 
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/voteImage3"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="3dp">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="3dp"
                 android:src="@drawable/test_selfie"
-                android:layout_gravity="center_horizontal"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/frame"/>
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="#32000000"/>
+
+
         </FrameLayout>
 
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
             android:id="@+id/voteImage4">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="3dp"
                 android:src="@drawable/test_selfie"
-                android:layout_gravity="center_horizontal"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/frame"/>
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="#32000000"/>
         </FrameLayout>
 
     </LinearLayout>
@@ -61,47 +70,64 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
         android:id="@+id/votingLayout"
         >
 
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/voteImage1"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="3dp">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="3dp"
                 android:src="@drawable/test_selfie"
-                android:layout_gravity="center_horizontal"/>
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="#32000000"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/frame"/>
+
         </FrameLayout>
 
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
             android:id="@+id/voteImage2">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="3dp"
                 android:src="@drawable/test_selfie"
-                android:layout_gravity="center_horizontal"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/frame"/>
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="#32000000"/>
         </FrameLayout>
     </LinearLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/versusCircleShape"
+        android:src="@drawable/versus_circle"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/versusCircleShape"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/tabsScrollColor"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="@string/versus_circle_text"
+        android:gravity="center"/>
 </RelativeLayout>

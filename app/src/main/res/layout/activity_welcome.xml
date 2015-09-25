@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                android:background="@color/ColorPrimary"
+                android:background="@color/tabsScrollColor"
                 tools:context="com.gmail.nelsonr462.bestie.ui.WelcomeActivity"
                 android:id="@+id/relativeLayout">
 
@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Besty"
+        android:text="Bestie"
         android:id="@+id/logoLabel"
         android:textSize="50sp"
         android:textStyle="bold|italic"
@@ -27,11 +27,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/crownImageView"
-        android:layout_alignBottom="@+id/logoLabel"
+        android:id="@+id/duckImageView"
+        android:layout_below="@+id/logoLabel"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp"
-        android:src="@mipmap/crown_logo"/>
+        android:src="@mipmap/ic_duck_right"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"

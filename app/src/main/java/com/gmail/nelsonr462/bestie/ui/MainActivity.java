@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements VoteFragment.OnFr
 BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+
 
 
     @Override
@@ -33,11 +36,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
             Log.i(TAG, currentUser.getUsername());
         }
 
-//        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
-//        toolbar.setVisibility(View.INVISIBLE);
-//        setSupportActionBar(toolbar);
-
-
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         MainFragmentPagerAdapter adapter =  new MainFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
 
@@ -47,7 +45,7 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
 
         // Assiging the Sliding Tab Layout View
         SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setCustomTabView(R.layout.custom_tab, 0);
+        tabs.setCustomTabView(R.layout.tab_icon_layout, 0);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
@@ -70,7 +68,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
         super.onResume();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

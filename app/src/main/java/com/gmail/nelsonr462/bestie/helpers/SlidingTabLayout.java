@@ -57,7 +57,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private int mTitleOffset;
 
     private int mTabViewLayoutId;
-    private int mTabViewTextViewId;
     private int mTabImageViewId;
     private boolean mDistributeEvenly;
 
@@ -193,22 +192,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             TextView tabTitleView = null;
             ImageView tabIconView = null;
 
-//            if (mTabViewLayoutId != 0) {
-//                // If there is a custom tab view layout id set, try and inflate it
-//                tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
-//                        false);
-//                tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
-//            }
-//
-//            if (tabView == null) {
-//                tabView = createDefaultTabView(getContext());
-//            }
-//
-//            if (tabTitleView == null && TextView.class.isInstance(tabView)) {
-//                tabTitleView = (TextView) tabView;
-//            }
-
-
 
             // MODIFIED //
             if (mTabViewLayoutId != 0) {
@@ -225,20 +208,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabIconView = (ImageView) tabView;
             }
 
-            tabIconView.setImageDrawable(getResources().getDrawable(adapter.getDrawableId(i)));
-            if (mViewPager.getCurrentItem() == i) {
-                tabIconView.setSelected(true);
+            if(tabIconView != null) {
+                tabIconView.setImageDrawable(getResources().getDrawable(adapter.getDrawableId(i)));
+                if (mViewPager.getCurrentItem() == i) {
+                    tabIconView.setSelected(true);
+                }
             }
-            //
 
-//            if (mDistributeEvenly) {
-//                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tabView.getLayoutParams();
-//                lp.width = 0;
-//                lp.weight = 1;
-//            }
 
-//            tabTitleView.setCompoundDrawablesWithIntrinsicBounds(adapter.getDrawableId(i), 0, 0, 0);
-//            tabTitleView.setText(adapter.getPageTitle(i));
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {
@@ -249,8 +226,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
-//            tabTitleView.setTextColor(getResources().getColorStateList(R.color.selector));
-//            tabTitleView.setTextSize(12);
+
         }
 
     }
@@ -337,16 +313,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
             }
-//            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-//                mTabStrip.onViewPagerPageChanged(position, 0f);
-//                scrollToTab(position, 0);
-//            }
-//            for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-//                mTabStrip.getChildAt(i).setSelected(position == i);
-//            }
-//            if (mViewPagerPageChangeListener != null) {
-//                mViewPagerPageChangeListener.onPageSelected(position);
-//            }
+
         }
 
     }
