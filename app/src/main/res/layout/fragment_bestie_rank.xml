@@ -1,15 +1,100 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.gmail.nelsonr462.bestie.ui.BestieRankFragment"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context="com.gmail.nelsonr462.bestie.ui.BestieRankFragment"
                 android:background="@android:color/white">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Share"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:id="@+id/shareButton"
+            android:background="@drawable/bestie_share_button"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="15dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Start Over"
+            android:textSize="16sp"
+            android:shadowColor="#00000000"
+
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:id="@+id/startOverButton"
+            android:background="@drawable/bestie_start_over_button"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="15dp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:id="@+id/addPhotosBestieLayout"
+        android:visibility="invisible">
+
+
+        <GridView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/photoGridView"
+            android:paddingTop="20dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:listSelector="#00000000"
+            android:numColumns="2"
+            android:horizontalSpacing="-8dp"
+            android:verticalSpacing="-8dp"
+            android:gravity="center"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Find your best selfie"
+            android:textSize="16sp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#00000000"
+            android:layout_alignParentBottom="true"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:id="@+id/findNewBestieButton"
+            android:background="@drawable/bestie_start_over_button"
+            android:layout_marginBottom="15dp"
+            />
+
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

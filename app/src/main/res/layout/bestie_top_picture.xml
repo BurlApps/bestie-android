@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:paddingTop="10dp"
+                android:paddingLeft="45dp"
+                android:paddingRight="45dp"
+                android:paddingBottom="45dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                 >
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/theBestiePic"
+        android:src="@drawable/test_selfie"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        app:riv_corner_radius="10dp"
+        app:riv_border_width="1dp"
+        app:riv_border_color="#12000000"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/theBestiePic"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Your Bestie!"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:id="@+id/yourBestieText"
+            android:background="@android:color/white"
+            android:textSize="26sp"
+            android:textColor="@color/PrimaryTabTextColor"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/statsLayout"
+            android:background="@android:color/white"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/totalVotedLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1000"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:id="@+id/votedCount"
+                    android:gravity="center"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/ic_duck_right"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        android:adjustViewBounds="true"
+                        android:paddingBottom="2dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Voted!"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:gravity="left|center"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!--<TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="More votes = more accurate"
+                    android:textSize="10sp"
+                    android:textColor="#c4c4c4"
+                    android:paddingTop="10dp"/>-->
+
+            </LinearLayout>
+
+            <View    android:layout_width="1dp"
+                     android:layout_height="match_parent"
+                     android:background="#c4c4c4"
+                />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/totalChoseLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:text="90%"
+                    android:id="@+id/votedPercentage"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/ic_duck_right"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        android:adjustViewBounds="true"
+                        android:paddingBottom="2dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Chose"
+                        android:textSize="18sp"
+                        android:paddingLeft="10dp"
+                        android:gravity="left|center"
+                        android:layout_weight="1"/>
+
+
+                </LinearLayout>
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="That's a lot!"
+                    android:textSize="10sp"
+                    android:textColor="#c4c4c4"
+                    android:paddingTop="10dp"/>-->
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
