@@ -84,7 +84,7 @@ public class YourPhotosFragment extends android.support.v4.app.Fragment {
 
 //    @OnClick(R.id.editPhotosButton)
 //    public void editPhotos(){
-//        Intent intent = new Intent(getActivity(), EditPhotosActivity.class);
+//        Intent intent = new Intent(getActivity(), CropPhotoActivity.class);
 //        startActivity(intent);
 //
 //    }

@@ -5,6 +5,10 @@ package com.gmail.nelsonr462.bestie;
  */
 public class BestieConstants {
 
+    /* REQUEST CODE */
+    public static final int PICK_PHOTO_REQUEST = 1;
+    public static final int CROP_PHOTO_REQUEST = 2;
+
     /* ANIMATION DURATION */
     public static int ANIMATION_DURATION = 700;
 

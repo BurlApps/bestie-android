@@ -4,4 +4,5 @@
     <color name="PrimaryTabTextColor">#F44336</color>
     <color name="ColorPrimaryDark">#B71C1C</color>
     <color name="tabsScrollColor">#F44336</color>
+    <color name="borderFadedGrey">#12000000</color>
 </resources>

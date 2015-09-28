@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                tools:context="com.gmail.nelsonr462.bestie.ui.CropPhotoActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <com.isseiaoki.simplecropview.CropImageView
+        android:id="@+id/cropImageView"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="75dp"
+        android:layout_below="@+id/tool_bar"
+        custom:cropMode="ratio_1_1"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bestie_share_button"
+            android:text="Rotate"
+            android:textColor="@android:color/white"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/rotateButton"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bestie_start_over_button"
+            android:text="Crop"
+            android:textColor="@android:color/white"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/cropButton"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

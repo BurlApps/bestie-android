@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,17 +15,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
-import com.daimajia.easing.linear.Linear;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
 
     private RelativeLayout mRootLayout;
-    private List<FrameLayout> mVotingImages = new ArrayList<>();
+    private List<com.makeramen.roundedimageview.RoundedImageView> mVotingImages = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
 
@@ -65,13 +63,26 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
         LinearLayout votingLayout = (LinearLayout) mView.findViewById(R.id.votingLayout);
         LinearLayout votingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
+        votingLayout2.setVisibility(View.INVISIBLE);
 
         mVoteCounter = (ImageView) mView.findViewById(R.id.voteCounter);
 
-        mVotingImages.add(0, (FrameLayout) mView.findViewById(R.id.voteImage1));
-        mVotingImages.add(1, (FrameLayout) mView.findViewById(R.id.voteImage2));
-        mVotingImages.add(2, (FrameLayout) mView.findViewById(R.id.voteImage3));
-        mVotingImages.add(3, (FrameLayout) mView.findViewById(R.id.voteImage4));
+        mVotingImages.add(0, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage1));
+        mVotingImages.add(1, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage2));
+        mVotingImages.add(2, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage3));
+        mVotingImages.add(3, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage4));
+
+        ParseImagePuller imagePuller = new ParseImagePuller(mVotingImages, mView.getContext());
+        imagePuller.pullVoteImages();
+
+//        for(int i = 0; i < mVotingImages.size(); i++) {
+//            mVotingImages.get(i).setImageURI(imageUriList.get(i));
+//
+//        }
+
+
+
+
 
         setListeners(mVotingImages, votingLayout, votingLayout2);
 
@@ -108,7 +119,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         return mView;
     }
 
-    private void setListeners(List<FrameLayout> votingImages, LinearLayout votingLayout, LinearLayout votingLayout2) {
+    private void setListeners(List<com.makeramen.roundedimageview.RoundedImageView> votingImages, LinearLayout votingLayout, LinearLayout votingLayout2) {
         for(int i = 0; i < votingImages.size(); i++) {
             if(i <= 1) {
                 votingImages.get(i).setOnClickListener(nextImagesTransition(votingLayout, votingLayout2));
@@ -197,6 +208,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     public void onAnimationRepeat(Animator animation) {
                     }
                 });
+                endLayout.setVisibility(View.VISIBLE);
                 set.start();
 
             }
@@ -204,7 +216,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
 
-    private View.OnTouchListener onTouchFrame(final FrameLayout frame1, final FrameLayout frame2) {
+    private View.OnTouchListener onTouchFrame(final com.makeramen.roundedimageview.RoundedImageView frame1, final com.makeramen.roundedimageview.RoundedImageView frame2) {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -241,7 +253,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
 
-    private void scaleOnTouch(MotionEvent event, FrameLayout frame) {
+    private void scaleOnTouch(MotionEvent event, com.makeramen.roundedimageview.RoundedImageView frame) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             frame.setScaleX(1.05f);
             frame.setScaleY(1.05f);

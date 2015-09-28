@@ -16,9 +16,12 @@
         android:src="@drawable/test_selfie"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        app:riv_corner_radius="10dp"
+        app:riv_corner_radius_top_left="10dp"
+        app:riv_corner_radius_top_right="10dp"
+        app:riv_corner_radius_bottom_left="0dp"
+        app:riv_corner_radius_bottom_right="0dp"
         app:riv_border_width="1dp"
-        app:riv_border_color="#12000000"
+        app:riv_border_color="@color/borderFadedGrey"
         />
 
     <LinearLayout
@@ -26,6 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/theBestiePic"
+        android:background="@drawable/bestie_card_background"
+        android:paddingTop="3dp"
+
         >
 
         <TextView
@@ -33,6 +39,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:text="Your Bestie!"
             android:layout_weight="1"
             android:layout_gravity="center"
@@ -48,7 +56,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/statsLayout"
-            android:background="@android:color/white"
             >
 
             <LinearLayout
@@ -56,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingBottom="5dp"
                 android:gravity="center"
                 android:id="@+id/totalVotedLayout">
 
@@ -93,20 +101,21 @@
 
                 </LinearLayout>
 
-                <!--<TextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="More votes = more accurate"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textColor="#c4c4c4"
-                    android:paddingTop="10dp"/>-->
+                    android:paddingTop="10dp"/>
 
             </LinearLayout>
 
             <View    android:layout_width="1dp"
                      android:layout_height="match_parent"
-                     android:background="#c4c4c4"
+                     android:background="@color/borderFadedGrey"
+                     android:layout_marginBottom="-5dp"
                 />
 
             <LinearLayout
@@ -115,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:id="@+id/totalChoseLayout">
+                android:id="@+id/totalChoseLayout"
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,13 +161,13 @@
 
 
                 </LinearLayout>
-                <!--<TextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="That's a lot!"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textColor="#c4c4c4"
-                    android:paddingTop="10dp"/>-->
+                    android:paddingTop="10dp"/>
             </LinearLayout>
 
         </LinearLayout>

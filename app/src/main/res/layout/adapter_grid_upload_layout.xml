@@ -9,7 +9,7 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/gridImage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
