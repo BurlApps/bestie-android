@@ -34,9 +34,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
 
     private RelativeLayout mRootLayout;
+    private RelativeLayout mLoadingLayout;
     private List<com.makeramen.roundedimageview.RoundedImageView> mVotingImages = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
+    private ParseImagePuller mImagePuller;
 
     Rect outRect = new Rect();
     int[] location = new int[2];
@@ -67,13 +69,16 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
         mVoteCounter = (ImageView) mView.findViewById(R.id.voteCounter);
 
+        mLoadingLayout = (RelativeLayout) mView.findViewById(R.id.loadImageProgressBar);
+        mLoadingLayout.setVisibility(View.VISIBLE);
+
         mVotingImages.add(0, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage1));
         mVotingImages.add(1, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage2));
         mVotingImages.add(2, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage3));
         mVotingImages.add(3, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage4));
 
-        ParseImagePuller imagePuller = new ParseImagePuller(mVotingImages, mView.getContext());
-        imagePuller.pullVoteImages();
+        mImagePuller = new ParseImagePuller(mVotingImages, mView.getContext(), mLoadingLayout);
+        mImagePuller.pullVoteImages(0);
 
 //        for(int i = 0; i < mVotingImages.size(); i++) {
 //            mVotingImages.get(i).setImageURI(imageUriList.get(i));
@@ -198,6 +203,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                         disableVoteImages(false);
                         startLayout.setEnabled(true);
                         endLayout.setEnabled(true);
+                        mImagePuller.loadNextPair(startLayout);
                     }
 
                     @Override
