@@ -17,6 +17,11 @@ public class ParseConstants {
     public static final String KEY_OBJECT_ID = "objectId";
     public static final String KEY_CREATOR = "creator";
     public static final String KEY_VOTERS = "voters";
+    public static final String KEY_VOTES = "votes";
+    public static final String KEY_WINS = "wins";
+    public static final String KEY_LOSSES = "losses";
+    public static final String KEY_OPPONENTS = "opponents";
+    public static final String KEY_SCORE = "score";
 
 
     public static final String CLASS_BATCH = "Batch";

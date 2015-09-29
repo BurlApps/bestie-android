@@ -5,26 +5,25 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private List<com.makeramen.roundedimageview.RoundedImageView> mVotingImages = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
-    private ParseImagePuller mImagePuller;
+    private ParseImageHelper mImagePuller;
+    private int mPairSwitch;
+    private int mTopImagePosition;
+    private int mBottomImagePosition;
+//    private int[] mImageViewIds = new int[4];
 
     Rect outRect = new Rect();
     int[] location = new int[2];
@@ -77,7 +80,15 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mVotingImages.add(2, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage3));
         mVotingImages.add(3, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage4));
 
-        mImagePuller = new ParseImagePuller(mVotingImages, mView.getContext(), mLoadingLayout);
+//        for(int i = 0; i < mVotingImages.size(); i++) {
+//            mImageViewIds[i] = mVotingImages.get(i).getId();
+//        }
+
+        mPairSwitch = 0;
+        mTopImagePosition = 0;
+        mBottomImagePosition = 1;
+
+        mImagePuller = new ParseImageHelper(mVotingImages, mView.getContext(), mLoadingLayout);
         mImagePuller.pullVoteImages(0);
 
 //        for(int i = 0; i < mVotingImages.size(); i++) {
@@ -152,6 +163,15 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (v.getId() == R.id.voteImage1 || v.getId() == R.id.voteImage3 ) {
+                    mImagePuller.setImageVoted(mTopImagePosition);
+                    // run with top position
+                } else {
+                    mImagePuller.setImageVoted(mBottomImagePosition);
+                    // run with bottom position
+                }
+
                 disableVoteImages(true);
                 startLayout.setEnabled(false);
                 endLayout.setEnabled(false);
@@ -203,7 +223,13 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                         disableVoteImages(false);
                         startLayout.setEnabled(true);
                         endLayout.setEnabled(true);
-                        mImagePuller.loadNextPair(startLayout);
+                        mImagePuller.loadNextPair(mPairSwitch);
+                        if (mPairSwitch == 0) {
+                            mPairSwitch = 1;
+                        } else {
+                            mPairSwitch = 0;
+                        }
+
                     }
 
                     @Override
@@ -215,6 +241,8 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     }
                 });
                 endLayout.setVisibility(View.VISIBLE);
+                mTopImagePosition = mTopImagePosition + 2;
+                mBottomImagePosition = mBottomImagePosition + 2;
                 set.start();
 
             }
