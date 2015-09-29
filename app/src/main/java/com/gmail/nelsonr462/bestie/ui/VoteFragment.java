@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,9 +35,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
     private RelativeLayout mRootLayout;
     private RelativeLayout mLoadingLayout;
+    private RelativeLayout mCheckNowLayout;
     private List<com.makeramen.roundedimageview.RoundedImageView> mVotingImages = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
+    private Button mCheckNowButton;
     private ParseImageHelper mImagePuller;
     private int mPairSwitch;
     private int mTopImagePosition;
@@ -65,6 +68,9 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
 
         mRootLayout = (RelativeLayout) mView.findViewById(R.id.rootLayout);
+        mCheckNowLayout = (RelativeLayout) mView.findViewById(R.id.checkForMoreLayout);
+        mCheckNowButton = (Button) mView.findViewById(R.id.checkNowButton);
+
 
         LinearLayout votingLayout = (LinearLayout) mView.findViewById(R.id.votingLayout);
         LinearLayout votingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
@@ -88,8 +94,17 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mTopImagePosition = 0;
         mBottomImagePosition = 1;
 
-        mImagePuller = new ParseImageHelper(mVotingImages, mView.getContext(), mLoadingLayout);
+        mImagePuller = new ParseImageHelper(mVotingImages, mView.getContext(), mLoadingLayout, mCheckNowLayout, mRootLayout);
         mImagePuller.pullVoteImages(0);
+
+        mCheckNowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCheckNowLayout.setVisibility(View.INVISIBLE);
+                mLoadingLayout.setVisibility(View.VISIBLE);
+                mImagePuller.pullVoteImages(0);
+            }
+        });
 
 //        for(int i = 0; i < mVotingImages.size(); i++) {
 //            mVotingImages.get(i).setImageURI(imageUriList.get(i));

@@ -129,14 +129,47 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:id="@+id/loadImageProgressBar"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:id="@+id/checkForMoreLayout"
+        android:visibility="invisible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:includeFontPadding="true"
+            android:text="We're out of pictures! \n\nPlease check back later!"
+            android:textSize="16sp"
+            android:textColor="#a4a4a4"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check now!"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bestie_start_over_button"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/checkNowButton"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 
