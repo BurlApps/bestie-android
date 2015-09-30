@@ -20,6 +20,7 @@ import com.parse.ConfigCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,7 +50,6 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        toolbar.setBackgroundColor(getResources().getColor(R.color.tabsScrollColor));
         toolbar.setTitleTextColor(getResources().getColor(R.color.tabsScrollColor));
 
         mCropImageView = (CropImageView) findViewById(R.id.cropImageView);
@@ -57,64 +57,28 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
         mRotateButton = (Button) findViewById(R.id.rotateButton);
 
         Intent cropIntent = getIntent();
-        mMediaUri = getOutputMediaFileUri();
 
-        if(mMediaUri == null) {
-            Toast.makeText(this, "There was an error accessing your internal storage", Toast.LENGTH_LONG).show();
-        } else {
-            Bitmap bitmap;
+        Bitmap bitmap;
 
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), cropIntent.getData());
-                mCropImageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mCropImageView.setHandleShowMode(CropImageView.ShowMode.SHOW_ALWAYS);
-            mCropImageView.setGuideShowMode(CropImageView.ShowMode.SHOW_ON_TOUCH);
-            mCropImageView.setCropMode(CropImageView.CropMode.RATIO_1_1);
-
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), cropIntent.getData());
+            mCropImageView.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        mCropImageView.setHandleShowMode(CropImageView.ShowMode.SHOW_ALWAYS);
+        mCropImageView.setGuideShowMode(CropImageView.ShowMode.SHOW_ON_TOUCH);
+        mCropImageView.setCropMode(CropImageView.CropMode.RATIO_1_1);
+
 
 
         mCropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String appName = getApplicationContext().getString(R.string.app_name);
-                File mediaStorageDir = new File(Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        appName);
-                // Create subdirectory
-                if(! mediaStorageDir.exists()) {
-                    if( ! mediaStorageDir.mkdirs() ) {
-                        Log.e(TAG, "Failed to create directory");
-                        return;
-                    }
-                }
 
-                final File mediaFile;
-                Date now = new Date();
-                String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(now);
-                String path = mediaStorageDir.getPath() + File.separator;
-                mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
-
-                OutputStream fOut = null;
-                try {
-                    fOut = new FileOutputStream(mediaFile);
-                    mCropImageView.getCroppedBitmap().compress(Bitmap.CompressFormat.JPEG, 70, fOut); // obtaining the Bitmap
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    if(fOut != null) {
-                        fOut.flush();
-                        fOut.close(); // do not forget to close the stream
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                mCropImageView.getCroppedBitmap().compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                final byte[] imageBitmap = stream.toByteArray();
 
 
                 /*  IMAGE UPLOADER BEGIN  */
@@ -122,21 +86,11 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
                     @Override
                     public void done(ParseConfig parseConfig, ParseException e) {
                         ParseImageUploader imageUploader = new ParseImageUploader(parseConfig);
-                        imageUploader.newParseImage(mediaFile);
+                        imageUploader.newParseImage(imageBitmap);
 
                         finish();
                     }
                 });
-
-
-
-
-//                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//                mediaScanIntent.setData(Uri.fromFile(mediaFile));
-//                sendBroadcast(mediaScanIntent);
-//
-//                Toast.makeText(CropPhotoActivity.this, "Photo cropped!", Toast.LENGTH_SHORT).show();
-//                finish();
 
             }
         });
@@ -150,48 +104,6 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
 
     }
 
-    private Uri getOutputMediaFileUri() {
-        if(isExternalStorageAvailable()) {
-            // Get URI
-            // Get external storage directory
-            String appName = this.getString(R.string.app_name);
-            File mediaStorageDir = new File(Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    appName);
-            // Create subdirectory
-            if(! mediaStorageDir.exists()) {
-                if( ! mediaStorageDir.mkdirs() ) {
-                    Log.e(TAG, "Failed to create directory");
-                    return null;
-                }
-            }
-            // Create a file name
-            // Create the file
-            File mediaFile;
-            Date now = new Date();
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(now);
-            String path = mediaStorageDir.getPath() + File.separator;
-                mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
-
-
-            Log.d(TAG, "File: "+ Uri.fromFile(mediaFile));
-
-            // Return the file's URI
-
-            return Uri.fromFile(mediaFile);
-        } else {
-            return null;
-        }
-    }
-
-    private boolean isExternalStorageAvailable() {
-        String state = Environment.getExternalStorageState();
-        if(state.equals(Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     public void onFragmentInteraction(String id) {

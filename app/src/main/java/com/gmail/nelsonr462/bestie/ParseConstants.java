@@ -23,6 +23,7 @@ public class ParseConstants {
     public static final String KEY_OPPONENTS = "opponents";
     public static final String KEY_SCORE = "score";
     public static final String KEY_IMAGE_MAX_VOTES = "imageMaxVotes";
+    public static final String KEY_UPLOAD_LIMIT = "uploadLimit";
 
     /* CLASSES */
     public static final String CLASS_BATCH = "Batch";

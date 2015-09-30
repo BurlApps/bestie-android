@@ -1,6 +1,7 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -45,11 +46,12 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private String TAG = BestieRankFragment.class.getSimpleName();
 
     private UserDataHelper mUserDataHelper;
+    public static Context mContext;
 
     private ParseUser mCurrentUser;
     private ParseRelation<ParseObject> mBatchImageRelation;
-    private ParseObject mUserBatch;
-    private ArrayList<ParseObject> mActiveBatchImages = new ArrayList<ParseObject>();;
+    public static ParseObject mUserBatch;
+    public static ArrayList<ParseObject> mActiveBatchImages = new ArrayList<ParseObject>();;
 
     private View mView;
     private ListView mRankedPictureList;
@@ -81,6 +83,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_bestie_rank, container, false);
         mBestieHeader = (RelativeLayout) inflater.inflate(R.layout.header_bestie_top_picture, null, false);
+
+        mContext = getActivity();
 
         mBatchView = (RelativeLayout) mView.findViewById(R.id.batchView);
         mBatchCompletionGraph = (DecoView) mView.findViewById(R.id.batchCompletionGraph);
@@ -121,7 +125,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                     Log.d(TAG, "Get current installation failed");
                     return;
                 }
-                /* FIX PARSE POINTER QUERY */
 
                 mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_USER_BATCH);
 
@@ -135,10 +138,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                             Log.d(TAG, "Batch ID:   " + userBatch.getObjectId());
 
 
-                            /*  TEST BATCH  */
                             mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
-                            if (mBatchImageRelation == null)
-                                Toast.makeText(mView.getContext(), "batch relation null", Toast.LENGTH_SHORT).show();
 
                             ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
                             query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
@@ -184,10 +184,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
-
-
 
     }
 
@@ -250,6 +246,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         startActivity(intent);
 
     }
+
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

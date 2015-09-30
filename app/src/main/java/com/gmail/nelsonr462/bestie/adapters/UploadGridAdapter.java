@@ -23,8 +23,12 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.parse.Parse;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -46,7 +50,7 @@ public class UploadGridAdapter extends BaseAdapter {
     /* SET CREATE */
 
     // Keep all Images in array
-    public static ArrayList<String> mImageList = new ArrayList<>();
+    public ArrayList<String> mImageList = new ArrayList<>();
 
 
     // Constructor
@@ -66,7 +70,15 @@ public class UploadGridAdapter extends BaseAdapter {
             }
         }
 
-        if(mImageList.size() < 10) {
+        int uploadLimit = ParseConfig.getCurrentConfig().getInt(ParseConstants.KEY_UPLOAD_LIMIT);
+
+        if(mImageList.size() > uploadLimit) {
+            for(int i = mImageList.size() - 1; i > uploadLimit; i--) {
+                mImageList.remove(i);
+            }
+        }
+
+        if(mImageList.size() < uploadLimit) {
             mImageList.add(mPlaceholderUri.toString());
         }
 
@@ -122,6 +134,18 @@ public class UploadGridAdapter extends BaseAdapter {
 
                 mImageList.remove(position);
                 mAdapter.notifyDataSetChanged();
+
+                final ParseObject removedImage = mActiveImageList.get(position);
+                ParseObject batch = removedImage.getParseObject(ParseConstants.KEY_USER_BATCH);
+                ParseRelation<ParseObject> imageRelation = batch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
+                imageRelation.remove(removedImage);
+                batch.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        removedImage.deleteInBackground();
+                        mActiveImageList.remove(position);
+                    }
+                });
             }
         });
         return convertView;
@@ -133,7 +157,4 @@ public class UploadGridAdapter extends BaseAdapter {
     }
 
 
-    public void newImage(){
-
-    }
 }

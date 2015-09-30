@@ -150,6 +150,8 @@
             android:horizontalSpacing="-8dp"
             android:verticalSpacing="-8dp"
             android:gravity="center"
+            android:paddingBottom="75dp"
+            android:clipToPadding="false"
             />
 
         <Button
