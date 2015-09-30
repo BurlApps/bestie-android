@@ -13,8 +13,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.ParseImageUploader;
 import com.gmail.nelsonr462.bestie.R;
 import com.isseiaoki.simplecropview.CropImageView;
+import com.parse.ConfigCallback;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,7 +92,7 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
                     }
                 }
 
-                File mediaFile;
+                final File mediaFile;
                 Date now = new Date();
                 String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(now);
                 String path = mediaStorageDir.getPath() + File.separator;
@@ -97,7 +101,7 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
                 OutputStream fOut = null;
                 try {
                     fOut = new FileOutputStream(mediaFile);
-                    mCropImageView.getCroppedBitmap().compress(Bitmap.CompressFormat.PNG, 50, fOut); // obtaining the Bitmap
+                    mCropImageView.getCroppedBitmap().compress(Bitmap.CompressFormat.JPEG, 70, fOut); // obtaining the Bitmap
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -112,12 +116,27 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
                     e.printStackTrace();
                 }
 
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScanIntent.setData(Uri.fromFile(mediaFile));
-                sendBroadcast(mediaScanIntent);
 
-                Toast.makeText(CropPhotoActivity.this, "Photo cropped!", Toast.LENGTH_SHORT).show();
-                finish();
+                /*  IMAGE UPLOADER BEGIN  */
+                ParseConfig.getInBackground(new ConfigCallback() {
+                    @Override
+                    public void done(ParseConfig parseConfig, ParseException e) {
+                        ParseImageUploader imageUploader = new ParseImageUploader(parseConfig);
+                        imageUploader.newParseImage(mediaFile);
+
+                        finish();
+                    }
+                });
+
+
+
+
+//                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//                mediaScanIntent.setData(Uri.fromFile(mediaFile));
+//                sendBroadcast(mediaScanIntent);
+//
+//                Toast.makeText(CropPhotoActivity.this, "Photo cropped!", Toast.LENGTH_SHORT).show();
+//                finish();
 
             }
         });

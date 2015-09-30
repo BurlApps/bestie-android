@@ -55,7 +55,7 @@ public class ParseImageHelper {
         ParseQuery<ParseObject> imageQuery = ParseQuery.getQuery(ParseConstants.CLASS_IMAGE);
         imageQuery.whereEqualTo(ParseConstants.KEY_ACTIVE, true);
         imageQuery.setLimit(50);
-//        imageQuery.whereEqualTo(ParseConstants.KEY_GENDER, currentUser.get(ParseConstants.KEY_INTERESTED));
+        imageQuery.whereEqualTo(ParseConstants.KEY_GENDER, currentUser.get(ParseConstants.KEY_INTERESTED));
         imageQuery.addAscendingOrder(ParseConstants.KEY_OBJECT_ID);
         imageQuery.whereNotEqualTo(ParseConstants.KEY_CREATOR, currentUser);
         imageQuery.whereNotEqualTo(ParseConstants.KEY_VOTERS, currentUser);
@@ -124,11 +124,11 @@ public class ParseImageHelper {
             return;
         }
 
-        if(mImageUriList.get(mUriPosition) != null) {
+        if(mUriPosition < mImageUriList.size()) {
             Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 0 : 2));
             mUriPosition++;
         }
-        if(mImageUriList.get(mUriPosition) != null) {
+        if (mUriPosition < mImageUriList.size()) {
             Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 1 : 3));
             mUriPosition++;
         }
@@ -145,18 +145,20 @@ public class ParseImageHelper {
         ParseObject selectedImage;
         ParseObject losingImage;
 
+
+
         if(imagePosition + 1 < mParseImageObjects.size()) {
             selectedImage = mParseImageObjects.get(imagePosition);
             losingImage = mParseImageObjects.get((imagePosition % 2 == 0) ? imagePosition + 1 : imagePosition - 1);
 
             saveParseChanges(selectedImage, losingImage, true);
-            saveParseChanges(losingImage, selectedImage, false);
-        } else {
+//            saveParseChanges(losingImage, selectedImage, false);
+        } /*else {
             Toast.makeText(mContext, "No more images!", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
-    public void saveParseChanges(ParseObject imageToModify, ParseObject opponent, boolean won) {
+    public void saveParseChanges(final ParseObject imageToModify, final ParseObject opponent, final boolean won) {
         ParseRelation<ParseUser> votedRelation = imageToModify.getRelation(ParseConstants.KEY_VOTERS);
         votedRelation.add(ParseUser.getCurrentUser());
 
@@ -167,8 +169,11 @@ public class ParseImageHelper {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Toast.makeText(mContext, "Image changes save failed!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(mContext, "Image changes save failed!", Toast.LENGTH_LONG).show();
                 }
+                if(!won) return;
+
+                saveParseChanges(opponent, imageToModify, false);
             }
         });
     }

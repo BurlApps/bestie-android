@@ -1,5 +1,9 @@
 package com.gmail.nelsonr462.bestie;
 
+import com.parse.ParseUser;
+
+import java.util.concurrent.FutureTask;
+
 /**
  * Created by nelson on 9/24/15.
  */
@@ -21,6 +25,5 @@ public class BestieConstants {
     public static int VOTES_NEEDED = 5;
     public static int VOTE_INCREMENT = 0;
     public static int VOTE_COUNTER_POSITION = 0;
-
 
 }

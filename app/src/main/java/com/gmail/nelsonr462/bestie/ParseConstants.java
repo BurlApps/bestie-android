@@ -22,10 +22,14 @@ public class ParseConstants {
     public static final String KEY_LOSSES = "losses";
     public static final String KEY_OPPONENTS = "opponents";
     public static final String KEY_SCORE = "score";
+    public static final String KEY_IMAGE_MAX_VOTES = "imageMaxVotes";
 
-
+    /* CLASSES */
     public static final String CLASS_BATCH = "Batch";
     public static final String CLASS_IMAGE = "Image";
 
+    /* STRINGS */
+    public static final String STRING_MALE = "male";
+    public static final String STRING_FEMALE = "female";
 
 }

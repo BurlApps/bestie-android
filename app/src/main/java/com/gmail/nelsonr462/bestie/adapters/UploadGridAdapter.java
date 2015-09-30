@@ -25,6 +25,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,68 +41,45 @@ public class UploadGridAdapter extends BaseAdapter {
     Uri mPlaceholderUri;
 
 
-    private List<ParseObject> mActiveImageList;
+    private ArrayList<ParseObject> mActiveImageList;
 
     /* SET CREATE */
 
     // Keep all Images in array
-    public static ArrayList<Integer> mThumbIds;
-    public static ArrayList<Uri> mImageList;
+    public static ArrayList<String> mImageList = new ArrayList<>();
 
 
     // Constructor
-    public UploadGridAdapter(Context c, List<ParseObject> activeImages) {
+    public UploadGridAdapter(Context c, ArrayList<ParseObject> activeImages) {
         mContext = c;
         mActiveImageList = activeImages;
-
-
-
-
-        for(int i = 0; i < mActiveImageList.size(); i++) {
-            ParseFile image =  mActiveImageList.get(i).getParseFile(ParseConstants.KEY_IMAGE);
-            Uri imageUri = Uri.parse(image.getUrl());
-            mImageList.add(imageUri);
-        }
-
-        if(mImageList.size() < 5) {
-            mImageList.add(mPlaceholderUri);
-        }
-
-
-        mThumbIds = new ArrayList<>();
-        for(int i = 0; i < 4; i++) {
-            mThumbIds.add(R.drawable.test_selfie);
-            if(i == 3) {
-                mThumbIds.add(R.drawable.add_placeholder);
-            }
-        }
-    }
-
-    public UploadGridAdapter(Context c) {
-        mContext = c;
-
-        mThumbIds = new ArrayList<>();
-        for(int i = 0; i < 4; i++) {
-            mThumbIds.add(R.drawable.test_selfie);
-            if(i == 3) {
-                mThumbIds.add(R.drawable.add_placeholder);
-            }
-        }
-
         mPlaceholderUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                + "://" + mContext.getResources().getResourcePackageName(R.drawable.add_placeholder)
-                + '/' + mContext.getResources().getResourceTypeName(R.drawable.add_placeholder)
-                + '/' + mContext.getResources().getResourceEntryName(R.drawable.add_placeholder) );
+                + "://" + mContext.getResources().getResourcePackageName(R.drawable.add_placeholder_small)
+                + '/' + mContext.getResources().getResourceTypeName(R.drawable.add_placeholder_small)
+                + '/' + mContext.getResources().getResourceEntryName(R.drawable.add_placeholder_small) );
+
+
+        if(mActiveImageList.size() > 0) {
+            for(int i = 0; i < mActiveImageList.size(); i++) {
+                ParseFile image =  mActiveImageList.get(i).getParseFile(ParseConstants.KEY_IMAGE);
+                mImageList.add(image.getUrl());
+            }
+        }
+
+        if(mImageList.size() < 10) {
+            mImageList.add(mPlaceholderUri.toString());
+        }
+
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.size();
+        return mImageList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds.get(position);
+        return mImageList.get(position);
     }
 
     @Override
@@ -125,19 +103,7 @@ public class UploadGridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-//        if(mImageList.get(position).equals(mPlaceholderUri)) {
-//            holder.cancelButton.setVisibility(View.GONE);
-//            holder.gridImage.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent choosePhotoIntent = new Intent (Intent.ACTION_GET_CONTENT);
-//                    choosePhotoIntent.setType("image/*");
-//                    ((Activity) mContext).startActivityForResult(choosePhotoIntent, BestieConstants.PICK_PHOTO_REQUEST );
-//                }
-//            });
-//        }
-
-        if(position == mThumbIds.size() - 1) {
+        if(mImageList.get(position).equals(mPlaceholderUri.toString())) {
             holder.cancelButton.setVisibility(View.GONE);
             holder.gridImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -149,13 +115,12 @@ public class UploadGridAdapter extends BaseAdapter {
             });
         }
 
-        holder.gridImage.setImageResource(mThumbIds.get(position));
-//        holder.gridImage.setImageURI(mImageList.get(position));
+        Picasso.with(mContext).load(mImageList.get(position)).into(holder.gridImage);
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mThumbIds.remove(position);
+                mImageList.remove(position);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -165,5 +130,10 @@ public class UploadGridAdapter extends BaseAdapter {
     private static class ViewHolder {
         ImageView gridImage;
         ImageView cancelButton;
+    }
+
+
+    public void newImage(){
+
     }
 }

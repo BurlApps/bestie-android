@@ -13,11 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -42,13 +44,21 @@ public class WelcomeActivity extends AppCompatActivity {
             ParseAnonymousUtils.logIn(new LogInCallback() {
                 @Override
                 public void done(ParseUser parseUser, ParseException e) {
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    if (e != null) {
-                        Log.d(TAG, "PARSE LOGIN:     Login failed");
-                    } else {
-                        Log.d(TAG, "PARSE LOGIN:     Login success");
-                        navigateToMain();
-                    }
+
+                    parseUser.put(ParseConstants.KEY_GENDER, ParseConstants.STRING_MALE);
+                    parseUser.put(ParseConstants.KEY_INTERESTED, ParseConstants.STRING_FEMALE);
+                    parseUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            if (e != null) {
+                                Log.d(TAG, "PARSE LOGIN:     Login failed");
+                            } else {
+                                Log.d(TAG, "PARSE LOGIN:     Login success");
+                                navigateToMain();
+                            }
+                        }
+                    });
                 }
             });
         }
