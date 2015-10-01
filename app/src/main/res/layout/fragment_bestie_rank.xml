@@ -11,6 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1dp"
         />
 
     <LinearLayout
@@ -88,7 +92,7 @@
             android:id="@+id/completionPercentage"
             android:textSize="60sp"
             android:textStyle="bold"
-            android:text="80%"
+            android:text="0%"
             android:paddingBottom="22dp"
             />
         <TextView

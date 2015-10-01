@@ -7,7 +7,8 @@ import com.parse.ParseUser;
  */
 public class ParseConstants {
     /* KEYS */
-    public static final String KEY_USER_BATCH = "batch";
+    public static final String KEY_BATCH = "batch";
+    public static final String KEY_BATCHES = "batches";
     public static final String KEY_BATCH_IMAGE_RELATION = "images";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_IMAGE = "image";
@@ -24,6 +25,8 @@ public class ParseConstants {
     public static final String KEY_SCORE = "score";
     public static final String KEY_IMAGE_MAX_VOTES = "imageMaxVotes";
     public static final String KEY_UPLOAD_LIMIT = "uploadLimit";
+    public static final String KEY_MAX_VOTES_BATCH = "maxVotes";
+    public static final String KEY_USER_VOTES = "userVotes";
 
     /* CLASSES */
     public static final String CLASS_BATCH = "Batch";
@@ -32,5 +35,11 @@ public class ParseConstants {
     /* STRINGS */
     public static final String STRING_MALE = "male";
     public static final String STRING_FEMALE = "female";
+
+    /* CLOUD FUNCTION */
+    public static final String SET_VOTED = "setVoted";
+
+    /* PARSE PULL BOOLEAN */
+    public static boolean PARSE_PULL = true;
 
 }

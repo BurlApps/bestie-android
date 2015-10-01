@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.parse.ParseObject;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class BestieListAdapter extends BaseAdapter{
     private Context mContext;
+    private ArrayList<ParseObject> mActiveImageList;
 
     /* SET CREATE */
 
@@ -23,18 +29,27 @@ public class BestieListAdapter extends BaseAdapter{
     };
 
     // Constructor
+    public BestieListAdapter(Context context, ArrayList<ParseObject> activeImageList) {
+        mContext = context;
+        mActiveImageList = activeImageList;
+    }
+
+
+
+
+
     public BestieListAdapter(Context c) {
         mContext = c;
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return mActiveImageList.size();  /*mThumbIds.length;*/
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return mActiveImageList.get(position);  /*mThumbIds[position];*/
     }
 
     @Override
@@ -49,14 +64,19 @@ public class BestieListAdapter extends BaseAdapter{
         if(convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.adapter_bestie_layout, null);
             holder = new ViewHolder();
+
+
             holder.rankImage = (ImageView) convertView.findViewById(R.id.bestieRankListImage);
+
             convertView.setTag(holder);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.rankImage.setImageResource(mThumbIds[position]);
+        Picasso.with(mContext).load(mActiveImageList.get(position).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(holder.rankImage);
+
+//        holder.rankImage.setImageResource(mThumbIds[position]);
         return convertView;
     }
 

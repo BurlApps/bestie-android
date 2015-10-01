@@ -48,6 +48,7 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
         toolbar.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
 
+        assert  getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(R.color.tabsScrollColor));

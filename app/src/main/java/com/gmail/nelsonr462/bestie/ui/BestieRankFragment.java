@@ -19,24 +19,25 @@ import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
-import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.BestieListAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
-import com.gmail.nelsonr462.bestie.helpers.UserDataHelper;
+import com.gmail.nelsonr462.bestie.helpers.BatchActivator;
+import com.gmail.nelsonr462.bestie.helpers.BestieRankHelper;
+import com.gmail.nelsonr462.bestie.helpers.GraphDataHelper;
 import com.hookedonplay.decoviewlib.DecoView;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,8 @@ import java.util.List;
 public class BestieRankFragment extends android.support.v4.app.Fragment {
     private String TAG = BestieRankFragment.class.getSimpleName();
 
-    private UserDataHelper mUserDataHelper;
+    private GraphDataHelper mGraphDataHelper;
+    private BestieRankHelper mBestieRankHelper;
     public static Context mContext;
 
     private ParseUser mCurrentUser;
@@ -56,6 +58,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private View mView;
     private ListView mRankedPictureList;
     public static GridView mUploadGrid;
+    private RelativeLayout mAddPhotosLayout;
     private RelativeLayout mBestieHeader;
     private RelativeLayout mBatchView;
     private DecoView mBatchCompletionGraph;
@@ -86,98 +89,139 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
         mContext = getActivity();
 
+        /* Set Add Photos Layout */
+        mAddPhotosLayout = (RelativeLayout) mView.findViewById(R.id.addPhotosBestieLayout);
+        mUploadGrid = (GridView) mView.findViewById(R.id.photoGridView);
+        mFindBestieButton = (Button) mView.findViewById(R.id.findNewBestieButton);
+        mFindBestieButton.setOnClickListener(ButtonClickListener(3));
+
+        /* Set Batch Completion Graph View */
         mBatchView = (RelativeLayout) mView.findViewById(R.id.batchView);
         mBatchCompletionGraph = (DecoView) mView.findViewById(R.id.batchCompletionGraph);
 
+        /* Set Bestie View */
         mRankedPictureList = (ListView) mView.findViewById(R.id.listView);
         mRankedPictureList.addHeaderView(mBestieHeader);
-        mRankedPictureList.setAdapter(new BestieListAdapter(getActivity()));
+//        mRankedPictureList.setAdapter(new BestieListAdapter(getActivity()));
 
-        mUploadGrid = (GridView) mView.findViewById(R.id.photoGridView);
+        mStartOverButton = (Button) mView.findViewById(R.id.startOverButton);
+        mStartOverButton.setOnClickListener(ButtonClickListener(1));
+        mShareButton = (Button) mView.findViewById(R.id.shareButton);
+        mShareButton.setOnClickListener(ButtonClickListener(2));
 
         /* CONNECT UPLOAD GRID TO PARSE HERE */
         mCurrentUser = ParseUser.getCurrentUser();
 
         if(mCurrentUser == null) {
             navigateToLogin();
+            return mView;
         }
 
-        mUserDataHelper = new UserDataHelper(mBatchView);
+        if(mActiveBatchImages.size() > 0) {
+            Toast.makeText(mView.getContext(), "no new pull", Toast.LENGTH_SHORT).show();
+            if(mUserBatch != null) {
 
+                if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) == 0) {
+                    mAddPhotosLayout.setVisibility(View.VISIBLE);
 
-
-//        mUploadGrid.setAdapter(new UploadGridAdapter(getActivity()));
-
-        mStartOverButton = (Button) mView.findViewById(R.id.startOverButton);
-        mStartOverButton.setOnClickListener(ButtonClickListener(1));
-        mShareButton = (Button) mView.findViewById(R.id.shareButton);
-        mShareButton.setOnClickListener(ButtonClickListener(2));
-        mFindBestieButton = (Button) mView.findViewById(R.id.findNewBestieButton);
-        mFindBestieButton.setOnClickListener(ButtonClickListener(3));
-
-
-        mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-
-
-                if (e != null) {
-                    Log.d(TAG, "Get current installation failed");
-                    return;
                 }
 
-                mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_USER_BATCH);
-
-                if (mUserBatch != null) {
-                    Log.d(TAG, "USER NAME:  " + mCurrentUser.getUsername());
-
-
-                    mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject userBatch, ParseException e) {
-                            Log.d(TAG, "Batch ID:   " + userBatch.getObjectId());
+                if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
+                    RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                    Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
+                    ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
+                    for (int i = 1; i < mActiveBatchImages.size(); i++) {
+                        rankedImages.add(mActiveBatchImages.get(i));
+                    }
 
 
-                            mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
-
-                            ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
-                            query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
-                            query.findInBackground(new FindCallback<ParseObject>() {
-                                @Override
-                                public void done(List<ParseObject> list, ParseException e) {
-                                    if (e != null) {
-                                        Toast.makeText(mView.getContext(), "Parse Query failed :(", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-
-                                    for (int i = 0; i < list.size(); i++) {
-                                        mActiveBatchImages.add(list.get(i));
-                                    }
-
-                                    mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
-                                }
-                            });
-
-                        }
-                    });
-                } else {
-                    Toast.makeText(mView.getContext(), "No Active batch!", Toast.LENGTH_SHORT).show();
-                    mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+                    mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
                 }
 
-
+                mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+            } else {
+                mAddPhotosLayout.setVisibility(View.VISIBLE);
+                mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
             }
-        });
 
+        } else {
+
+            mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+
+
+                    if (e != null) {
+                        Log.d(TAG, "Get current installation failed");
+                        return;
+                    }
+
+                    mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_BATCH);
+
+                    if (mUserBatch != null) {
+                        Log.d(TAG, "USER NAME:  " + mCurrentUser.getUsername());
+
+
+                        mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject userBatch, ParseException e) {
+                                Log.d(TAG, "Batch ID:   " + userBatch.getObjectId());
+
+
+                                if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == true) {
+                                    mBatchView.setVisibility(View.VISIBLE);
+                                    mGraphDataHelper = new GraphDataHelper(mBatchView);
+                                }
+
+                                mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
+
+                                ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
+                                query.addAscendingOrder((mUserBatch.get(ParseConstants.KEY_VOTES) == 0) ? ParseConstants.KEY_CREATED_AT : ParseConstants.KEY_SCORE);
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (e != null) {
+                                            Toast.makeText(mView.getContext(), "Parse Query failed :(", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) == 0) {
+                                            mAddPhotosLayout.setVisibility(View.VISIBLE);
+
+                                        }
+
+                                        for (int i = 0; i < list.size(); i++) {
+                                            mActiveBatchImages.add(list.get(i));
+                                        }
+
+                                        if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
+                                            RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                                            Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
+                                            ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
+                                            for (int i = 1; i < mActiveBatchImages.size(); i++) {
+                                                rankedImages.add(mActiveBatchImages.get(i));
+                                            }
+
+
+                                            mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
+                                        }
+
+                                        mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        Toast.makeText(mView.getContext(), "No Active batch!", Toast.LENGTH_SHORT).show();
+                        mAddPhotosLayout.setVisibility(View.VISIBLE);
+                        mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+                    }
+
+                }
+            });
+        }
 
         return mView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
 
@@ -213,6 +257,13 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                 RelativeLayout addPhotosLayout = (RelativeLayout) mView.findViewById(R.id.addPhotosBestieLayout);
 
                 if(buttonType == 1) {
+                    // Reset mActiveBatchImages and set new GridLayoutAdapter
+                    // Remove current batch from user batch pointer field
+
+                    mActiveBatchImages.clear();
+                    mUploadGrid.setAdapter(new UploadGridAdapter(mContext, mActiveBatchImages));
+                    BatchActivator.moveBatch();
+
                     AnimatorSet set = new AnimatorSet();
                     set.playTogether(
                             Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(addPhotosLayout, "translationY", 2100, 0))
@@ -225,6 +276,9 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                     if(mUploadGrid.getAdapter().getCount() < 3) {
                         Toast.makeText(mView.getContext(), "Upload some images first!", Toast.LENGTH_SHORT).show();
                     } else {
+                        // Set batch as active and display graph
+                        BatchActivator.activateBatch(true);
+                        mBatchView.setVisibility(View.VISIBLE);
 
                         AnimatorSet set = new AnimatorSet();
                         set.playTogether(

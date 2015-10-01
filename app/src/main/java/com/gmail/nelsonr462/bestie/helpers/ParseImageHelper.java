@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -20,6 +23,7 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -141,6 +145,8 @@ public class ParseImageHelper {
     }
 
     public void setImageVoted(int imagePosition) {
+
+
         // Increment votes, wins/losses
         ParseObject selectedImage;
         ParseObject losingImage;
@@ -151,31 +157,41 @@ public class ParseImageHelper {
             selectedImage = mParseImageObjects.get(imagePosition);
             losingImage = mParseImageObjects.get((imagePosition % 2 == 0) ? imagePosition + 1 : imagePosition - 1);
 
-            saveParseChanges(selectedImage, losingImage, true);
+            final HashMap<String, Object> params = new HashMap<String, Object>();
+            params.put("winner", selectedImage);
+            params.put("loser", losingImage);
+
+            ParseCloud.callFunctionInBackground(ParseConstants.SET_VOTED, params);
+
+
+//            saveParseChanges(selectedImage, losingImage, true);
 //            saveParseChanges(losingImage, selectedImage, false);
         } /*else {
             Toast.makeText(mContext, "No more images!", Toast.LENGTH_SHORT).show();
         }*/
     }
 
-    public void saveParseChanges(final ParseObject imageToModify, final ParseObject opponent, final boolean won) {
-        ParseRelation<ParseUser> votedRelation = imageToModify.getRelation(ParseConstants.KEY_VOTERS);
-        votedRelation.add(ParseUser.getCurrentUser());
-
-        imageToModify.increment(ParseConstants.KEY_VOTES);
-        imageToModify.increment(won? ParseConstants.KEY_WINS : ParseConstants.KEY_LOSSES);
-        imageToModify.increment(ParseConstants.KEY_OPPONENTS, opponent.getNumber(ParseConstants.KEY_SCORE));
-        imageToModify.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-//                    Toast.makeText(mContext, "Image changes save failed!", Toast.LENGTH_LONG).show();
-                }
-                if(!won) return;
-
-                saveParseChanges(opponent, imageToModify, false);
-            }
-        });
-    }
+//    public void saveParseChanges(final ParseObject imageToModify, final ParseObject opponent, final boolean won) {
+//        ParseRelation<ParseUser> votedRelation = imageToModify.getRelation(ParseConstants.KEY_VOTERS);
+//        votedRelation.add(ParseUser.getCurrentUser());
+//
+//        imageToModify.increment(ParseConstants.KEY_VOTES);
+//        imageToModify.increment(won? ParseConstants.KEY_WINS : ParseConstants.KEY_LOSSES);
+//        imageToModify.increment(ParseConstants.KEY_OPPONENTS, opponent.getNumber(ParseConstants.KEY_SCORE));
+//        imageToModify.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e != null) {
+////                    Toast.makeText(mContext, "Image changes save failed!", Toast.LENGTH_LONG).show();
+//                }
+//                BestieRankFragment.mUserBatch.increment(ParseConstants.KEY_USER_VOTES);
+//
+//
+//                if(!won) return;
+//
+//                saveParseChanges(opponent, imageToModify, false);
+//            }
+//        });
+//    }
 
 }

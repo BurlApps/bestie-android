@@ -4,25 +4,16 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.daimajia.easing.Glider;
-import com.daimajia.easing.Skill;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
-import com.gmail.nelsonr462.bestie.ui.MainActivity;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.parse.Parse;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -31,12 +22,7 @@ import com.parse.ParseRelation;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 
 public class UploadGridAdapter extends BaseAdapter {
@@ -136,9 +122,10 @@ public class UploadGridAdapter extends BaseAdapter {
                 mAdapter.notifyDataSetChanged();
 
                 final ParseObject removedImage = mActiveImageList.get(position);
-                ParseObject batch = removedImage.getParseObject(ParseConstants.KEY_USER_BATCH);
+                ParseObject batch = removedImage.getParseObject(ParseConstants.KEY_BATCH);
                 ParseRelation<ParseObject> imageRelation = batch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
                 imageRelation.remove(removedImage);
+                batch.increment(ParseConstants.KEY_MAX_VOTES_BATCH, -ParseConfig.getCurrentConfig().getInt(ParseConstants.KEY_IMAGE_MAX_VOTES));
                 batch.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

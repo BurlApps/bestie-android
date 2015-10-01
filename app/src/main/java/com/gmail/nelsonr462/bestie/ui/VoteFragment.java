@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,10 @@ import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +49,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private int mPairSwitch;
     private int mTopImagePosition;
     private int mBottomImagePosition;
-//    private int[] mImageViewIds = new int[4];
 
     Rect outRect = new Rect();
     int[] location = new int[2];
@@ -86,16 +90,26 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mVotingImages.add(2, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage3));
         mVotingImages.add(3, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage4));
 
-//        for(int i = 0; i < mVotingImages.size(); i++) {
-//            mImageViewIds[i] = mVotingImages.get(i).getId();
-//        }
 
         mPairSwitch = 0;
         mTopImagePosition = 0;
         mBottomImagePosition = 1;
 
         mImagePuller = new ParseImageHelper(mVotingImages, mView.getContext(), mLoadingLayout, mCheckNowLayout, mRootLayout);
-        mImagePuller.pullVoteImages(0);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser!=null)
+        currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if(e!=null) {
+                    Log.d(TAG, "No current user");
+                    return;
+                }
+
+                mImagePuller.pullVoteImages(0);
+            }
+        });
 
         mCheckNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,14 +119,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 mImagePuller.pullVoteImages(0);
             }
         });
-
-//        for(int i = 0; i < mVotingImages.size(); i++) {
-//            mVotingImages.get(i).setImageURI(imageUriList.get(i));
-//
-//        }
-
-
-
 
 
         setListeners(mVotingImages, votingLayout, votingLayout2);
