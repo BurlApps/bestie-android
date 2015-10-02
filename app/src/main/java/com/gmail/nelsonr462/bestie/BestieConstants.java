@@ -17,13 +17,13 @@ public class BestieConstants {
     public static int ANIMATION_DURATION = 700;
 
     /* VOTE COUNTER CONSTANTS */
-    public static int SCREEN_HEIGHT = 0;
+    public static float SCREEN_HEIGHT = 0;
 
     public static boolean ACTIVE_VOTE_COUNT = true;
 
     public static int VOTE_COUNT = 0;
     public static int VOTES_NEEDED = 5;
-    public static int VOTE_INCREMENT = 0;
+    public static float VOTE_INCREMENT = 0;
     public static int VOTE_COUNTER_POSITION = 0;
 
 }

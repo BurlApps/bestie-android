@@ -20,6 +20,7 @@ import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
@@ -41,19 +42,7 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
         setContentView(R.layout.activity_main);
 
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if(currentUser == null) {
-            navigateToLogin();
-        } else {
-            Log.i(TAG, currentUser.getUsername());
-            try {
-                currentUser.fetch();
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
 
         ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
             @Override
@@ -65,8 +54,26 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
             }
         });
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser == null) {
+            navigateToLogin();
+        } else {
+            Log.i(TAG, currentUser.getUsername());
+            currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    inflateTabLayout();
+
+                }
+            });
+
+        }
 
 
+
+    }
+
+    private void inflateTabLayout() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         MainFragmentPagerAdapter adapter =  new MainFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
 
@@ -90,7 +97,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
         pager.setCurrentItem(1);
-
     }
 
 
@@ -123,6 +129,10 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
             return true;
         } else if (id == R.id.action_logout) {
             ParseUser.logOut();
+
+            if(BestieRankFragment.mActiveBatchImages.size() > 0)
+                ParseQuery.clearAllCachedResults();
+            BestieRankFragment.mActiveBatchImages.clear();
             navigateToLogin();
             return true;
         }

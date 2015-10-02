@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseCrashReporting;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
@@ -25,6 +26,7 @@ public class BestieApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Parse.enableLocalDatastore(this);
+        ParseCrashReporting.enable(this);
         Parse.initialize(this, "q1NZZSGYNxaYIQq5dDNkMlD407fmm2Hq6BoXBzu4", "aA6IKoTDyboREj5gNfWQ2PasrmaaRYtMTUlugje0");
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParseFacebookUtils.initialize(getApplicationContext());

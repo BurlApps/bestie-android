@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
+import com.gmail.nelsonr462.bestie.ui.VoteFragment;
 import com.parse.GetCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
@@ -102,6 +103,7 @@ public class ParseImageUploader {
                 parseImage.saveInBackground();
                 BestieRankFragment.mUserBatch = newBatch;
                 BestieRankFragment.mUserBatch.saveInBackground();
+                VoteFragment.mUserBatch = newBatch;
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                     @Override

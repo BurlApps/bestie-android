@@ -152,7 +152,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
 
                     if (e != null) {
-                        Log.d(TAG, "Get current installation failed");
+                        Log.d(TAG, "Get current user failed");
                         return;
                     }
 
@@ -279,6 +279,11 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                         // Set batch as active and display graph
                         BatchActivator.activateBatch(true);
                         mBatchView.setVisibility(View.VISIBLE);
+                        try {
+                            VoteFragment.mUserBatch.fetch();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
                         AnimatorSet set = new AnimatorSet();
                         set.playTogether(
