@@ -12,7 +12,7 @@ import android.text.style.ImageSpan;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.VoteFragment;
-import com.gmail.nelsonr462.bestie.ui.YourPhotosFragment;
+import com.gmail.nelsonr462.bestie.ui.SettingsFragment;
 
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
@@ -38,7 +38,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new YourPhotosFragment();
+                return new SettingsFragment();
             case 1:
                 return new VoteFragment();
             case 2:

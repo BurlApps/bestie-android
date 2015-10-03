@@ -16,7 +16,7 @@
         android:src="@drawable/test_selfie"
         app:riv_corner_radius="10dp"
         app:riv_border_width="1dp"
-        app:riv_border_color="#12000000"
+        app:riv_border_color="@color/bestieBorderGrey"
         android:padding="13dp"
 
         />
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/delete_button"
         android:src="@mipmap/ic_cancel_white_24dp"
-        android:tint="@color/tabsScrollColor"
+        android:tint="@color/bestieRed"
         android:layout_alignTop="@+id/gridImage"
         android:layout_alignRight="@+id/gridImage"
 

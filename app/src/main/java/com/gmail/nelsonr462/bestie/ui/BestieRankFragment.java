@@ -62,8 +62,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private Button mShareButton;
     private Button mFindBestieButton;
 
-    private OnFragmentInteractionListener mListener;
-
     public BestieRankFragment() {}
 
     @Override
@@ -93,7 +91,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         /* Set Bestie View */
         mRankedPictureList = (ListView) mView.findViewById(R.id.listView);
         mRankedPictureList.addHeaderView(mBestieHeader);
-//        mRankedPictureList.setAdapter(new BestieListAdapter(getActivity()));
 
         mStartOverButton = (Button) mView.findViewById(R.id.startOverButton);
         mStartOverButton.setOnClickListener(ButtonClickListener(1));
@@ -109,32 +106,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         }
 
         if(mActiveBatchImages.size() > 0) {
-            Toast.makeText(mView.getContext(), "no new pull", Toast.LENGTH_SHORT).show();
-            if(mUserBatch != null) {
-
-                if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) == 0) {
-                    mAddPhotosLayout.setVisibility(View.VISIBLE);
-
-                }
-
-                if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
-                    RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
-                    Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
-                    ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
-                    for (int i = 1; i < mActiveBatchImages.size(); i++) {
-                        rankedImages.add(mActiveBatchImages.get(i));
-                    }
-
-
-                    mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
-                }
-
-                mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
-            } else {
-                mAddPhotosLayout.setVisibility(View.VISIBLE);
-                mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
-            }
-
+            checkForBatch();
         } else {
 
             mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
@@ -259,6 +231,34 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         return mView;
     }
 
+    private void checkForBatch() {
+        Toast.makeText(mView.getContext(), "no new pull", Toast.LENGTH_SHORT).show();
+        if(mUserBatch != null) {
+
+            if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) == 0) {
+                mAddPhotosLayout.setVisibility(View.VISIBLE);
+
+            }
+
+            if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
+                RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
+                ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
+                for (int i = 1; i < mActiveBatchImages.size(); i++) {
+                    rankedImages.add(mActiveBatchImages.get(i));
+                }
+
+
+                mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
+            }
+
+            mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+        } else {
+            mAddPhotosLayout.setVisibility(View.VISIBLE);
+            mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -269,18 +269,11 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach (Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     private View.OnClickListener ButtonClickListener(final int buttonType) {
@@ -340,13 +333,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-    }
-
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

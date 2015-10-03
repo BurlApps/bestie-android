@@ -62,9 +62,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     Rect outRect = new Rect();
     int[] location = new int[2];
 
-
-    private OnFragmentInteractionListener mListener;
-
     public VoteFragment() {}
 
     @Override
@@ -382,23 +379,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

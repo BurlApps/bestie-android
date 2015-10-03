@@ -29,8 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements VoteFragment.OnFragmentInteractionListener,
-BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -148,10 +147,5 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
         } else if (requestCode == BestieConstants.CROP_PHOTO_REQUEST) {
             Toast.makeText(this, "photo crop request!", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
