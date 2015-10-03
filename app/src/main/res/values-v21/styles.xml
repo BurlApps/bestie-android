@@ -3,7 +3,7 @@
 
     <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- no action bar theme-->
-        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
-        <item name="android:colorEdgeEffect">@color/tabsScrollColor</item>
+        <item name="colorPrimaryDark">@color/bestieRedDark</item>
+        <item name="android:colorEdgeEffect">@color/bestieRed</item>
     </style>
 </resources>

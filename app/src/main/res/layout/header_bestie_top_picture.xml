@@ -47,7 +47,7 @@
             android:id="@+id/yourBestieText"
             android:background="@android:color/white"
             android:textSize="26sp"
-            android:textColor="@color/PrimaryTabTextColor"
+            android:textColor="@color/bestieRed"
             android:gravity="center"/>
 
         <LinearLayout

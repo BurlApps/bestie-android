@@ -109,8 +109,8 @@
     <orderEntry type="library" exported="" name="ParseFacebookUtilsV4-1.10.1" level="project" />
     <orderEntry type="library" exported="" name="ParseCrashReporting-1.10.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.0.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="simplecropview-1.0.8" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="android-DecoView-charting-v0.9.4" level="project" />

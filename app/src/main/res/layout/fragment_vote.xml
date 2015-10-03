@@ -5,7 +5,7 @@
                 android:id="@+id/rootLayout"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="com.gmail.nelsonr462.bestie.ui.VoteFragment"
-                android:background="#fad11d">
+                android:background="#2196F3">
 
     <ImageView
         android:layout_width="match_parent"
@@ -26,39 +26,55 @@
         android:id="@+id/votingLayout2"
         android:layout_centerHorizontal="true">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/test_selfie"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:id="@+id/voteImage3"
             android:layout_marginBottom="3dp"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="10dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="@color/borderFadedGrey"/>
+            android:id="@+id/voteImage3"
+            android:layout_weight="1">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test_selfie"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="@color/borderFadedGrey"/>
+
+        </RelativeLayout>
 
 
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/test_selfie"
+            android:layout_weight="1"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="8dp"
-            android:id="@+id/voteImage4"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="10dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="@color/borderFadedGrey"/>
+            android:id="@+id/voteImage4">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test_selfie"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="@color/borderFadedGrey"/>
+
+        </RelativeLayout>
+
+
 
     </LinearLayout>
 
@@ -70,39 +86,57 @@
         android:id="@+id/votingLayout"
         >
 
-
-        <com.makeramen.roundedimageview.RoundedImageView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/test_selfie"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:id="@+id/voteImage1"
             android:layout_marginBottom="3dp"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="10dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="@color/borderFadedGrey"/>
+            android:id="@+id/voteImage1"
+            android:layout_weight="1">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test_selfie"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="@color/borderFadedGrey"/>
+
+        </RelativeLayout>
 
 
-        <com.makeramen.roundedimageview.RoundedImageView
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/test_selfie"
+            android:layout_weight="1"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="8dp"
-            android:id="@+id/voteImage2"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="10dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="@color/borderFadedGrey"/>
+            android:id="@+id/voteImage2">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test_selfie"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dp"
+                app:riv_border_width="1dp"
+                app:riv_border_color="@color/borderFadedGrey"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -119,7 +153,7 @@
         android:layout_height="50dp"
         android:layout_alignTop="@+id/versusCircleShape"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/tabsScrollColor"
+        android:textColor="@color/bestieRed"
         android:textSize="22sp"
         android:textStyle="bold"
         android:text="@string/versus_circle_text"

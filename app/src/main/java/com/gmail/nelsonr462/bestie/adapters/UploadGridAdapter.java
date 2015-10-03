@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,13 +59,15 @@ public class UploadGridAdapter extends BaseAdapter {
 
         int uploadLimit = ParseConfig.getCurrentConfig().getInt(ParseConstants.KEY_UPLOAD_LIMIT);
 
+        Log.d("UPLOAD LIMIT:  ","LIMIT  =  "+uploadLimit);
+
         if(mImageList.size() > uploadLimit) {
             for(int i = mImageList.size() - 1; i > uploadLimit; i--) {
                 mImageList.remove(i);
             }
         }
 
-        if(mImageList.size() < uploadLimit) {
+        if(mImageList.size() < uploadLimit || mImageList.size() == 0) {
             mImageList.add(mPlaceholderUri.toString());
         }
 

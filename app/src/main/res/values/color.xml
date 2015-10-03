@@ -5,4 +5,14 @@
     <color name="ColorPrimaryDark">#B71C1C</color>
     <color name="tabsScrollColor">#F44336</color>
     <color name="borderFadedGrey">#12000000</color>
+
+
+    <color name="bestieBlue">#2196F3</color>
+    <color name="bestieBlueDark">#0D47A1</color>
+    <color name="bestieBlueOverlay">#7D2196F3</color>
+    <color name="bestieYellow">#FFD740</color>
+    <color name="bestieRed">#FA7470</color>
+    <color name="bestieRedDark">#e53935</color>
+    <color name="bestieMessageText">#C6C6C6</color>
+    <color name="bestieBorderGrey">#E2E2E2</color>
 </resources>

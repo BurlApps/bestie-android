@@ -3,9 +3,10 @@ package com.gmail.nelsonr462.bestie.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
@@ -24,9 +24,7 @@ import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.BestieListAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.BatchActivator;
-import com.gmail.nelsonr462.bestie.helpers.BestieRankHelper;
 import com.gmail.nelsonr462.bestie.helpers.GraphDataHelper;
-import com.hookedonplay.decoviewlib.DecoView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -47,7 +45,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private String TAG = BestieRankFragment.class.getSimpleName();
 
     private GraphDataHelper mGraphDataHelper;
-    private BestieRankHelper mBestieRankHelper;
     public static Context mContext;
 
     private ParseUser mCurrentUser;
@@ -61,19 +58,13 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private RelativeLayout mAddPhotosLayout;
     private RelativeLayout mBestieHeader;
     private RelativeLayout mBatchView;
-    private DecoView mBatchCompletionGraph;
-    private TextView mCompletionPercentage;
     private Button mStartOverButton;
     private Button mShareButton;
     private Button mFindBestieButton;
 
-    private ArrayList<Bitmap> mBitmaps;
-
     private OnFragmentInteractionListener mListener;
 
-    public BestieRankFragment() {
-        // Required empty public constructor
-    }
+    public BestieRankFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +76,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_bestie_rank, container, false);
+        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         mBestieHeader = (RelativeLayout) inflater.inflate(R.layout.header_bestie_top_picture, null, false);
 
         mContext = getActivity();
@@ -97,7 +89,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
         /* Set Batch Completion Graph View */
         mBatchView = (RelativeLayout) mView.findViewById(R.id.batchView);
-        mBatchCompletionGraph = (DecoView) mView.findViewById(R.id.batchCompletionGraph);
 
         /* Set Bestie View */
         mRankedPictureList = (ListView) mView.findViewById(R.id.listView);
@@ -213,6 +204,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                         });
                     } else {
                         Toast.makeText(mView.getContext(), "No Active batch!", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "LIST SIZE:   "+mActiveBatchImages.size());
                         mAddPhotosLayout.setVisibility(View.VISIBLE);
                         mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
                     }
@@ -220,6 +212,49 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                 }
             });
         }
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                final Handler h = new Handler();
+                final int delay = 7000; //milliseconds
+
+                if(mGraphDataHelper != null) {
+                    if (mUserBatch != null) {
+
+                        h.postDelayed(new Runnable() {
+                            public void run() {
+                                mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
+                                    @Override
+                                    public void done(ParseObject parseObject, ParseException e) {
+                                        if (e != null) {
+                                            Log.d(TAG, e.getMessage());
+                                        }
+
+                                        if (parseObject != null) {
+                                            Log.d(TAG, "Fetched batch");
+                                            mGraphDataHelper.updateGraph();
+                                        }
+                                    }
+                                });
+                                h.postDelayed(this, delay);
+                            }
+                        }, delay);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         return mView;
     }
@@ -232,7 +267,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach (Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
@@ -278,6 +313,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                     } else {
                         // Set batch as active and display graph
                         BatchActivator.activateBatch(true);
+                        mGraphDataHelper = new GraphDataHelper(mBatchView);
                         mBatchView.setVisibility(View.VISIBLE);
                         try {
                             VoteFragment.mUserBatch.fetch();

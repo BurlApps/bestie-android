@@ -1,8 +1,9 @@
-package com.gmail.nelsonr462.bestie;
+package com.gmail.nelsonr462.bestie.helpers;
 
 
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.VoteFragment;
@@ -46,7 +47,7 @@ public class ParseImageUploader {
                             return;
                         }
                         parseImage.put(ParseConstants.KEY_CREATOR, ParseUser.getCurrentUser());
-                        parseImage.put(ParseConstants.KEY_IMAGE_MAX_VOTES, mParseConfig.getInt(ParseConstants.KEY_IMAGE_MAX_VOTES));
+                        parseImage.put(ParseConstants.KEY_MAX_VOTES_BATCH, mParseConfig.getInt(ParseConstants.KEY_IMAGE_MAX_VOTES));
                         parseImage.put(ParseConstants.KEY_GENDER, currentUser.get(ParseConstants.KEY_GENDER));
                         parseImage.put(ParseConstants.KEY_IMAGE, imgFile);
 

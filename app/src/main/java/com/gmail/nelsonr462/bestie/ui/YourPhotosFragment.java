@@ -22,8 +22,6 @@ public class YourPhotosFragment extends android.support.v4.app.Fragment {
     private ListView mListView;
     private FloatingActionButton mActionButton;
 
-//    @Bind(R.id.editPhotosButton) Button mEditPhotosButton;
-//    @Bind(R.id.addPhotosButton) Button mAddPhotosButton;
 
 
     private OnFragmentInteractionListener mListener;
@@ -79,36 +77,6 @@ public class YourPhotosFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-
-
-
-//    @OnClick(R.id.editPhotosButton)
-//    public void editPhotos(){
-//        Intent intent = new Intent(getActivity(), CropPhotoActivity.class);
-//        startActivity(intent);
-//
-//    }
-//
-//
-//    @OnClick(R.id.addPhotosButton)
-//    public void addPhotos(){
-//        Intent intent = new Intent(getActivity(), AddPhotosActivity.class);
-//        startActivity(intent);
-//
-//    }
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);

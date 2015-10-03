@@ -23,6 +23,7 @@ import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -43,7 +44,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private RelativeLayout mRootLayout;
     private RelativeLayout mLoadingLayout;
     private RelativeLayout mCheckNowLayout;
-    private List<com.makeramen.roundedimageview.RoundedImageView> mVotingImages = new ArrayList<>();
+    private List<RelativeLayout> mVotingImages = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
     private Button mCheckNowButton;
@@ -93,17 +94,21 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mLoadingLayout = (RelativeLayout) mView.findViewById(R.id.loadImageProgressBar);
         mLoadingLayout.setVisibility(View.VISIBLE);
 
-        mVotingImages.add(0, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage1));
-        mVotingImages.add(1, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage2));
-        mVotingImages.add(2, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage3));
-        mVotingImages.add(3, (com.makeramen.roundedimageview.RoundedImageView) mView.findViewById(R.id.voteImage4));
+        mVotingImages.add(0, (RelativeLayout) mView.findViewById(R.id.voteImage1));
+        mVotingImages.add(1, (RelativeLayout) mView.findViewById(R.id.voteImage2));
+        mVotingImages.add(2, (RelativeLayout) mView.findViewById(R.id.voteImage3));
+        mVotingImages.add(3, (RelativeLayout) mView.findViewById(R.id.voteImage4));
 
 
         mPairSwitch = 0;
         mTopImagePosition = 0;
         mBottomImagePosition = 1;
 
-        mImagePuller = new ParseImageHelper(mVotingImages, mView.getContext(), mLoadingLayout, mCheckNowLayout, mRootLayout);
+        ArrayList<RoundedImageView> votingImageIds = new ArrayList<>();
+        for(int i = 0; i < mVotingImages.size(); i++) {
+            votingImageIds.add((RoundedImageView) mVotingImages.get(i).getChildAt(0));
+        }
+        mImagePuller = new ParseImageHelper(votingImageIds, mView.getContext(), mLoadingLayout, mCheckNowLayout, mRootLayout);
 
         final ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser!=null)
@@ -172,9 +177,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                /*RE-ENABLE FOR KEEPING VOTE COUNT BAR UP*/
-//                BestieConstants.VOTE_COUNT = 0;
-//                BestieConstants.ACTIVE_VOTE_COUNT = true;
+
             }
 
             @Override
@@ -190,7 +193,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         return mView;
     }
 
-    private void setListeners(List<com.makeramen.roundedimageview.RoundedImageView> votingImages, LinearLayout votingLayout, LinearLayout votingLayout2) {
+    private void setListeners(List<RelativeLayout> votingImages, LinearLayout votingLayout, LinearLayout votingLayout2) {
         for(int i = 0; i < votingImages.size(); i++) {
             if(i <= 1) {
                 votingImages.get(i).setOnClickListener(nextImagesTransition(votingLayout, votingLayout2));
@@ -236,6 +239,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 set.playTogether(
                         Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(startLayout, "translationY", 0, -2100))
                 );
+
                 set.setDuration(BestieConstants.ANIMATION_DURATION);
                 set.addListener(new Animator.AnimatorListener() {
                     @Override
@@ -298,7 +302,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
 
-    private View.OnTouchListener onTouchFrame(final com.makeramen.roundedimageview.RoundedImageView frame1, final com.makeramen.roundedimageview.RoundedImageView frame2) {
+    private View.OnTouchListener onTouchFrame(final RelativeLayout frame1, final RelativeLayout frame2) {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -335,7 +339,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
 
-    private void scaleOnTouch(MotionEvent event, com.makeramen.roundedimageview.RoundedImageView frame) {
+    private void scaleOnTouch(MotionEvent event, RelativeLayout frame) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             frame.setScaleX(1.05f);
             frame.setScaleY(1.05f);
@@ -346,25 +350,26 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
     public void updateBatch() {
-
-        mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject userBatch, ParseException e) {
-                if(userBatch!=null) {
-                    if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
-                        mVoteCount = 0;
-                        mVotesNeeded = 0;
-                        mCounterPosition = 0;
-                    } else if (userBatch.get(ParseConstants.KEY_ACTIVE) == true && userBatch.getInt(ParseConstants.KEY_USER_VOTES) == 0) {
-                        mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
-                        mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
-                        mIncrement =  (mVotesNeeded != 0)? mScreenHeight / mVotesNeeded : 0;
-                        mCounterPosition = -(mVoteCount *mIncrement);
+        if(mUserBatch != null) {
+            mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject userBatch, ParseException e) {
+                    if (userBatch != null) {
+                        if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
+                            mVoteCount = 0;
+                            mVotesNeeded = 0;
+                            mCounterPosition = 0;
+                        } else if (userBatch.get(ParseConstants.KEY_ACTIVE) == true && userBatch.getInt(ParseConstants.KEY_USER_VOTES) == 0) {
+                            mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
+                            mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
+                            mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
+                            mCounterPosition = -(mVoteCount * mIncrement);
+                        }
+                        Log.d(TAG, "UPDATE CHECK VOTE COUNT:  " + mVoteCount);
                     }
-                    Log.d(TAG, "UPDATE CHECK VOTE COUNT:  "+mVoteCount);
                 }
-            }
-        });
+            });
+        }
 
     }
 

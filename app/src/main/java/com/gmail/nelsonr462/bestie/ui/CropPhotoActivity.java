@@ -3,17 +3,13 @@ package com.gmail.nelsonr462.bestie.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.gmail.nelsonr462.bestie.ParseImageUploader;
+import com.gmail.nelsonr462.bestie.helpers.ParseImageUploader;
 import com.gmail.nelsonr462.bestie.R;
 import com.isseiaoki.simplecropview.CropImageView;
 import com.parse.ConfigCallback;
@@ -21,14 +17,7 @@ import com.parse.ParseConfig;
 import com.parse.ParseException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFragment.OnFragmentInteractionListener {
     private final String TAG = CropPhotoActivity.class.getSimpleName();

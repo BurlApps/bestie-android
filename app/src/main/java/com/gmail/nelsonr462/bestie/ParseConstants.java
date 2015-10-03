@@ -38,6 +38,7 @@ public class ParseConstants {
 
     /* CLOUD FUNCTION */
     public static final String SET_VOTED = "setVoted";
+    public static final String FEED = "feed";
 
     /* PARSE PULL BOOLEAN */
     public static boolean PARSE_PULL = true;

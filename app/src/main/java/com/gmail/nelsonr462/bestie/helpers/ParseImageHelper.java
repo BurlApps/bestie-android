@@ -23,9 +23,11 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ParseImageHelper {
@@ -55,19 +57,11 @@ public class ParseImageHelper {
     public void pullVoteImages(final int pullType){
         mRootLayout.setEnabled(false);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        final HashMap<String, Object> params = new HashMap<String, Object>();
 
-        ParseQuery<ParseObject> imageQuery = ParseQuery.getQuery(ParseConstants.CLASS_IMAGE);
-        imageQuery.whereEqualTo(ParseConstants.KEY_ACTIVE, true);
-        imageQuery.setLimit(50);
-        imageQuery.whereEqualTo(ParseConstants.KEY_GENDER, currentUser.get(ParseConstants.KEY_INTERESTED));
-        imageQuery.addAscendingOrder(ParseConstants.KEY_OBJECT_ID);
-        imageQuery.whereNotEqualTo(ParseConstants.KEY_CREATOR, currentUser);
-        imageQuery.whereNotEqualTo(ParseConstants.KEY_VOTERS, currentUser);
-
-        imageQuery.findInBackground(new FindCallback<ParseObject>() {
+        ParseCloud.callFunctionInBackground(ParseConstants.FEED, params, new FunctionCallback<ArrayList<ParseObject>>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
+            public void done(ArrayList<ParseObject> list, ParseException e) {
                 mRootLayout.setEnabled(true);
                 if (e != null) {
                     Log.d(TAG, e.getMessage());
@@ -80,6 +74,7 @@ public class ParseImageHelper {
                         Log.d(TAG, "IMAGE ID:  "+mImageUriList.get(j)+"  /  OBJECT ID:  "+mParseImageObjects.get(j).getObjectId());
 
                     }
+                    mRootLayout.setEnabled(false);
                     return;
                 }
 
@@ -172,14 +167,11 @@ public class ParseImageHelper {
                     if(o != null) {
                         Log.d(TAG, "RETURNED ID:   " + updatedBatch.getObjectId());
                         VoteFragment.mUserBatch = (ParseObject) o;
-//
                     }
                 }
             });
 
-        } /*else {
-            Toast.makeText(mContext, "No more images!", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
 
 }

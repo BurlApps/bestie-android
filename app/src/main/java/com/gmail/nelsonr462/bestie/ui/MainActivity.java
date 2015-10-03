@@ -35,7 +35,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
     public static final String TAG = MainActivity.class.getSimpleName();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +68,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
 
         }
 
-
-
     }
 
     private void inflateTabLayout() {
@@ -90,7 +87,7 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return getResources().getColor(R.color.bestieYellow);
             }
         });
 
@@ -115,16 +112,8 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
-        /* -- REMOVE LOGOUT --*/
-
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_logout) {
@@ -160,8 +149,6 @@ BestieRankFragment.OnFragmentInteractionListener, YourPhotosFragment.OnFragmentI
             Toast.makeText(this, "photo crop request!", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
