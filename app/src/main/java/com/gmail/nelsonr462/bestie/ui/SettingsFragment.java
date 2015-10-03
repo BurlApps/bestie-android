@@ -18,10 +18,8 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
 
     private View mView;
     private ListView mListView;
-    private FloatingActionButton mActionButton;
 
-    public SettingsFragment() {
-    }
+    public SettingsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,12 +33,10 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, mView);
-        mListView = (ListView) mView.findViewById(R.id.photoFragmentListView);
+        mListView = (ListView) mView.findViewById(R.id.bestieListView);
         String[] settingsOptions = {"Terms of Service", "Privacy Policy"};
         ArrayAdapter<String> settingsAdapter = new ArrayAdapter<String>(mView.getContext(), android.R.layout.simple_list_item_1, settingsOptions);
         mListView.setAdapter(settingsAdapter);
-
-        mActionButton = (FloatingActionButton) mView.findViewById(R.id.fab);
         return mView;
     }
 
