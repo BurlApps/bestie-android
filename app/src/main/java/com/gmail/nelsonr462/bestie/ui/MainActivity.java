@@ -1,23 +1,18 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.BestieConstants;
+import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
-import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -25,22 +20,19 @@ import com.parse.ParseQuery;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
+    protected ParseObject mUserBatch;
+    protected ParseUser mCurrentUser;
+    private BestieRankFragment mBestieFragment;
+    private VoteFragment mVoteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
 
         ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
             @Override
@@ -52,20 +44,68 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if(currentUser == null) {
+        mCurrentUser = ParseUser.getCurrentUser();
+        if(mCurrentUser == null) {
             navigateToLogin();
+            return;
         } else {
-            Log.i(TAG, currentUser.getUsername());
-            currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+            Log.i(TAG, mCurrentUser.getUsername());
+            mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
                     inflateTabLayout();
+//                    mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_BATCH);
+//
+//                    if (mUserBatch != null) {
+//                        Log.d(TAG, "USER NAME:  " + mCurrentUser.getUsername());
+//
+//
+//                        mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+//                            @Override
+//                            public void done(ParseObject userBatch, ParseException e) {
+//                                if (userBatch != null) {
+//                                    Log.d(TAG, "Batch ID:   " + userBatch.getObjectId());
+//
+//
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        Toast.makeText(MainActivity.this, "No Active batch!", Toast.LENGTH_SHORT).show();
+//                    }
 
                 }
             });
 
         }
+
+
+        /* Fetch global config */
+
+        /////
+
+
+        /* BATCH REFRESH HANDLER */
+
+//        final Handler h = new Handler();
+//        final int delay = 6000; //milliseconds
+//
+//
+//        h.postDelayed(new Runnable() {
+//            public void run() {
+//                if (mUserBatch != null) {
+//                    mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
+//                        @Override
+//                        public void done(ParseObject parseObject, ParseException e) {
+//                            if (e != null) {
+//                                Log.d(TAG, e.getMessage());
+//                            }
+//                        }
+//                    });
+//                }
+//                h.postDelayed(this, delay);
+//            }
+//        }, delay);
 
     }
 
@@ -93,12 +133,21 @@ public class MainActivity extends AppCompatActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
         pager.setCurrentItem(1);
+
+        mBestieFragment = (BestieRankFragment) adapter.getItem(2);
+        mVoteFragment = (VoteFragment) adapter.getItem(1);
+
+//        mBestieFragment = (BestieRankFragment) getSupportFragmentManager().findFragmentByTag(BestieRankFragment.class.getSimpleName());
+//        mVoteFragment = (VoteFragment) getSupportFragmentManager().findFragmentByTag(VoteFragment.class.getSimpleName());
+
+
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+
 
     }
 
@@ -128,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void navigateToLogin() {
+    public void navigateToLogin() {
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -139,13 +188,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == BestieConstants.PICK_PHOTO_REQUEST && resultCode == RESULT_OK) {
-            Toast.makeText(this, "photo picked!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, CropPhotoActivity.class);
             intent.setData(result.getData());
             startActivity(intent);
-
-        } else if (requestCode == BestieConstants.CROP_PHOTO_REQUEST) {
-            Toast.makeText(this, "photo crop request!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void setBatch(ParseObject batch) {
+        mBestieFragment.setUserBatch(batch);
+        mVoteFragment.setUserBatch(batch);
+    }
+
+
 }

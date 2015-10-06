@@ -8,8 +8,8 @@ android {
         applicationId "com.gmail.nelsonr462.bestie"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 3
-        versionName "0.03"
+        versionCode 4
+        versionName "0.04"
     }
     buildTypes {
         release {
@@ -45,4 +45,7 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile files('libs/ParseFacebookUtilsV4-1.10.1.jar')
     compile files('libs/ParseCrashReporting-1.10.1.jar')
+
+    compile 'de.greenrobot:eventbus:2.4.0'
+
 }

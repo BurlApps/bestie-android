@@ -23,11 +23,18 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import de.greenrobot.event.EventBus;
 
 
 public class ParseImageHelper {
@@ -42,6 +49,7 @@ public class ParseImageHelper {
     private int mNextPair;
     private ArrayList<ParseObject> mParseImageObjects = new ArrayList<>();
     protected int mUriPosition;
+    private boolean mMinVotesReached;
 
     public ParseImageHelper(List<com.makeramen.roundedimageview.RoundedImageView> imageViewList,
                             Context context, RelativeLayout loadingLayout, RelativeLayout checkNowLayout, RelativeLayout rootLayout){
@@ -56,6 +64,11 @@ public class ParseImageHelper {
 
     public void pullVoteImages(final int pullType){
         mRootLayout.setEnabled(false);
+        if (pullType == 3) {
+            mParseImageObjects.clear();
+            mImageUriList.clear();
+            mUriPosition = 0;
+        }
 
         final HashMap<String, Object> params = new HashMap<String, Object>();
 
@@ -68,7 +81,7 @@ public class ParseImageHelper {
                     return;
                 }
 
-                if(list.size() < 10) {
+                if(list.size() < 4) {
                     mCheckNowLayout.setVisibility(View.VISIBLE);
                     for (int j = 0; j < mImageUriList.size(); j++) {
                         Log.d(TAG, "IMAGE ID:  "+mImageUriList.get(j)+"  /  OBJECT ID:  "+mParseImageObjects.get(j).getObjectId());
@@ -79,19 +92,19 @@ public class ParseImageHelper {
                 }
 
                 for (int i = 0; i < list.size(); i++) {
-                    if(!mParseImageObjects.contains(list.get(i))) {
+//                    if(!mParseImageObjects.contains(list.get(i))) {
                         ParseFile image = list.get(i).getParseFile(ParseConstants.KEY_IMAGE);
                         Uri imageUri = Uri.parse(image.getUrl());
                         mImageUriList.add(imageUri);
                         mParseImageObjects.add(list.get(i));
-                    }
+//                    }
                 }
                 Log.d(TAG, "IMAGE URI LIST SIZE:   " + mImageUriList.size());
                 for (int j = 0; j < mImageUriList.size(); j++) {
                     Log.d(TAG, "IMAGE ID:  "+mImageUriList.get(j)+"  /  OBJECT ID:  "+mParseImageObjects.get(j).getObjectId());
 
                 }
-                if (pullType == 0) {
+                if (pullType == 0 || pullType == 3) {
                     loadImagesIntoViews();
 
                 } else {
@@ -141,13 +154,9 @@ public class ParseImageHelper {
     }
 
     public void setImageVoted(int imagePosition) {
-
-
         // Increment votes, wins/losses
         ParseObject selectedImage;
         ParseObject losingImage;
-
-
 
         if(imagePosition + 1 < mParseImageObjects.size()) {
             selectedImage = mParseImageObjects.get(imagePosition);
@@ -162,16 +171,17 @@ public class ParseImageHelper {
                 public void done(Object o, ParseException e) {
                     if(e!=null)
                         Log.d(TAG, e.getMessage());
-                    ParseObject updatedBatch = (ParseObject) o;
 
                     if(o != null) {
-                        Log.d(TAG, "RETURNED ID:   " + updatedBatch.getObjectId());
-                        VoteFragment.mUserBatch = (ParseObject) o;
+                        Log.d(TAG, "RETURNED:   " + o.toString());
+                        EventBus.getDefault().post(new ImageVotedEvent(o));
+
                     }
                 }
             });
 
         }
+//        return mMinVotesReached;
     }
 
 }

@@ -70,7 +70,7 @@ public class GraphDataHelper {
     }
 
     public void setGraphData(float maxVotes, float userVotes, float votes) {
-        final float calculatedGraphPosition =  (userVotes/maxVotes) * (votes/maxVotes);
+        final float calculatedGraphPosition =   ((userVotes/maxVotes < 1)? (userVotes / maxVotes) : 1) * (votes/maxVotes);
 
         mGraphPosition = (int) (calculatedGraphPosition * 100.0f);
 
@@ -115,6 +115,7 @@ public class GraphDataHelper {
     }
 
     public void updateGraph() {
+        Log.d("UPDATEGRAPH:  ", "Update fired");
         if((int) mVotes == mActiveBatch.get(ParseConstants.KEY_MAX_VOTES_BATCH)) {
             mBatchViewLayout.setVisibility(View.INVISIBLE);
         }
@@ -124,7 +125,7 @@ public class GraphDataHelper {
             mUserVotes = (float) mActiveBatch.getInt(ParseConstants.KEY_USER_VOTES);
             mVotes = (float) mActiveBatch.getInt(ParseConstants.KEY_VOTES);
 
-            final float calculatedGraphPosition = (mUserVotes / mMaxVotes) * (mVotes / mMaxVotes);
+            final float calculatedGraphPosition = ((mUserVotes/mMaxVotes < 1)? (mUserVotes / mMaxVotes) : 1) * (mVotes / mMaxVotes);
 
             final int graphPosition = (int) (calculatedGraphPosition * 100.0f);
 

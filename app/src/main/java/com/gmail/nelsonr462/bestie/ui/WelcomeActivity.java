@@ -25,8 +25,6 @@ import com.parse.SaveCallback;
 public class WelcomeActivity extends AppCompatActivity {
     private String TAG = WelcomeActivity.class.getSimpleName();
 
-    private TextView mLogoLabel;
-    private ImageView mCrownImage;
     private ProgressBar mProgressBar;
 
 
@@ -45,8 +43,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 @Override
                 public void done(ParseUser parseUser, ParseException e) {
 
-                    parseUser.put(ParseConstants.KEY_GENDER, ParseConstants.STRING_MALE);
-                    parseUser.put(ParseConstants.KEY_INTERESTED, ParseConstants.STRING_FEMALE);
+                    parseUser.put(ParseConstants.KEY_GENDER, ParseConstants.STRING_FEMALE);
+                    parseUser.put(ParseConstants.KEY_INTERESTED, ParseConstants.STRING_MALE);
                     parseUser.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -68,6 +66,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void navigateToMain() {
         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

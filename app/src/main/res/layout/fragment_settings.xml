@@ -10,26 +10,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp">
+        android:orientation="vertical"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        >
 
         <ListView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bestieListView"
+            android:paddingTop="5dp"
+            android:footerDividersEnabled="true"
 
             />
 
         <ListView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/userListView"
+            android:paddingTop="15dp"
+            android:footerDividersEnabled="true"
 
             />
 
         <ListView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/legalListView"
+            android:paddingTop="15dp"
+            android:footerDividersEnabled="true"
 
             />
 

@@ -10,15 +10,14 @@
     <string name="login_error_title">Oops!</string>
     <string name="signup_error_message">Please make sure you enter a username, password, and email address!</string>
     <string name="signup_error_title">Oops!</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">BLANK VOTE FRAGMENT</string>
     <string name="title_activity_add_photos">Add Photos</string>
     <string name="title_activity_crop_photo">Crop Photo</string>
     <string name="versus_circle_text">VS</string>
+    <string name="title_activity_legal_view">Legal WebView</string>
+
+    <string-array name="interested_choices">
+        <item>Men</item>
+        <item>Women</item>
+    </string-array>
 </resources>

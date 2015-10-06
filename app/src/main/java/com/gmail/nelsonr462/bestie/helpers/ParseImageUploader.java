@@ -38,7 +38,7 @@ public class ParseImageUploader {
         currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject currentUser, ParseException e) {
-                final ParseFile imgFile = new ParseFile("pic.jpeg", mediaFile);
+                final ParseFile imgFile = new ParseFile("pic.jpeg", mediaFile, "image/jpeg");
                 imgFile.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -104,7 +104,6 @@ public class ParseImageUploader {
                 parseImage.saveInBackground();
                 BestieRankFragment.mUserBatch = newBatch;
                 BestieRankFragment.mUserBatch.saveInBackground();
-                VoteFragment.mUserBatch = newBatch;
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                     @Override

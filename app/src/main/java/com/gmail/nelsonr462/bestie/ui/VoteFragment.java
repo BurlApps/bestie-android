@@ -2,7 +2,6 @@ package com.gmail.nelsonr462.bestie.ui;
 
 import android.app.Activity;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +20,8 @@ import com.daimajia.easing.Skill;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.helpers.BatchUpdateEvent;
+import com.gmail.nelsonr462.bestie.helpers.ImageVotedEvent;
 import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
@@ -35,11 +35,13 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 
 public class VoteFragment extends android.support.v4.app.Fragment {
-    private String TAG = VoteFragment.class.getSimpleName();
+    private final String TAG = VoteFragment.class.getSimpleName();
 
-    public static ParseObject mUserBatch;
+    public ParseObject mUserBatch;
 
     private RelativeLayout mRootLayout;
     private RelativeLayout mLoadingLayout;
@@ -122,29 +124,30 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject userBatch, ParseException e) {
+                            if(userBatch != null) {
+                                if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
+                                    mVoteCount = 0;
+                                    mVotesNeeded = 0;
+                                    mCounterPosition = 0;
 
-                            if(userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
-                                mVoteCount = 0;
-                                mVotesNeeded = 0;
-                                mCounterPosition = 0;
+                                } else {
+                                    mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
+                                    mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
+                                }
 
-                            } else {
-                                mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
-                                mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
-                            }
+                                mScreenHeight = mRootLayout.getHeight();
+                                mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
+                                mCounterPosition = -(mVoteCount * mIncrement);
 
-                            mScreenHeight = mRootLayout.getHeight();
-                            mIncrement =  (mVotesNeeded != 0)? mScreenHeight / mVotesNeeded : 0;
-                            mCounterPosition = -(mVoteCount *mIncrement);
-
-                            Log.d(TAG, "COUNTER POSITION :    " + mCounterPosition);
-                            if(mCounterPosition < 0) {
-                                AnimatorSet set = new AnimatorSet();
-                                set.playTogether(
-                                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(mVoteCounter, "translationY", 0, mCounterPosition))
-                                );
-                                set.setDuration(BestieConstants.ANIMATION_DURATION);
-                                set.start();
+                                Log.d(TAG, "COUNTER POSITION :    " + mCounterPosition);
+                                if (mCounterPosition < 0) {
+                                    AnimatorSet set = new AnimatorSet();
+                                    set.playTogether(
+                                            Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(mVoteCounter, "translationY", 0, mCounterPosition))
+                                    );
+                                    set.setDuration(BestieConstants.ANIMATION_DURATION);
+                                    set.start();
+                                }
                             }
 
                         }
@@ -174,7 +177,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                if(BestieRankFragment.mUserBatch != null) {
+                    mVoteCount = (float) BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_USER_VOTES)+1;
+                    mVotesNeeded = (float) BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH)+1;
 
+                }
             }
 
             @Override
@@ -186,6 +193,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+
 
         return mView;
     }
@@ -219,14 +227,19 @@ public class VoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 mIncrement =  (mVotesNeeded != 0)? mScreenHeight / mVotesNeeded : 0;
+//                boolean minVotes;
 
                 if (v.getId() == R.id.voteImage1 || v.getId() == R.id.voteImage3 ) {
-                    mImagePuller.setImageVoted(mTopImagePosition);
+                   /* minVotes =*/ mImagePuller.setImageVoted(mTopImagePosition);
                     // run with top position
                 } else {
-                    mImagePuller.setImageVoted(mBottomImagePosition);
+                  /*  minVotes =*/ mImagePuller.setImageVoted(mBottomImagePosition);
                     // run with bottom position
                 }
+
+//                if(minVotes) {
+//                    mCounterPosition = -(mIncrement * mVotesNeeded);
+//                }
 
                 disableVoteImages(true);
                 startLayout.setEnabled(false);
@@ -257,6 +270,8 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                             /* RE-ENABLE FOR KEEPING VOTE COUNT BAR UP */
 
                         if (-mCounterPosition >= mScreenHeight) {
+                            Log.d(TAG, "CounterPosition:  "+mCounterPosition);
+                            Log.d(TAG, "ScreenHeight:   "+mScreenHeight);
                             if (BestieConstants.ACTIVE_VOTE_COUNT)
                                 Toast.makeText(getActivity(), "You've reached the minimum number of votes!", Toast.LENGTH_SHORT).show();
                             BestieConstants.ACTIVE_VOTE_COUNT = false;
@@ -347,33 +362,41 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
     public void updateBatch() {
-        if(mUserBatch != null) {
-            mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
-                @Override
-                public void done(ParseObject userBatch, ParseException e) {
-                    if (userBatch != null) {
-                        if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
+//        Log.d(TAG, "updateBatch fired");
+//        if(mUserBatch != null) {
+//            mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
+//                @Override
+//                public void done(ParseObject userBatch, ParseException e) {
+                    if (mUserBatch != null) {
+                        if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false) {
                             mVoteCount = 0;
                             mVotesNeeded = 0;
                             mCounterPosition = 0;
-                        } else if (userBatch.get(ParseConstants.KEY_ACTIVE) == true && userBatch.getInt(ParseConstants.KEY_USER_VOTES) == 0) {
-                            mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
-                            mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
+                        } else if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == true && mUserBatch.getInt(ParseConstants.KEY_USER_VOTES) == 0) {
+                            mVoteCount = (float) mUserBatch.getInt(ParseConstants.KEY_USER_VOTES);
+                            mVotesNeeded = (float) mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
                             mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
                             mCounterPosition = -(mVoteCount * mIncrement);
                         }
                         Log.d(TAG, "UPDATE CHECK VOTE COUNT:  " + mVoteCount);
                     }
-                }
-            });
-        }
+//                }
+//            });
+//        }
 
     }
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -386,4 +409,48 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         super.onDetach();
     }
 
+
+
+    public void setUserBatch(ParseObject batch) {
+        mUserBatch = batch;
+    }
+
+    public ParseObject getUserBatch() {
+        return mUserBatch;
+    }
+
+    public void newPull(){
+        mLoadingLayout.setVisibility(View.VISIBLE);
+        mImagePuller.pullVoteImages(3);
+    }
+
+    public void onEvent(BatchUpdateEvent event) {
+        Log.d(TAG, "CURRENT VOTES:   " + mUserBatch.getInt(ParseConstants.KEY_USER_VOTES));
+        Log.d(TAG, "NEW VOTES:   " + event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES));
+
+        if(mUserBatch.getInt(ParseConstants.KEY_USER_VOTES) != event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES)) {
+            mUserBatch = event.updatedBatch;
+            updateBatch();
+        }
+    }
+
+    public void onEvent(ImageVotedEvent event) {
+        Log.d(TAG, "VOTED EVENT VOTE COUNT:  "+event.mVoteCount);
+        Log.d(TAG, "VOTED EVENT FINISHED:  "+event.mFinished);
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

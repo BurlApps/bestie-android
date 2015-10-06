@@ -7,24 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.adapters.SettingsAdapter;
 
-import butterknife.ButterKnife;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SettingsFragment extends android.support.v4.app.Fragment {
 
     private View mView;
-    private ListView mListView;
+    private ArrayList<ListView> mListViews = new ArrayList<>();
+    private ListView mBestieList;
+    private ListView mUserList;
+    private ListView mLegalList;
+    private ArrayList<RelativeLayout> mHeaders = new ArrayList<>();
 
     public SettingsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -32,11 +39,39 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
-        ButterKnife.bind(this, mView);
-        mListView = (ListView) mView.findViewById(R.id.bestieListView);
-        String[] settingsOptions = {"Terms of Service", "Privacy Policy"};
-        ArrayAdapter<String> settingsAdapter = new ArrayAdapter<String>(mView.getContext(), android.R.layout.simple_list_item_1, settingsOptions);
-        mListView.setAdapter(settingsAdapter);
+
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
+
+        // Lists
+        mBestieList = (ListView) mView.findViewById(R.id.bestieListView);
+        SettingsAdapter bAdapter = new SettingsAdapter(mView.getContext(), 0);
+        mBestieList.setAdapter(bAdapter);
+        TextView title1 = (TextView) mHeaders.get(0).getChildAt(0);
+        title1.setText("Bestie");
+        mBestieList.addHeaderView(mHeaders.get(0), null, false);
+
+
+
+        mUserList = (ListView) mView.findViewById(R.id.userListView);
+        SettingsAdapter uAdapter = new SettingsAdapter(mView.getContext(), 1);
+        mUserList.setAdapter(uAdapter);
+        TextView title2 = (TextView) mHeaders.get(1).getChildAt(0);
+        title2.setText("User Information");
+        mUserList.addHeaderView(mHeaders.get(1), null, false);
+
+
+
+        mLegalList = (ListView) mView.findViewById(R.id.legalListView);
+        SettingsAdapter lAdapter = new SettingsAdapter(mView.getContext(), 2);
+        mLegalList.setAdapter(lAdapter);
+        TextView title3 = (TextView) mHeaders.get(2).getChildAt(0);
+        title3.setText("Legal Stuff");
+        mLegalList.addHeaderView(mHeaders.get(2), null, false);
+
+
+
         return mView;
     }
 
