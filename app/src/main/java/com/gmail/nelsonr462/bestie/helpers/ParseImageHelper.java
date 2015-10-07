@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
@@ -42,6 +43,7 @@ public class ParseImageHelper {
     private static final String TAG = ParseImageHelper.class.getSimpleName();
     private List<com.makeramen.roundedimageview.RoundedImageView> mImageViewList;
     private ArrayList<Uri> mImageUriList = new ArrayList<>();
+    private ArrayList<TextView> mPercentViews;
     private Context mContext;
     private RelativeLayout mLoadingLayout;
     private RelativeLayout mCheckNowLayout;
@@ -52,8 +54,10 @@ public class ParseImageHelper {
     private boolean mMinVotesReached;
 
     public ParseImageHelper(List<com.makeramen.roundedimageview.RoundedImageView> imageViewList,
-                            Context context, RelativeLayout loadingLayout, RelativeLayout checkNowLayout, RelativeLayout rootLayout){
+                            Context context, RelativeLayout loadingLayout, RelativeLayout checkNowLayout,
+                            RelativeLayout rootLayout, ArrayList<TextView> percentViews){
         mImageViewList = imageViewList;
+        mPercentViews = percentViews;
         mContext = context;
         mLoadingLayout = loadingLayout;
         mUriPosition = 0;
@@ -120,9 +124,10 @@ public class ParseImageHelper {
         int i = 0;
         while(i < mImageUriList.size() && i < mImageViewList.size()) {
             Picasso.with(mContext).load(mImageUriList.get(i)).into(mImageViewList.get(i));
+            float percent = ((float) mParseImageObjects.get(i).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(i).getInt(ParseConstants.KEY_VOTES))*100;
+            mPercentViews.get(i).setText((int) percent + "%");
             mUriPosition++;
             mLoadingLayout.setVisibility(View.INVISIBLE);
-            Log.d(TAG, "LOAD FIRST IMAGES    :  URIPOSITION="+mUriPosition);
             i++;
         }
 
@@ -139,18 +144,18 @@ public class ParseImageHelper {
 
         if(mUriPosition < mImageUriList.size()) {
             Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 0 : 2));
+            float percent = ((float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_VOTES))*100;
+            mPercentViews.get((nextPair == 0) ? 0 : 2).setText((int) percent + "%");
             mUriPosition++;
         }
         if (mUriPosition < mImageUriList.size()) {
             Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 1 : 3));
+            float percent = ((float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_VOTES))*100;
+            mPercentViews.get((nextPair == 0) ? 1 : 3).setText((int) percent + "%");
             mUriPosition++;
         }
 
         mNextPair = (mNextPair == 0)? 1 : 0;
-
-        Log.d(TAG, "LOAD NEXT PAIR    :  URIPOSITION=" + mUriPosition);
-
-
     }
 
     public void setImageVoted(int imagePosition) {
@@ -175,13 +180,18 @@ public class ParseImageHelper {
                     if(o != null) {
                         Log.d(TAG, "RETURNED:   " + o.toString());
                         EventBus.getDefault().post(new ImageVotedEvent(o));
-
                     }
                 }
             });
 
         }
-//        return mMinVotesReached;
+    }
+
+    public void flagImage(int imagePosition) {
+        ParseObject flaggedImage = mParseImageObjects.get(imagePosition);
+        Log.d(TAG, "FLAGGED STATUS:   "+flaggedImage.getBoolean(ParseConstants.KEY_FLAGGED));
+//        flaggedImage.put(ParseConstants.KEY_FLAGGED, true);
+//        flaggedImage.saveInBackground();
     }
 
 }

@@ -115,12 +115,11 @@ public class GraphDataHelper {
     }
 
     public void updateGraph() {
-        Log.d("UPDATEGRAPH:  ", "Update fired");
         if((int) mVotes == mActiveBatch.get(ParseConstants.KEY_MAX_VOTES_BATCH)) {
             mBatchViewLayout.setVisibility(View.INVISIBLE);
         }
 
-        if ((int) mVotes != BestieRankFragment.mUserBatch.get(ParseConstants.KEY_VOTES)) {
+        if ((int) mVotes != BestieRankFragment.mUserBatch.get(ParseConstants.KEY_VOTES) || (int) mUserVotes != BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_USER_VOTES)) {
             mMaxVotes = (float) mActiveBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
             mUserVotes = (float) mActiveBatch.getInt(ParseConstants.KEY_USER_VOTES);
             mVotes = (float) mActiveBatch.getInt(ParseConstants.KEY_VOTES);

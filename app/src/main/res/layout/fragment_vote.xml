@@ -45,7 +45,33 @@
                 android:scaleType="centerCrop"
                 app:riv_corner_radius="10dp"
                 app:riv_border_width="1dp"
-                app:riv_border_color="@color/borderFadedGrey"/>
+                app:riv_border_color="@color/borderFadedGrey"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/overlay_vote"
+                android:id="@+id/percentOverlay3"
+                android:text="100%"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:gravity="center"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_white_flag"
+                android:id="@+id/flag3"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:padding="5dp"
+                />
 
         </RelativeLayout>
 
@@ -71,6 +97,31 @@
                 app:riv_corner_radius="10dp"
                 app:riv_border_width="1dp"
                 app:riv_border_color="@color/borderFadedGrey"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/overlay_vote"
+                android:id="@+id/percentOverlay4"
+                android:text="100%"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:gravity="center"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_white_flag"
+                android:id="@+id/flag4"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:padding="5dp"
+                />
 
         </RelativeLayout>
 
@@ -107,6 +158,31 @@
                 app:riv_border_width="1dp"
                 app:riv_border_color="@color/borderFadedGrey"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/overlay_vote"
+                android:id="@+id/percentOverlay1"
+                android:text="100%"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:gravity="center"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_white_flag"
+                android:id="@+id/flag1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:padding="5dp"
+                />
+
         </RelativeLayout>
 
 
@@ -131,9 +207,30 @@
                 app:riv_corner_radius="10dp"
                 app:riv_border_width="1dp"
                 app:riv_border_color="@color/borderFadedGrey"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/overlay_vote"
+                android:id="@+id/percentOverlay2"
+                android:text="100%"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:gravity="center"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_white_flag"
+                android:id="@+id/flag2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:padding="5dp"
                 />
 
         </RelativeLayout>
@@ -163,7 +260,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:id="@+id/loadImageProgressBar"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"

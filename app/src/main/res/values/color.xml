@@ -9,10 +9,11 @@
 
     <color name="bestieBlue">#2196F3</color>
     <color name="bestieBlueDark">#0D47A1</color>
-    <color name="bestieBlueOverlay">#7D2196F3</color>
+    <color name="bestieBlueOverlay">#6D2196F3</color>
     <color name="bestieYellow">#FFD740</color>
     <color name="bestieRed">#FA7470</color>
     <color name="bestieRedDark">#e53935</color>
     <color name="bestieMessageText">#C6C6C6</color>
     <color name="bestieBorderGrey">#E2E2E2</color>
+    <color name="votePercentShadow">#7D000000</color>
 </resources>

@@ -19,7 +19,7 @@ import com.parse.ParseException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFragment.OnFragmentInteractionListener {
+public class CropPhotoActivity extends AppCompatActivity {
     private final String TAG = CropPhotoActivity.class.getSimpleName();
     protected Uri mMediaUri;
 
@@ -91,12 +91,6 @@ public class CropPhotoActivity extends AppCompatActivity implements EditPhotosFr
                 mCropImageView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
             }
         });
-
-    }
-
-
-    @Override
-    public void onFragmentInteraction(String id) {
 
     }
 }

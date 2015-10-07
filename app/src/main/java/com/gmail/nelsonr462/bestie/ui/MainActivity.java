@@ -84,29 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         /////
 
-
-        /* BATCH REFRESH HANDLER */
-
-//        final Handler h = new Handler();
-//        final int delay = 6000; //milliseconds
-//
-//
-//        h.postDelayed(new Runnable() {
-//            public void run() {
-//                if (mUserBatch != null) {
-//                    mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
-//                        @Override
-//                        public void done(ParseObject parseObject, ParseException e) {
-//                            if (e != null) {
-//                                Log.d(TAG, e.getMessage());
-//                            }
-//                        }
-//                    });
-//                }
-//                h.postDelayed(this, delay);
-//            }
-//        }, delay);
-
     }
 
     private void inflateTabLayout() {
@@ -136,11 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
         mBestieFragment = (BestieRankFragment) adapter.getItem(2);
         mVoteFragment = (VoteFragment) adapter.getItem(1);
-
-//        mBestieFragment = (BestieRankFragment) getSupportFragmentManager().findFragmentByTag(BestieRankFragment.class.getSimpleName());
-//        mVoteFragment = (VoteFragment) getSupportFragmentManager().findFragmentByTag(VoteFragment.class.getSimpleName());
-
-
     }
 
 
@@ -193,11 +165,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
-    private void setBatch(ParseObject batch) {
-        mBestieFragment.setUserBatch(batch);
-        mVoteFragment.setUserBatch(batch);
-    }
-
 
 }

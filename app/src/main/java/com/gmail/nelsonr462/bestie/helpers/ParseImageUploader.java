@@ -19,6 +19,8 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+
 public class ParseImageUploader {
     private File mImageFile;
     private ParseConfig mParseConfig;
@@ -62,6 +64,7 @@ public class ParseImageUploader {
                                 if(BestieRankFragment.mUserBatch == null ||
                                         BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH) == BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_VOTES)) {
                                     newBatch(parseImage);
+
                                 } else {
                                     ParseRelation<ParseObject> imageRelation = BestieRankFragment.mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
                                     imageRelation.add(parseImage);
@@ -96,7 +99,7 @@ public class ParseImageUploader {
         newBatch.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(e != null) {
+                if (e != null) {
                     Toast.makeText(BestieRankFragment.mContext, "Image save failed!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -115,6 +118,7 @@ public class ParseImageUploader {
 
             }
         });
+        EventBus.getDefault().post(new BatchUpdateEvent(newBatch));
     }
 
 

@@ -40,9 +40,9 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
-        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
-        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, container, false));
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, mBestieList, false));
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, mUserList, false));
+        mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, mLegalList, false));
 
         // Lists
         mBestieList = (ListView) mView.findViewById(R.id.bestieListView);

@@ -55,6 +55,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     public static ArrayList<ParseObject> mActiveBatchImages = new ArrayList<ParseObject>();;
 
     private View mView;
+    private ViewPager mViewPager;
     private ListView mRankedPictureList;
     public static GridView mUploadGrid;
     private RelativeLayout mAddPhotosLayout;
@@ -63,6 +64,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private Button mStartOverButton;
     private Button mShareButton;
     private Button mFindBestieButton;
+    private Button mContinueButton;
 
     public BestieRankFragment() {}
 
@@ -76,7 +78,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView =  inflater.inflate(R.layout.fragment_bestie_rank, container, false);
-        final ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+        mViewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         mBestieHeader = (RelativeLayout) inflater.inflate(R.layout.header_bestie_top_picture, null, false);
 
         mContext = getActivity();
@@ -98,6 +100,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         mStartOverButton.setOnClickListener(ButtonClickListener(1));
         mShareButton = (Button) mView.findViewById(R.id.shareButton);
         mShareButton.setOnClickListener(ButtonClickListener(2));
+        mContinueButton = (Button) mView.findViewById(R.id.continueVotingButton);
+        mContinueButton.setOnClickListener(ButtonClickListener(4));
 
         /* CONNECT UPLOAD GRID TO PARSE HERE */
         mCurrentUser = ParseUser.getCurrentUser();
@@ -180,8 +184,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                             }
                         });
                     } else {
-                        Toast.makeText(mView.getContext(), "No Active batch!", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "LIST SIZE:   " + mActiveBatchImages.size());
                         mAddPhotosLayout.setVisibility(View.VISIBLE);
                         mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
                     }
@@ -307,6 +309,9 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                     addPhotosLayout.setVisibility(View.VISIBLE);
                     set.start();
 
+                } else if (buttonType == 2) {
+                    // Save button
+
                 } else if(buttonType == 3) {
                     if(mUploadGrid.getAdapter().getCount() < 3) {
                         Toast.makeText(mView.getContext(), "Upload some images first!", Toast.LENGTH_SHORT).show();
@@ -323,6 +328,10 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                         set.setDuration(500);
                         set.start();
                     }
+                } else if (buttonType == 4) {
+                    // Continue voting button
+                    mViewPager.setCurrentItem(1, true);
+
                 }
             }
         };

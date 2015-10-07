@@ -27,6 +27,7 @@ public class ParseConstants {
     public static final String KEY_UPLOAD_LIMIT = "uploadLimit";
     public static final String KEY_MAX_VOTES_BATCH = "maxVotes";
     public static final String KEY_USER_VOTES = "userVotes";
+    public static final String KEY_FLAGGED = "flagged";
 
     /* CLASSES */
     public static final String CLASS_BATCH = "Batch";
