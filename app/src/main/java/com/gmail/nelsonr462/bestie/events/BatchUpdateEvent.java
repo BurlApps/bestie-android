@@ -1,4 +1,4 @@
-package com.gmail.nelsonr462.bestie.helpers;
+package com.gmail.nelsonr462.bestie.events;
 
 import com.parse.ParseObject;
 

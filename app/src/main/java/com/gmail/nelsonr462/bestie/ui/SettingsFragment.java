@@ -1,6 +1,7 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.SettingsAdapter;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +39,15 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        if(ParseUser.getCurrentUser() == null) {
+//            navigateToLogin();
+            return mView;
+        }
 
         mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, mBestieList, false));
         mHeaders.add((RelativeLayout) inflater.inflate(R.layout.header_settings_list, mUserList, false));
@@ -83,6 +92,14 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(mView.getContext(), WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
     }
 
 }

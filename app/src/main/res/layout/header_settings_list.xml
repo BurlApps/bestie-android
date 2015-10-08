@@ -13,12 +13,12 @@
         android:paddingBottom="4dp"
         android:text="New Text"
         android:textStyle="bold"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/bestieBlue"
+        android:textColor="@color/bestieMessageText"
         android:textAllCaps="true"
         />
 
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/textView"
-        android:background="@color/bestieBlue"
+        android:background="@color/bestieMessageText"
         />
 
 

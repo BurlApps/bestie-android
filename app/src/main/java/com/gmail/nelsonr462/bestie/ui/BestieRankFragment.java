@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.BestieListAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.BatchActivator;
-import com.gmail.nelsonr462.bestie.helpers.BatchUpdateEvent;
+import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.helpers.GraphDataHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -108,7 +109,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
 
         if(mCurrentUser == null) {
-            navigateToLogin();
+//            navigateToLogin();
             return mView;
         }
 
@@ -152,7 +153,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (e != null) {
-                                                Toast.makeText(mView.getContext(), "Parse Query failed :(", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
 
@@ -208,8 +208,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                             }
 
                                 if (userBatch != null) {
-                                    Log.d(TAG, "Fetched batch");
-
 
                                     if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0 && mActiveBatchImages.size() > 0 && mBatchView.getVisibility() == View.VISIBLE) {
                                         RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
@@ -314,7 +312,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                 } else if(buttonType == 3) {
                     if(mUploadGrid.getAdapter().getCount() < 3) {
-                        Toast.makeText(mView.getContext(), "Upload some images first!", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(v, "Upload some images first!", Snackbar.LENGTH_LONG).show();
                     } else {
                         // Set batch as active and display graph
                         BatchActivator.activateBatch(true);

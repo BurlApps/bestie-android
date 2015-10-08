@@ -63,14 +63,16 @@
                 android:gravity="center"
                 android:visibility="invisible"/>
 
-            <ImageView
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00000000"
                 android:src="@mipmap/ic_white_flag"
                 android:id="@+id/flag3"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:padding="5dp"
+                android:alpha=".8"
                 />
 
         </RelativeLayout>
@@ -113,14 +115,16 @@
                 android:gravity="center"
                 android:visibility="invisible"/>
 
-            <ImageView
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00000000"
                 android:src="@mipmap/ic_white_flag"
                 android:id="@+id/flag4"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:padding="5dp"
+                android:alpha=".8"
                 />
 
         </RelativeLayout>
@@ -173,14 +177,16 @@
                 android:gravity="center"
                 android:visibility="invisible"/>
 
-            <ImageView
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00000000"
                 android:src="@mipmap/ic_white_flag"
                 android:id="@+id/flag1"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:padding="5dp"
+                android:alpha=".8"
                 />
 
         </RelativeLayout>
@@ -223,14 +229,16 @@
                 android:gravity="center"
                 android:visibility="invisible"/>
 
-            <ImageView
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00000000"
                 android:src="@mipmap/ic_white_flag"
                 android:id="@+id/flag2"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:padding="5dp"
+                android:alpha=".8"
                 />
 
         </RelativeLayout>
@@ -250,7 +258,7 @@
         android:layout_height="50dp"
         android:layout_alignTop="@+id/versusCircleShape"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/bestieRed"
+        android:textColor="@color/bestieBlue"
         android:textSize="22sp"
         android:textStyle="bold"
         android:text="@string/versus_circle_text"

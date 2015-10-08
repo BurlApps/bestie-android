@@ -115,7 +115,7 @@ public class GraphDataHelper {
     }
 
     public void updateGraph() {
-        if((int) mVotes == mActiveBatch.get(ParseConstants.KEY_MAX_VOTES_BATCH)) {
+        if((int) mVotes == mActiveBatch.get(ParseConstants.KEY_MAX_VOTES_BATCH) && (int) mUserVotes >= mActiveBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH)) {
             mBatchViewLayout.setVisibility(View.INVISIBLE);
         }
 

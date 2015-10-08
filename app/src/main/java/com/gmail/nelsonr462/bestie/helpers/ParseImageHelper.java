@@ -1,7 +1,10 @@
 package com.gmail.nelsonr462.bestie.helpers;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -10,6 +13,8 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
+import com.gmail.nelsonr462.bestie.events.ImageVotedEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.VoteFragment;
 import com.parse.FindCallback;
@@ -187,11 +192,27 @@ public class ParseImageHelper {
         }
     }
 
-    public void flagImage(int imagePosition) {
-        ParseObject flaggedImage = mParseImageObjects.get(imagePosition);
+    public void flagImage(int imagePosition, final View view) {
+        final ParseObject flaggedImage = mParseImageObjects.get(imagePosition);
         Log.d(TAG, "FLAGGED STATUS:   "+flaggedImage.getBoolean(ParseConstants.KEY_FLAGGED));
-//        flaggedImage.put(ParseConstants.KEY_FLAGGED, true);
-//        flaggedImage.saveInBackground();
+
+        new AlertDialog.Builder(mContext).setTitle("Flag picture")
+                .setMessage("Are you sure you want to flag this photo?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Snackbar.make(view, "Flagged picture", Snackbar.LENGTH_LONG).show();
+                        flaggedImage.put(ParseConstants.KEY_FLAGGED, true);
+                        flaggedImage.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                EventBus.getDefault().post(new ImageFlaggedEvent());
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 }

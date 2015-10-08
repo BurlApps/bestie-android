@@ -19,6 +19,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,45 +35,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
-            @Override
-            public void done(ParseSession parseSession, ParseException e) {
-                if(parseSession == null) {
-                    ParseUser.logOut();
-                    navigateToLogin();
-                }
-            }
-        });
-
         mCurrentUser = ParseUser.getCurrentUser();
         if(mCurrentUser == null) {
             navigateToLogin();
             return;
         } else {
             Log.i(TAG, mCurrentUser.getUsername());
-            mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+            mCurrentUser.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
-                    inflateTabLayout();
-//                    mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_BATCH);
-//
-//                    if (mUserBatch != null) {
-//                        Log.d(TAG, "USER NAME:  " + mCurrentUser.getUsername());
-//
-//
-//                        mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-//                            @Override
-//                            public void done(ParseObject userBatch, ParseException e) {
-//                                if (userBatch != null) {
-//                                    Log.d(TAG, "Batch ID:   " + userBatch.getObjectId());
-//
-//
-//                                }
-//                            }
-//                        });
-//                    } else {
-//                        Toast.makeText(MainActivity.this, "No Active batch!", Toast.LENGTH_SHORT).show();
-//                    }
+                    mCurrentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            inflateTabLayout();
+
+                        }
+                    });
 
                 }
             });
@@ -138,9 +116,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_logout) {
             ParseUser.logOut();
-
-            if(BestieRankFragment.mActiveBatchImages.size() > 0)
-                ParseQuery.clearAllCachedResults();
             BestieRankFragment.mActiveBatchImages.clear();
             navigateToLogin();
             return true;

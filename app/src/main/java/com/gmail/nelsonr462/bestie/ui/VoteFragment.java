@@ -1,7 +1,5 @@
 package com.gmail.nelsonr462.bestie.ui;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,11 +10,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -25,8 +23,9 @@ import com.daimajia.easing.Skill;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
-import com.gmail.nelsonr462.bestie.helpers.BatchUpdateEvent;
-import com.gmail.nelsonr462.bestie.helpers.ImageVotedEvent;
+import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
+import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
+import com.gmail.nelsonr462.bestie.events.ImageVotedEvent;
 import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
@@ -36,8 +35,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +50,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private RelativeLayout mRootLayout;
     private RelativeLayout mLoadingLayout;
     private RelativeLayout mCheckNowLayout;
+    private LinearLayout mVotingLayout1;
+    private LinearLayout mVotingLayout2;
     private List<RelativeLayout> mVotingImages = new ArrayList<>();
     private ArrayList<TextView> mPercentView = new ArrayList<>();
-    private ArrayList<ImageView> mFlags = new ArrayList<>();
+    private ArrayList<ImageButton> mFlags = new ArrayList<>();
     private ImageView mVoteCounter;
     private View mView;
     private Button mCheckNowButton;
@@ -69,6 +68,8 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private float mIncrement;
     private float mVotesNeeded;
     private float mVoteCount;
+
+    private boolean mShowSnack;
 
     Rect outRect = new Rect();
     int[] location = new int[2];
@@ -93,9 +94,9 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mCheckNowButton = (Button) mView.findViewById(R.id.checkNowButton);
 
 
-        LinearLayout votingLayout = (LinearLayout) mView.findViewById(R.id.votingLayout);
-        LinearLayout votingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
-        votingLayout2.setVisibility(View.INVISIBLE);
+        mVotingLayout1 = (LinearLayout) mView.findViewById(R.id.votingLayout);
+        mVotingLayout2 = (LinearLayout) mView.findViewById(R.id.votingLayout2);
+        mVotingLayout2.setVisibility(View.INVISIBLE);
 
         mVoteCounter = (ImageView) mView.findViewById(R.id.voteCounter);
 
@@ -112,6 +113,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mPercentView.add(2, (TextView) mView.findViewById(R.id.percentOverlay3));
         mPercentView.add(3, (TextView) mView.findViewById(R.id.percentOverlay4));
 
+        setFlaggedClickListeners();
 
         mPairSwitch = 0;
         mTopImagePosition = 0;
@@ -132,25 +134,29 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     Log.d(TAG, "No current user");
                     return;
                 }
-
+                Log.d(TAG, "USER:  "+currentUser.getObjectId());
                 mUserBatch = currentUser.getParseObject(ParseConstants.KEY_BATCH);
                 if(mUserBatch != null) {
                     mUserBatch.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject userBatch, ParseException e) {
-                            if(userBatch != null) {
+                            if (userBatch != null) {
                                 mScreenHeight = mRootLayout.getHeight();
 
                                 if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
+                                    mShowSnack = false;
+                                    mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
+                                    mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
                                     mCounterPosition = mScreenHeight;
 
                                 } else {
+                                    mShowSnack = (userBatch.getInt(ParseConstants.KEY_USER_VOTES) < userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH));
                                     mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
                                     mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
                                 }
 
                                 mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
-                                if(mVoteCount <= mVotesNeeded)
+                                if (mVoteCount <= mVotesNeeded)
                                     mCounterPosition = -(mVoteCount * mIncrement);
                                 else
                                     mCounterPosition = -(mVotesNeeded * mIncrement);
@@ -184,7 +190,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         });
 
 
-        setListeners(mVotingImages, votingLayout, votingLayout2, mPercentView);
+        setListeners(mVotingImages, mVotingLayout1, mVotingLayout2, mPercentView);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -289,13 +295,16 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                                 set.setDuration(BestieConstants.ANIMATION_DURATION);
                                 set.setStartDelay(400);
                                 set.start();
-                                if(mVoteCount <= mVotesNeeded)
+                                if (mVoteCount <= mVotesNeeded)
                                     mCounterPosition = -(mIncrement * mVoteCount);
+                                if (mVoteCount > mVotesNeeded)
+                                    mCounterPosition = -(mIncrement * mVotesNeeded);
+
 
                             /* RE-ENABLE FOR KEEPING VOTE COUNT BAR UP */
 
                                 if (mVoteCount >= mVotesNeeded && mUserBatch != null) {
-                                    if (BestieConstants.ACTIVE_VOTE_COUNT) {
+                                    if (BestieConstants.ACTIVE_VOTE_COUNT && mShowSnack) {
                                         final Snackbar snackbar = Snackbar.make(v, "You've reached the minimum number of votes!", 5000);
                                         View snackbarView = snackbar.getView();
                                         snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
@@ -308,12 +317,15 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                                         }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
                                     }
                                     BestieConstants.ACTIVE_VOTE_COUNT = false;
+                                    mShowSnack = false;
                                 } else BestieConstants.ACTIVE_VOTE_COUNT = true;
 
                             }
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
+                                Log.d(TAG, "CP:   " + mCounterPosition);
+
                                 percent1.setVisibility(View.INVISIBLE);
                                 percent2.setVisibility(View.INVISIBLE);
                                 disableVoteImages(false);
@@ -366,7 +378,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     frame2.setEnabled(false);
-                    if (inViewInBounds(frame2, x, y)) {
+                    if (inViewInBounds(frame2, x, y) && !isFlagTouched(mFlags, x, y)) {
                         frame2.dispatchTouchEvent(event);
                     } else if (inViewInBounds(frame1, x, y)) {
                         scaleOnTouch(event, frame1);
@@ -375,7 +387,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     frame2.setEnabled(true);
                     frame1.setScaleX(1.0f);
                     frame1.setScaleY(1.0f);
-                } else if (inViewInBounds(frame2, x, y)) {
+                } else if (inViewInBounds(frame2, x, y) && !isFlagTouched(mFlags, x, y)) {
                     frame2.setEnabled(true);
                     frame1.setScaleX(1.0f);
                     frame1.setScaleY(1.0f);
@@ -385,6 +397,18 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         };
     }
 
+    private boolean isFlagTouched(final ArrayList<ImageButton> flags, int x, int y){
+        boolean onFlag = false;
+
+        for(int i =0; i < flags.size(); i++) {
+            flags.get(i).getDrawingRect(outRect);
+            flags.get(i).getLocationOnScreen(location);
+            outRect.offset(location[0], location[1]);
+            if(outRect.contains(x, y)) onFlag = true;
+        }
+
+        return onFlag;
+    }
 
     private boolean inViewInBounds(View view, int x, int y){
         view.getDrawingRect(outRect);
@@ -401,6 +425,20 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             frame.setScaleX(1.0f);
             frame.setScaleY(1.0f);
+        }
+    }
+
+
+    private void setFlagListeners(ArrayList<ImageButton> flags) {
+
+        for(int i = 0; i < flags.size(); i++) {
+            final int positionCheck = i;
+            flags.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mImagePuller.flagImage((positionCheck%2 == 0)? mTopImagePosition : mBottomImagePosition, v);
+                }
+            });
         }
     }
 
@@ -449,30 +487,79 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     public void onEvent(ImageVotedEvent event) {
         Log.d(TAG, "VOTED EVENT VOTE COUNT:  "+event.mVoteCount);
         Log.d(TAG, "VOTED EVENT FINISHED:  "+event.mFinished);
+        if(event.mFinished) {
+           mShowSnack = true;
+        }
     }
 
-    // Implement flagging
+    public void onEvent(ImageFlaggedEvent event) {
+        final LinearLayout startLayout = (mPairSwitch == 0)? mVotingLayout1 : mVotingLayout2;
+        final LinearLayout endLayout = (mPairSwitch == 0)? mVotingLayout2 : mVotingLayout1;
 
-//    private void setFlaggedClickListeners() {
-//        mFlags.add(0, (ImageView) mView.findViewById(R.id.flag1));
-//        mFlags.add(1, (ImageView) mView.findViewById(R.id.flag2));
-//        mFlags.add(2, (ImageView) mView.findViewById(R.id.flag3));
-//        mFlags.add(3, (ImageView) mView.findViewById(R.id.flag4));
-//
-//        for(int i = 0; i < mFlags.size(); i++) {
-//            mFlags.get(i).setOnClickListener(setFlagListener((i%2 == 0)? mTopImagePosition : mBottomImagePosition));
-//        }
-//
-//    }
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(
+                Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(startLayout, "translationY", 0, -2100))
+        );
 
-    private View.OnClickListener setFlagListener(final int flagPosition) {
-        return new View.OnClickListener() {
+        set.setDuration(BestieConstants.ANIMATION_DURATION);
+        set.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onClick(View v) {
-                mImagePuller.flagImage(flagPosition);
+            public void onAnimationStart(Animator animation) {
+                AnimatorSet set = new AnimatorSet();
+
+                set.playTogether(
+                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                endLayout, "translationY", 1950, 0)),
+                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                mVoteCounter, "translationY", mCounterPosition, -(mIncrement * mVoteCount)
+                        ))
+                );
+                set.setDuration(BestieConstants.ANIMATION_DURATION);
+                set.start();
+
             }
-        };
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Log.d(TAG, "CP:   " + mCounterPosition);
+
+                disableVoteImages(false);
+                startLayout.setEnabled(true);
+                endLayout.setEnabled(true);
+                mImagePuller.loadNextPair(mPairSwitch);
+                if (mPairSwitch == 0) {
+                    mPairSwitch = 1;
+                } else {
+                    mPairSwitch = 0;
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        endLayout.setVisibility(View.VISIBLE);
+        mTopImagePosition = mTopImagePosition + 2;
+        mBottomImagePosition = mBottomImagePosition + 2;
+        set.start();
+
+
     }
+
+    private void setFlaggedClickListeners() {
+        mFlags.add(0, (ImageButton) mView.findViewById(R.id.flag1));
+        mFlags.add(1, (ImageButton) mView.findViewById(R.id.flag2));
+        mFlags.add(2, (ImageButton) mView.findViewById(R.id.flag3));
+        mFlags.add(3, (ImageButton) mView.findViewById(R.id.flag4));
+
+        setFlagListeners(mFlags);
+
+    }
+
 }
 
 

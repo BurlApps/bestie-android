@@ -5,8 +5,8 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
+import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
-import com.gmail.nelsonr462.bestie.ui.VoteFragment;
 import com.parse.GetCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
@@ -92,6 +92,8 @@ public class ParseImageUploader {
     public void newBatch(final ParseObject parseImage){
         final ParseObject newBatch = new ParseObject(ParseConstants.CLASS_BATCH);
         newBatch.put(ParseConstants.KEY_ACTIVE, false);
+        newBatch.put(ParseConstants.KEY_USER_VOTES, 0);
+        newBatch.put(ParseConstants.KEY_VOTES, 0);
         newBatch.increment(ParseConstants.KEY_MAX_VOTES_BATCH, mParseConfig.getInt(ParseConstants.KEY_IMAGE_MAX_VOTES));
         newBatch.put(ParseConstants.KEY_CREATOR, ParseUser.getCurrentUser());
         ParseRelation<ParseObject> imageRelation = newBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
@@ -115,10 +117,10 @@ public class ParseImageUploader {
                         currentUser.saveInBackground();
                     }
                 });
+                EventBus.getDefault().post(new BatchUpdateEvent(newBatch));
 
             }
         });
-        EventBus.getDefault().post(new BatchUpdateEvent(newBatch));
     }
 
 

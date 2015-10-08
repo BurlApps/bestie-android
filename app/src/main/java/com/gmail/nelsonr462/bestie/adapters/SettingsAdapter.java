@@ -38,6 +38,7 @@ public class SettingsAdapter extends BaseAdapter{
     private ArrayList<String> mSettingsOptions = new ArrayList<>();
     private int mSection;
     private String[][] mListOptions = {{"Rate The App", "Share Bestie"}, {"Show Me", "Logout & Erase All Data"}, {"Terms of Service", "Privacy Policy"}};
+    private ParseUser mCurrentUser;
 
     public SettingsAdapter(Context context, int section) {
         mContext = context;
@@ -103,9 +104,6 @@ public class SettingsAdapter extends BaseAdapter{
                     @Override
                     public void onClick(View v) {
                         ParseUser.logOut();
-
-                        if(BestieRankFragment.mActiveBatchImages.size() > 0)
-                            ParseQuery.clearAllCachedResults();
                         BestieRankFragment.mActiveBatchImages.clear();
                         ((MainActivity) mContext).navigateToLogin();
                     }
