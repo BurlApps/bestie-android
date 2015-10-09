@@ -19,7 +19,9 @@ import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
+import com.parse.ConfigCallback;
 import com.parse.GetCallback;
+import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -56,7 +58,13 @@ public class MainActivity extends AppCompatActivity {
                     mCurrentUser.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            inflateTabLayout();
+                            ParseConfig.getInBackground(new ConfigCallback() {
+                                @Override
+                                public void done(ParseConfig parseConfig, ParseException e) {
+                                    inflateTabLayout();
+
+                                }
+                            });
 
                         }
                     });
@@ -65,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-
-
-        /* Fetch global config */
-
-        /////
 
     }
 

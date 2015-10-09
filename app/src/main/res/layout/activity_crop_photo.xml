@@ -30,7 +30,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bestie_share_button"
+            android:background="@drawable/bestie_blue_button"
             android:text="Rotate"
             android:textColor="@android:color/white"
             android:paddingLeft="25dp"
@@ -42,7 +42,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bestie_start_over_button"
+            android:background="@drawable/bestie_red_button"
             android:text="Crop"
             android:textColor="@android:color/white"
             android:paddingLeft="32dp"

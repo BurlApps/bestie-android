@@ -35,7 +35,7 @@
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:id="@+id/shareButton"
-            android:background="@drawable/bestie_share_button"
+            android:background="@drawable/bestie_blue_button"
             android:layout_marginRight="3dp"
             android:layout_marginBottom="15dp"
             />
@@ -50,7 +50,7 @@
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:id="@+id/startOverButton"
-            android:background="@drawable/bestie_start_over_button"
+            android:background="@drawable/bestie_red_button"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="15dp"
             />
@@ -121,7 +121,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/bestie_share_button"
+            android:background="@drawable/bestie_blue_button"
             android:id="@+id/continueVotingButton"
             android:text="Continue Voting"
             android:textAllCaps="false"
@@ -159,11 +159,22 @@
             android:clipToPadding="false"
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/addPhotosText"
+            android:text="@string/add_photos_message"
+            android:textColor="@color/bestieMessageText"
+            android:gravity="center"
+            android:textSize="16sp"
+            />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Find your best selfie"
+            android:text="@string/find_selfie_button"
             android:textSize="16sp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
@@ -173,7 +184,7 @@
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:id="@+id/findNewBestieButton"
-            android:background="@drawable/bestie_start_over_button"
+            android:background="@drawable/bestie_blue_button"
             android:layout_marginBottom="15dp"
             />
 

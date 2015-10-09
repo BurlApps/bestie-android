@@ -13,7 +13,7 @@
     <color name="bestieYellow">#FFD740</color>
     <color name="bestieRed">#FA7470</color>
     <color name="bestieRedDark">#e53935</color>
-    <color name="bestieMessageText">#C6C6C6</color>
+    <color name="bestieMessageText">#A6A6A6</color>
     <color name="bestieBorderGrey">#E2E2E2</color>
     <color name="votePercentShadow">#7D000000</color>
 </resources>

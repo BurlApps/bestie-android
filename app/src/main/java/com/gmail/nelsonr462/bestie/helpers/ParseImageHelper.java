@@ -168,7 +168,7 @@ public class ParseImageHelper {
         ParseObject selectedImage;
         ParseObject losingImage;
 
-        if(imagePosition + 1 < mParseImageObjects.size()) {
+        if (imagePosition + 1 < mParseImageObjects.size()) {
             selectedImage = mParseImageObjects.get(imagePosition);
             losingImage = mParseImageObjects.get((imagePosition % 2 == 0) ? imagePosition + 1 : imagePosition - 1);
 
@@ -179,17 +179,20 @@ public class ParseImageHelper {
             ParseCloud.callFunctionInBackground(ParseConstants.SET_VOTED, params, new FunctionCallback<Object>() {
                 @Override
                 public void done(Object o, ParseException e) {
-                    if(e!=null)
+                    Log.d(TAG, "RETURNED:  IMAGES VOTED ");
+                    if (e != null)
                         Log.d(TAG, e.getMessage());
 
-                    if(o != null) {
-                        Log.d(TAG, "RETURNED:   " + o.toString());
-                        EventBus.getDefault().post(new ImageVotedEvent(o));
+                    if (o != null) {
+                        if(BestieRankFragment.mUserBatch.getBoolean(ParseConstants.KEY_ACTIVE)) {
+                            EventBus.getDefault().post(new ImageVotedEvent(o));
+                        }
                     }
                 }
             });
 
         }
+
     }
 
     public void flagImage(int imagePosition, final View view) {

@@ -80,7 +80,7 @@ public class GraphDataHelper {
                 .setLineWidth(38f)
                 .build());
 
-        mInitialSeries = new SeriesItem.Builder(Color.argb(255, 64, 196, 0))
+        mInitialSeries = new SeriesItem.Builder(Color.argb(255, 255, 215, 64))
                 .setRange(0, 100, 0)
                 .setCapRounded(true)
                 .setInitialVisibility(false)

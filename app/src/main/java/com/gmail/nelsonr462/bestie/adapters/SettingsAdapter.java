@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.LegalViewActivity;
 import com.gmail.nelsonr462.bestie.ui.MainActivity;
@@ -29,6 +32,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 
 public class SettingsAdapter extends BaseAdapter{
@@ -82,6 +87,32 @@ public class SettingsAdapter extends BaseAdapter{
 
         holder.settingsOption.setText(mSettingsOptions.get(position));
 
+        if (mSection == 0) {
+            if (position == 0) {
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+
+            if (position == 1) {
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        String shareBody = ParseConfig.getCurrentConfig().getString(ParseConstants.KEY_SHARE_MESSAGE);
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out Bestie!");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                        mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                    }
+                });
+            }
+        }
+
         if(mSection == 1) {
             if(position == 0) {
                 String interested = (ParseUser.getCurrentUser().getString(ParseConstants.KEY_INTERESTED).equals(ParseConstants.STRING_MALE)) ? "Men" : "Women";
@@ -102,10 +133,19 @@ public class SettingsAdapter extends BaseAdapter{
             if(position == 1) {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        ParseUser.logOut();
-                        BestieRankFragment.mActiveBatchImages.clear();
-                        ((MainActivity) mContext).navigateToLogin();
+                    public void onClick(final View v) {
+                        new android.support.v7.app.AlertDialog.Builder(mContext).setTitle("Delete account")
+                                .setMessage("Are you sure you want to delete everything?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ParseUser.logOut();
+                                        BestieRankFragment.mActiveBatchImages.clear();
+                                        ((MainActivity) mContext).navigateToLogin();
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
                     }
                 });
             }

@@ -152,8 +152,8 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
                                 if (userBatch.get(ParseConstants.KEY_ACTIVE) == false) {
                                     mShowSnack = false;
-                                    mVoteCount = (float) userBatch.getInt(ParseConstants.KEY_USER_VOTES);
-                                    mVotesNeeded = (float) userBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
+                                    mVoteCount = 0;
+                                    mVotesNeeded = 0;
                                     mCounterPosition = mScreenHeight;
 
                                 } else {
@@ -453,11 +453,14 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
     public void updateBatch() {
-        mVoteCount = (float) mUserBatch.getInt(ParseConstants.KEY_USER_VOTES);
-        mVotesNeeded = (float) mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
-        mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
 
-        if(mUserBatch.getBoolean(ParseConstants.KEY_ACTIVE)) {
+        if(mUserBatch.getBoolean(ParseConstants.KEY_ACTIVE) || mShowSnack ) {
+
+            mVoteCount = (float) mUserBatch.getInt(ParseConstants.KEY_USER_VOTES);
+            mVotesNeeded = (float) mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH);
+            mIncrement = (mVotesNeeded != 0) ? mScreenHeight / mVotesNeeded : 0;
+
+
             if (mVoteCount <= mVotesNeeded)
                 mCounterPosition = -(mVoteCount * mIncrement);
             else if (mVotesNeeded < mVoteCount)

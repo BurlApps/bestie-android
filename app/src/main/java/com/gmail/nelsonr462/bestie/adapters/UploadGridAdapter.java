@@ -76,6 +76,8 @@ public class UploadGridAdapter extends BaseAdapter {
                 mImageList.add(mPlaceholderUri.toString());
         }
 
+
+
     }
 
     @Override
@@ -95,6 +97,11 @@ public class UploadGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        if(mImageList.size() > 2) {
+            ((Activity) mContext).findViewById(R.id.addPhotosText).setVisibility(View.INVISIBLE);
+        } else {
+            ((Activity) mContext).findViewById(R.id.addPhotosText).setVisibility(View.VISIBLE);
+        }
 
         ViewHolder holder;
 

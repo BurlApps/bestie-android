@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -49,6 +50,8 @@ import de.greenrobot.event.EventBus;
 public class BestieRankFragment extends android.support.v4.app.Fragment {
     private final String TAG = BestieRankFragment.class.getSimpleName();
 
+    private Vibrator mVibrator;
+
     private GraphDataHelper mGraphDataHelper;
     public static Context mContext;
 
@@ -69,6 +72,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private Button mFindBestieButton;
     private Button mContinueButton;
 
+    private final String mFormat =  "%.0f%%";
+
     public BestieRankFragment() {}
 
     @Override
@@ -83,6 +88,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         mView =  inflater.inflate(R.layout.fragment_bestie_rank, container, false);
         mViewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         mBestieHeader = (RelativeLayout) inflater.inflate(R.layout.header_bestie_top_picture, null, false);
+
+        mVibrator = (Vibrator) mView.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         mContext = getActivity();
 
@@ -176,7 +183,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                                 RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
                                                 TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
                                                 float percent = ((float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_WINS) / (float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES)) * 100;
-                                                bestiePercent.setText((int) percent + "%");
+                                                bestiePercent.setText(String.format(mFormat, percent));
                                                 Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
                                                 ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
                                                 for (int i = 1; i < mActiveBatchImages.size(); i++) {
@@ -222,6 +229,9 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                                     if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0 && mActiveBatchImages.size() > 0 && mBatchView.getVisibility() == View.VISIBLE) {
                                         RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                                        TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
+                                        float percent = ((float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_WINS) / (float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES)) * 100;
+                                        bestiePercent.setText(String.format(mFormat, percent));
                                         Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
                                         ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
                                         for (int i = 1; i < mActiveBatchImages.size(); i++) {
@@ -323,7 +333,21 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                 } else if(buttonType == 3) {
                     if(mUploadGrid.getAdapter().getCount() < 3) {
-                        Snackbar.make(v, "Upload some images first!", Snackbar.LENGTH_LONG).show();
+//                        Snackbar.make(v, "Upload some images first!", Snackbar.LENGTH_LONG).show();
+
+                        final Snackbar snackbar = Snackbar.make(mView, "Upload some images first!", 5000);
+                        View snackbarView = snackbar.getView();
+                        snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
+
+                        snackbar.setAction("Okay", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snackbar.dismiss();
+                            }
+                        }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
+                        mVibrator.vibrate(300);
+
+
                     } else {
                         // Set batch as active and display graph
                         BatchActivator.activateBatch(true);

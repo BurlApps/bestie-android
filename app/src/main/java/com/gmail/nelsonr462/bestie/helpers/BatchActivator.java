@@ -19,6 +19,7 @@ import java.util.List;
 public class BatchActivator {
     public static void activateBatch(final boolean active) {
         BestieRankFragment.mUserBatch.put(ParseConstants.KEY_ACTIVE, active);
+        BestieRankFragment.mUserBatch.put(ParseConstants.KEY_USER_VOTES, 0);
         ParseRelation<ParseObject> imageRelation = BestieRankFragment.mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
         ParseQuery<ParseObject> imageQuery = imageRelation.getQuery();
         imageQuery.findInBackground(new FindCallback<ParseObject>() {
