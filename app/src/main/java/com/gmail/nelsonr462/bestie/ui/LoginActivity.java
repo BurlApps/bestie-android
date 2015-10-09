@@ -8,9 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
@@ -22,8 +20,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 
-public class WelcomeActivity extends AppCompatActivity {
-    private String TAG = WelcomeActivity.class.getSimpleName();
+public class LoginActivity extends AppCompatActivity {
+    private String TAG = LoginActivity.class.getSimpleName();
 
     private ProgressBar mProgressBar;
 
@@ -65,7 +63,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     private void navigateToMain() {
-        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

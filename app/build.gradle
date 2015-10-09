@@ -48,4 +48,7 @@ dependencies {
 
     compile 'de.greenrobot:eventbus:2.4.0'
 
+    compile 'com.github.paolorotolo:appintro:3.2.0'
+
+
 }

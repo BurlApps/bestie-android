@@ -75,8 +75,8 @@
         <!-- Welcome Activity -->
 
         <activity
-            android:name=".ui.WelcomeActivity"
-            android:label="@string/title_activity_welcome"
+            android:name=".ui.LoginActivity"
+            android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoAction" >
         </activity>
@@ -97,6 +97,16 @@
         <activity
             android:name=".ui.LegalViewActivity"
             android:label="@string/title_activity_legal_view"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppThemeNoAction" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gmail.nelsonr462.bestie.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.OnboardActivity"
+            android:label="@string/title_activity_onboard"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppThemeNoAction" >
             <meta-data

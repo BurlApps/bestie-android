@@ -289,7 +289,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                         );
 
                         set.setDuration(BestieConstants.ANIMATION_DURATION);
-                        set.setStartDelay(600);
+                        set.setStartDelay(300);
                         set.addListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
@@ -303,7 +303,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                                         ))*/
                                 );
                                 set.setDuration(BestieConstants.ANIMATION_DURATION);
-                                set.setStartDelay(600);
+                                set.setStartDelay(300);
                                 set.start();
 //                                if (mVoteCount <= mVotesNeeded)
 //                                    mCounterPosition = -(mIncrement * mVoteCount);

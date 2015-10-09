@@ -6,18 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.SettingsAdapter;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SettingsFragment extends android.support.v4.app.Fragment {
@@ -95,7 +92,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
     }
 
     private void navigateToLogin() {
-        Intent intent = new Intent(mView.getContext(), WelcomeActivity.class);
+        Intent intent = new Intent(mView.getContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

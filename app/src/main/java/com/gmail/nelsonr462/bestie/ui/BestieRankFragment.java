@@ -12,13 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.GridLayoutAnimationController;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
@@ -372,7 +370,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     }
 
     private void navigateToLogin() {
-        Intent intent = new Intent(mView.getContext(), WelcomeActivity.class);
+        Intent intent = new Intent(mView.getContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
