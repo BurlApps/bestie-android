@@ -4,6 +4,6 @@
     <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- no action bar theme-->
         <item name="colorPrimaryDark">@android:color/black</item>
-        <item name="android:colorEdgeEffect">@color/bestieBlue</item>
+        <item name="android:colorEdgeEffect">@color/bestieYellow</item>
     </style>
 </resources>

@@ -146,6 +146,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/photoGridView"
+            android:animateLayoutChanges="true"
             android:paddingTop="20dp"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"

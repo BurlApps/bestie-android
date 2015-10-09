@@ -12,6 +12,7 @@ public class BestieConstants {
     /* REQUEST CODE */
     public static final int PICK_PHOTO_REQUEST = 1;
     public static final int CROP_PHOTO_REQUEST = 2;
+    public static final int SHARE_REQUEST = 3;
 
     /* ANIMATION DURATION */
     public static int ANIMATION_DURATION = 700;

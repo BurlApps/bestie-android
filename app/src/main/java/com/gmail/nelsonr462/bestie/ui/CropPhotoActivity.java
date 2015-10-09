@@ -65,7 +65,7 @@ public class CropPhotoActivity extends AppCompatActivity {
         mCropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mCropButton.setEnabled(false);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 mCropImageView.getCroppedBitmap().compress(Bitmap.CompressFormat.JPEG, 70, stream);
                 final byte[] imageBitmap = stream.toByteArray();

@@ -108,12 +108,12 @@ public class ParseImageUploader {
                 parseImage.put(ParseConstants.KEY_BATCH, newBatch);
                 parseImage.saveInBackground();
                 BestieRankFragment.mUserBatch = newBatch;
-                BestieRankFragment.mUserBatch.saveInBackground();
+//                BestieRankFragment.mUserBatch.saveInBackground();
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject currentUser, ParseException e) {
-                        currentUser.put(ParseConstants.KEY_BATCH, BestieRankFragment.mUserBatch);
+                        currentUser.put(ParseConstants.KEY_BATCH, newBatch);
                         currentUser.saveInBackground();
                     }
                 });

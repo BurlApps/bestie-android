@@ -3,14 +3,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+              android:id="@+id/mainRootView"
                 tools:context=".MainActivity">
-
-    <!--<include-->
-        <!--android:id="@+id/tool_bar"-->
-        <!--layout="@layout/tool_bar"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--/>-->
 
     <com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout
         android:id="@+id/tabs"

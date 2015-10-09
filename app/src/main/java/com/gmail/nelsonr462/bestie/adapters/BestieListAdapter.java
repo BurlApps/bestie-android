@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
@@ -67,6 +69,7 @@ public class BestieListAdapter extends BaseAdapter{
 
 
             holder.rankImage = (ImageView) convertView.findViewById(R.id.bestieRankListImage);
+            holder.rankPercent = (TextView) convertView.findViewById(R.id.rankPercent);
 
             convertView.setTag(holder);
 
@@ -75,6 +78,9 @@ public class BestieListAdapter extends BaseAdapter{
         }
 
         Picasso.with(mContext).load(mActiveImageList.get(position).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(holder.rankImage);
+        float percent = ((float) mActiveImageList.get(position).getInt(ParseConstants.KEY_WINS) / (float) mActiveImageList.get(position).getInt(ParseConstants.KEY_VOTES))*100;
+        holder.rankPercent.setText((int) percent + "%");
+
 
 //        holder.rankImage.setImageResource(mThumbIds[position]);
         return convertView;
@@ -82,6 +88,7 @@ public class BestieListAdapter extends BaseAdapter{
 
     private static class ViewHolder {
         ImageView rankImage;
+        TextView rankPercent;
     }
 
 

@@ -1,23 +1,27 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
+import android.os.Vibrator;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
+import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseSession;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -27,13 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
     protected ParseObject mUserBatch;
     protected ParseUser mCurrentUser;
+    private LinearLayout mRootView;
     private BestieRankFragment mBestieFragment;
     private VoteFragment mVoteFragment;
+    private Vibrator mVibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mRootView = (LinearLayout) findViewById(R.id.mainRootView);
+        mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         mCurrentUser = ParseUser.getCurrentUser();
         if(mCurrentUser == null) {
@@ -138,6 +147,28 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CropPhotoActivity.class);
             intent.setData(result.getData());
             startActivity(intent);
+        }
+
+        if(requestCode == BestieConstants.SHARE_REQUEST) {
+            Toast.makeText(this, "Content shared!", Toast.LENGTH_SHORT).show();
+            mCurrentUser.put(ParseConstants.KEY_SHARED, true);
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    BestieRankFragment.mUploadGrid.setAdapter(new UploadGridAdapter(BestieRankFragment.mContext, BestieRankFragment.mActiveBatchImages));
+                    final Snackbar snackbar = Snackbar.make(mRootView, "Upload limit increased!", 5000);
+                    View snackbarView = snackbar.getView();
+                    snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
+
+                    snackbar.setAction("Okay", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
+                    mVibrator.vibrate(300);
+                }
+            });
         }
     }
 

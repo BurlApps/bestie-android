@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.GridLayoutAnimationController;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.easing.Glider;
@@ -59,7 +61,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private ViewPager mViewPager;
     private ListView mRankedPictureList;
     public static GridView mUploadGrid;
-    private RelativeLayout mAddPhotosLayout;
+    public RelativeLayout mAddPhotosLayout;
     private RelativeLayout mBestieHeader;
     private RelativeLayout mBatchView;
     private Button mStartOverButton;
@@ -148,7 +150,12 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                     mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
 
                                     ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
-                                    query.addAscendingOrder((mUserBatch.get(ParseConstants.KEY_VOTES) == 0) ? ParseConstants.KEY_CREATED_AT : ParseConstants.KEY_SCORE);
+//                                    query.addAscendingOrder((mUserBatch.get(ParseConstants.KEY_VOTES) == 0) ? ParseConstants.KEY_CREATED_AT : ParseConstants.KEY_SCORE);
+                                    if (mUserBatch.get(ParseConstants.KEY_VOTES) == 0) {
+                                        query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
+                                    } else {
+                                        query.addDescendingOrder(ParseConstants.KEY_SCORE);
+                                    }
                                     query.findInBackground(new FindCallback<ParseObject>() {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
@@ -167,6 +174,9 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                                             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
                                                 RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                                                TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
+                                                float percent = ((float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_WINS) / (float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES)) * 100;
+                                                bestiePercent.setText((int) percent + "%");
                                                 Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
                                                 ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
                                                 for (int i = 1; i < mActiveBatchImages.size(); i++) {
@@ -178,6 +188,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                             }
 
                                             mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
+
                                         }
                                     });
                                 }
@@ -343,15 +354,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         startActivity(intent);
 
     }
-
-    public void setUserBatch(ParseObject batch) {
-        mUserBatch = batch;
-    }
-
-    public ParseObject getUserBatch() {
-        return mUserBatch;
-    }
-
 
 
 }

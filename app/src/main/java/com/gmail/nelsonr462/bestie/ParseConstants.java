@@ -28,6 +28,9 @@ public class ParseConstants {
     public static final String KEY_MAX_VOTES_BATCH = "maxVotes";
     public static final String KEY_USER_VOTES = "userVotes";
     public static final String KEY_FLAGGED = "flagged";
+    public static final String KEY_SHARED = "shared";
+    public static final String KEY_UPLOAD_SHARED_LIMIT = "uploadShareLimit";
+    public static final String KEY_SHARE_MESSAGE = "shareMessage";
 
     /* CLASSES */
     public static final String CLASS_BATCH = "Batch";

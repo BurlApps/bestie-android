@@ -53,6 +53,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/bestiePercent"
             android:paddingBottom="2dp"
             android:text="100%"
             android:textColor="@color/bestieRed"
@@ -69,129 +70,6 @@
             android:textSize="12sp"
             android:gravity="center"
             android:paddingBottom="10dp"/>
-
-        <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:id="@+id/statsLayout"-->
-            <!-->-->
-
-            <!--<LinearLayout-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:paddingBottom="5dp"-->
-                <!--android:gravity="center"-->
-                <!--android:id="@+id/totalVotedLayout">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="1000"-->
-                    <!--android:textSize="30sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:id="@+id/votedCount"-->
-                    <!--android:gravity="center"/>-->
-                <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:src="@mipmap/ic_duck_right"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:scaleType="fitEnd"-->
-                        <!--android:adjustViewBounds="true"-->
-                        <!--android:paddingBottom="2dp"-->
-                        <!--/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:text="Voted!"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:paddingLeft="10dp"-->
-                        <!--android:gravity="left|center"-->
-                        <!--android:layout_weight="1"/>-->
-
-                <!--</LinearLayout>-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="More votes = more accurate"-->
-                    <!--android:textSize="9sp"-->
-                    <!--android:textColor="#c4c4c4"-->
-                    <!--android:paddingTop="10dp"/>-->
-
-            <!--</LinearLayout>-->
-
-            <!--<View    android:layout_width="1dp"-->
-                     <!--android:layout_height="match_parent"-->
-                     <!--android:background="@color/borderFadedGrey"-->
-                     <!--android:layout_marginBottom="-5dp"-->
-                <!--/>-->
-
-            <!--<LinearLayout-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:gravity="center"-->
-                <!--android:id="@+id/totalChoseLayout"-->
-                <!--android:paddingBottom="5dp">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textSize="30sp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:text="90%"-->
-                    <!--android:id="@+id/votedPercentage"/>-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:src="@mipmap/ic_duck_right"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:scaleType="fitEnd"-->
-                        <!--android:adjustViewBounds="true"-->
-                        <!--android:paddingBottom="2dp"-->
-                        <!--/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:text="Chose"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:paddingLeft="10dp"-->
-                        <!--android:gravity="left|center"-->
-                        <!--android:layout_weight="1"/>-->
-
-
-                <!--</LinearLayout>-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="That's a lot!"-->
-                    <!--android:textSize="9sp"-->
-                    <!--android:textColor="#c4c4c4"-->
-                    <!--android:paddingTop="10dp"/>-->
-            <!--</LinearLayout>-->
-
-        <!--</LinearLayout>-->
-
 
     </LinearLayout>
 </RelativeLayout>
