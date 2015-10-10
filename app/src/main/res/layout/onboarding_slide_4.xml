@@ -5,14 +5,15 @@
               android:layout_height="match_parent"
               android:background="@android:color/white">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="35dp"
         android:layout_marginBottom="-50dp"
-        android:id="@+id/onboard_3_text"
+        android:id="@+id/onboard_4_text"
         android:textColor="@color/bestieRed"
-        android:text="Give your opinion on \nother people's photos..."
+        android:text="...and see if it \nmatches the crowd's"
         android:textSize="25sp"
         android:gravity="center"
 
@@ -21,10 +22,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/onboard_3_text"
+        android:layout_below="@id/onboard_4_text"
         android:id="@+id/imageView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_onboard_3"
+        android:src="@mipmap/ic_onboard_4"
         />
 </RelativeLayout>

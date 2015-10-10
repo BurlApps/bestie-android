@@ -1,25 +1,54 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
-import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.gmail.nelsonr462.bestie.OnboardSlide;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.events.OnboardLoadEvent;
+import com.gmail.nelsonr462.bestie.events.OnboardStopEvent;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import de.greenrobot.event.EventBus;
 
 public class OnboardActivity extends AppIntro2 {
+    private TextSwitcher mSwitcher;
+    private int mCounter;
+    private ArrayList<String> mText = new ArrayList<>();
+    private final Handler h = new Handler();
+    private final int delay = 2500; //milliseconds
+    private Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            if (mCounter > 3) mCounter = 0;
+            mSwitcher.setText(mText.get(mCounter));
+            mCounter++;
+            h.postDelayed(this, delay);
+        }
+    };
+
+
+
     @Override
     public void init(Bundle savedInstanceState) {
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_1));
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_2));
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_3));
+        addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_4));
+
 
 
     }
@@ -31,5 +60,65 @@ public class OnboardActivity extends AppIntro2 {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    private ViewSwitcher.ViewFactory mFactory = new ViewSwitcher.ViewFactory() {
+
+        @Override
+        public View makeView() {
+
+            // Create a new TextView
+            TextView text =  new TextView(OnboardActivity.this);
+            text.setTextColor(getResources().getColor(R.color.bestieMessageText));
+            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+
+
+            return text;
+        }
+    };
+
+    public void onEvent(OnboardLoadEvent event) {
+        if(event.mLayoutId == R.layout.onboarding_slide_1) {
+
+            OnboardSlide firstSlide = (OnboardSlide) getSlides().get(0);
+
+            mCounter = 0;
+
+            mText.add(0, "Instagram");
+            mText.add(1, "Tinder");
+            mText.add(2, "Facebook");
+            mText.add(3, "Twitter");
+
+            mSwitcher = firstSlide.getSwitcher();
+            mSwitcher.setFactory(mFactory);
+
+
+            Animation in = AnimationUtils.loadAnimation(this,
+                    android.R.anim.fade_in);
+            Animation out = AnimationUtils.loadAnimation(this,
+                    android.R.anim.fade_out);
+            mSwitcher.setInAnimation(in);
+            mSwitcher.setOutAnimation(out);
+
+
+            h.post(r);
+        }
+
+    }
+
+    public void onEvent(OnboardStopEvent event) {
+        h.removeCallbacks(r);
     }
 }

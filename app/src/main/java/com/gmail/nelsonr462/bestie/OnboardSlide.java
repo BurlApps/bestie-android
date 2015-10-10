@@ -6,12 +6,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextSwitcher;
+
+import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
+import com.gmail.nelsonr462.bestie.events.OnboardLoadEvent;
+import com.gmail.nelsonr462.bestie.events.OnboardStopEvent;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by nelson on 10/8/15.
  */
 public class OnboardSlide extends Fragment{
     private static final String ARG_LAYOUT_RES_ID = "layoutResId";
+    private View mView;
 
     public static OnboardSlide newInstance(int layoutResId) {
         OnboardSlide sampleSlide = new OnboardSlide();
@@ -38,6 +46,38 @@ public class OnboardSlide extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(layoutResId, container, false);
+        mView =  inflater.inflate(layoutResId, container, false);
+        return  mView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        EventBus.getDefault().post(new OnboardLoadEvent(layoutResId));
+        super.onResume();
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().post(new OnboardStopEvent());
+        super.onPause();
+    }
+
+    public TextSwitcher getSwitcher() {
+        if (layoutResId == R.layout.onboarding_slide_1) {
+            return (TextSwitcher) mView.findViewById(R.id.textSwitcher);
+        } else {
+            return null;
+        }
     }
 }

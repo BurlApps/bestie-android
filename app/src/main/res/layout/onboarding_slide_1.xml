@@ -8,19 +8,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="35dp"
-        android:layout_marginBottom="-50dp"
         android:id="@+id/onboard_1_text"
         android:textColor="#A6A6A6"
-        android:text="Find your best photo to \npost on Instagram"
+        android:text="@string/onboarding_slide1_part1"
         android:textSize="25sp"
         android:gravity="center"
-
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/onboard_1_text"
+        android:id="@+id/animatedText"
+        android:layout_marginTop="-6dp"
+        android:layout_marginBottom="-50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#A6A6A6"
+            android:textSize="25sp"
+            android:text="@string/onboarding_slide1_part2"
+            android:paddingRight="5dp"
+            />
+
+        <TextSwitcher
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#A6A6A6"
+            android:id="@+id/textSwitcher"
+            android:textSize="25sp"
+            android:text="Instagram"
+            />
+
+    </LinearLayout>
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/onboard_1_text"
+        android:layout_below="@+id/animatedText"
         android:id="@+id/imageView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"

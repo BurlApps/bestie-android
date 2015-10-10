@@ -22,4 +22,6 @@
         <item>Women</item>
     </string-array>
     <string name="title_activity_onboard">OnboardActivity</string>
+    <string name="onboarding_slide1_part1">Find your best photo to</string>
+    <string name="onboarding_slide1_part2">post on</string>
 </resources>
