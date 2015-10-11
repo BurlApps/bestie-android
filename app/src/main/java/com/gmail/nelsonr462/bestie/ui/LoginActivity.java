@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.parse.LogInCallback;
@@ -41,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private RadioButton mIAmMale;
     private RadioButton mIamFemale;
     private RadioGroup mIamRadioGroup;
-    private int VOTE_BUTTON = 0;
-    private int UPLOAD_BUTTON = 1;
+    private int VOTE_BUTTON = 1;
+    private int UPLOAD_BUTTON = 2;
 
 
 
@@ -106,14 +107,17 @@ public class LoginActivity extends AppCompatActivity {
                     interested = "both";
                 }
 
-                CreateUser(userGender, interested, buttonType);
+                CreateUser(userGender, interested);
+                BestieConstants.UPLOAD_ONBOARDING_ACTIVE = true;
+                BestieConstants.VOTE_ONBOARDING_ACTIVE = true;
+                BestieConstants.ONBOARD_TAB_CHOICE = buttonType;
 
 
             }
         };
     }
 
-    private void CreateUser(final String gender, final String interested, int buttonType) {
+    private void CreateUser(final String gender, final String interested) {
         mSetPreferences.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         ParseAnonymousUtils.logIn(new LogInCallback() {

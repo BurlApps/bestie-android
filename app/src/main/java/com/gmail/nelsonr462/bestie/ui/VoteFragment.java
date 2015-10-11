@@ -255,7 +255,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Votes needed:  "+mVotesNeeded);
-                Log.d(TAG, "Screen Heigh:    "+mScreenHeight);
+                Log.d(TAG, "Screen Height:    "+mScreenHeight);
 
 
                 mIncrement =  (mVotesNeeded != 0)? mScreenHeight / mVotesNeeded : 0;

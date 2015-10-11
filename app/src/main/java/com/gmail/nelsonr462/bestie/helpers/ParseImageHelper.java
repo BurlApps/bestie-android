@@ -164,6 +164,8 @@ public class ParseImageHelper {
     }
 
     public void setImageVoted(int imagePosition) {
+        Log.d(TAG, "WIN POSITION:  "+imagePosition);
+        Log.d(TAG, "LIST SIZE:   "+mParseImageObjects.size());
         // Increment votes, wins/losses
         ParseObject selectedImage;
         ParseObject losingImage;

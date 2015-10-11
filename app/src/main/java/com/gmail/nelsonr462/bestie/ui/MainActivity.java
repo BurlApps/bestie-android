@@ -20,18 +20,24 @@ import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
 import com.parse.ConfigCallback;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
     protected ParseObject mUserBatch;
+    private ParseRelation<ParseObject> mBatchRelation;
     protected ParseUser mCurrentUser;
     private LinearLayout mRootView;
     private BestieRankFragment mBestieFragment;
@@ -55,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
             mCurrentUser.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
+                    mBatchRelation = mCurrentUser.getRelation(ParseConstants.KEY_BATCHES);
+                    mUserBatch = mCurrentUser.getParseObject(ParseConstants.KEY_BATCH);
+
+                    ParseQuery<ParseObject> query = mBatchRelation.getQuery();
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if(mUserBatch == null && list.size() == 0) {
+                                BestieConstants.UPLOAD_ONBOARDING_ACTIVE = true;
+                            }
+                        }
+                    });
+
                     mCurrentUser.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -99,7 +118,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-        pager.setCurrentItem(1);
+
+        if(BestieConstants.ONBOARD_TAB_CHOICE != 0) {
+            pager.setCurrentItem(BestieConstants.ONBOARD_TAB_CHOICE);
+        } else {
+            pager.setCurrentItem(1);
+        }
 
         mBestieFragment = (BestieRankFragment) adapter.getItem(2);
         mVoteFragment = (VoteFragment) adapter.getItem(1);

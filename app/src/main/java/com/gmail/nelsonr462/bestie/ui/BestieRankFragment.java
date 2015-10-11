@@ -155,7 +155,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                     mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
 
                                     ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
-//                                    query.addAscendingOrder((mUserBatch.get(ParseConstants.KEY_VOTES) == 0) ? ParseConstants.KEY_CREATED_AT : ParseConstants.KEY_SCORE);
                                     if (mUserBatch.get(ParseConstants.KEY_VOTES) == 0) {
                                         query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
                                     } else {

@@ -311,5 +311,29 @@
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/voteOnboardScreen"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/white"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vote_onboard_message"
+            android:textSize="28sp"
+            android:textColor="@color/bestieRed"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:paddingRight="15dp"
+            android:paddingEnd="15dp"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
