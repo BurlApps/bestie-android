@@ -57,8 +57,9 @@ public class OnboardSlide extends Fragment{
 
     @Override
     public void onResume() {
-        EventBus.getDefault().post(new OnboardLoadEvent(layoutResId));
         super.onResume();
+        if(layoutResId == R.layout.onboarding_slide_1)
+            EventBus.getDefault().post(new OnboardLoadEvent(layoutResId));
 
     }
 
@@ -69,7 +70,8 @@ public class OnboardSlide extends Fragment{
 
     @Override
     public void onPause() {
-        EventBus.getDefault().post(new OnboardStopEvent());
+        if(layoutResId == R.layout.onboarding_slide_1)
+            EventBus.getDefault().post(new OnboardStopEvent());
         super.onPause();
     }
 

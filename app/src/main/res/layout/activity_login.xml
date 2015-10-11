@@ -2,8 +2,6 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
                 android:background="@android:color/white"
                 tools:context="com.gmail.nelsonr462.bestie.ui.LoginActivity"
                 android:id="@+id/relativeLayout">
@@ -36,12 +34,157 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/welcomeProgressBar"
+        android:id="@+id/loginProgressBar"
         android:layout_below="@+id/logoLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:visibility="invisible"
         android:indeterminate="false"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/whoAmI">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:paddingTop="70dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I am..."
+                android:textSize="34sp"
+                android:textColor="@color/bestieRed"
+                android:gravity="center"
+                android:paddingBottom="20dp"
+
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/iAmRadioGroup"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="40dp">
+
+                <RadioButton
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/iAmFemale"
+                    android:checked="false"
+                    android:background="@drawable/onboarding_female_selector"
+                    android:button="@android:color/transparent"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+
+                    />
+
+
+                <RadioButton
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/iAmMale"
+                    android:checked="false"
+                    android:background="@drawable/onboarding_male_selector"
+                    android:button="@android:color/transparent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+
+                    />
+
+            </RadioGroup>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I want to see..."
+                android:textSize="34sp"
+                android:textColor="@color/bestieRed"
+                android:gravity="center"
+                android:paddingBottom="20dp"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="25dp">
+
+                <CheckBox
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/seeFemale"
+                    android:background="@drawable/onboarding_female_selector"
+                    android:button="@android:color/transparent"
+                    android:layout_marginRight="15dp"
+                    />
+
+                <CheckBox
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/seeMale"
+                    android:background="@drawable/onboarding_male_selector"
+                    android:button="@android:color/transparent"
+                    android:layout_marginLeft="15dp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bestie_blue_button"
+                android:text="Start Voting"
+                android:id="@+id/onboardStartVoting"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bestie_red_button"
+                android:text="Find My Bestie"
+                android:id="@+id/onboardFindBestie"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 

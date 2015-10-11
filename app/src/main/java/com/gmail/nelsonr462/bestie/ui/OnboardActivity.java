@@ -29,7 +29,7 @@ public class OnboardActivity extends AppIntro2 {
     private int mCounter;
     private ArrayList<String> mText = new ArrayList<>();
     private final Handler h = new Handler();
-    private final int delay = 2500; //milliseconds
+    private final int delay = 2000; //milliseconds
     private Runnable r = new Runnable() {
         @Override
         public void run() {
@@ -40,19 +40,13 @@ public class OnboardActivity extends AppIntro2 {
         }
     };
 
-
-
     @Override
     public void init(Bundle savedInstanceState) {
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_1));
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_2));
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_3));
         addSlide(OnboardSlide.newInstance(R.layout.onboarding_slide_4));
-
-
-
     }
-
 
     @Override
     public void onDonePressed() {
@@ -74,21 +68,6 @@ public class OnboardActivity extends AppIntro2 {
         super.onStop();
     }
 
-    private ViewSwitcher.ViewFactory mFactory = new ViewSwitcher.ViewFactory() {
-
-        @Override
-        public View makeView() {
-
-            // Create a new TextView
-            TextView text =  new TextView(OnboardActivity.this);
-            text.setTextColor(getResources().getColor(R.color.bestieMessageText));
-            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-
-
-            return text;
-        }
-    };
-
     public void onEvent(OnboardLoadEvent event) {
         if(event.mLayoutId == R.layout.onboarding_slide_1) {
 
@@ -102,7 +81,17 @@ public class OnboardActivity extends AppIntro2 {
             mText.add(3, "Twitter");
 
             mSwitcher = firstSlide.getSwitcher();
-            mSwitcher.setFactory(mFactory);
+            mSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+                @Override
+                public View makeView() {
+                    TextView text =  new TextView(OnboardActivity.this);
+                    text.setTextColor(getResources().getColor(R.color.bestieMessageText));
+                    text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+                    text.setTextColor(getResources().getColor(R.color.bestieRed));
+
+                    return text;
+                }
+            });
 
 
             Animation in = AnimationUtils.loadAnimation(this,

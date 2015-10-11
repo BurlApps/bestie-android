@@ -20,6 +20,7 @@
     <string-array name="interested_choices">
         <item>Men</item>
         <item>Women</item>
+        <item>Both</item>
     </string-array>
     <string name="title_activity_onboard">OnboardActivity</string>
     <string name="onboarding_slide1_part1">Find your best photo to</string>

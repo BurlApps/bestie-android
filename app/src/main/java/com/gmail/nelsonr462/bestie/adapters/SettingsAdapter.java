@@ -115,7 +115,21 @@ public class SettingsAdapter extends BaseAdapter{
 
         if(mSection == 1) {
             if(position == 0) {
-                String interested = (ParseUser.getCurrentUser().getString(ParseConstants.KEY_INTERESTED).equals(ParseConstants.STRING_MALE)) ? "Men" : "Women";
+                String userKey = ParseUser.getCurrentUser().getString(ParseConstants.KEY_INTERESTED);
+                String interested = "";
+                switch (userKey) {
+                    case "male":
+                        interested = "Men";
+                        break;
+                    case "female":
+                        interested = "Women";
+                        break;
+                    case "both":
+                        interested = "Both";
+                        break;
+                }
+
+
                 holder.settingsMore.setVisibility(View.INVISIBLE);
                 holder.settingsDescription.setText(interested);
 
@@ -188,6 +202,9 @@ public class SettingsAdapter extends BaseAdapter{
                        break;
                    case 1:
                        currentUser.put(ParseConstants.KEY_INTERESTED, "female");
+                       break;
+                   case 2:
+                       currentUser.put(ParseConstants.KEY_INTERESTED, "both");
                        break;
                }
 
