@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share"
+            android:text="Save"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
@@ -64,17 +64,7 @@
         android:id="@+id/batchView"
         android:visibility="invisible">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="Keep voting to get more accurate results"/>
+
 
         <com.hookedonplay.decoviewlib.DecoView
             android:layout_width="wrap_content"
@@ -107,13 +97,32 @@
             />
 
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/batchViewProgressBar"
-            android:layout_centerInParent="true"
-            android:visibility="invisible"/>
+            android:background="@android:color/white">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="@string/bestie_check_back_message"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -123,9 +132,9 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/bestie_blue_button"
             android:id="@+id/continueVotingButton"
-            android:text="Continue Voting"
+            android:text="@string/continue_voting_button"
             android:textAllCaps="false"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@android:color/white"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
@@ -146,7 +155,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/photoGridView"
-            android:animateLayoutChanges="true"
             android:paddingTop="20dp"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"

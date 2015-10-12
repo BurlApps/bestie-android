@@ -25,5 +25,8 @@
     <string name="title_activity_onboard">OnboardActivity</string>
     <string name="onboarding_slide1_part1">Find your best photo to</string>
     <string name="onboarding_slide1_part2">post on</string>
-    <string name="vote_onboard_message">To get your bestie,\nhelp others find theirs! \n\nTap the better photo\n to fill the progress bar</string>
+    <string name="upload_onboard_message">To get your bestie,\nhelp others find theirs! \n\nTap the better photo\n to fill the progress bar</string>
+    <string name="vote_onboard_message">Tap the better \nphoto</string>
+    <string name="bestie_check_back_message">Check back here for your Bestie\'s progress when you\'re done voting</string>
+    <string name="continue_voting_button">Back To Voting</string>
 </resources>

@@ -20,15 +20,7 @@ import java.util.ArrayList;
 public class BestieListAdapter extends BaseAdapter{
     private Context mContext;
     private ArrayList<ParseObject> mActiveImageList;
-
-    /* SET CREATE */
-
-    // Keep all Images in array
-    public Integer[] mThumbIds = {
-            R.drawable.test_selfie, R.drawable.test_selfie,
-            R.drawable.test_selfie, R.drawable.test_selfie,
-            R.drawable.test_selfie,
-    };
+    private final String mFormat =  "%.0f%%";
 
     // Constructor
     public BestieListAdapter(Context context, ArrayList<ParseObject> activeImageList) {
@@ -36,22 +28,14 @@ public class BestieListAdapter extends BaseAdapter{
         mActiveImageList = activeImageList;
     }
 
-
-
-
-
-    public BestieListAdapter(Context c) {
-        mContext = c;
-    }
-
     @Override
     public int getCount() {
-        return mActiveImageList.size();  /*mThumbIds.length;*/
+        return mActiveImageList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mActiveImageList.get(position);  /*mThumbIds[position];*/
+        return mActiveImageList.get(position);
     }
 
     @Override
@@ -78,11 +62,14 @@ public class BestieListAdapter extends BaseAdapter{
         }
 
         Picasso.with(mContext).load(mActiveImageList.get(position).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(holder.rankImage);
-        float percent = ((float) mActiveImageList.get(position).getInt(ParseConstants.KEY_WINS) / (float) mActiveImageList.get(position).getInt(ParseConstants.KEY_VOTES))*100;
-        holder.rankPercent.setText((int) percent + "%");
+        float percent;
+//        if( mActiveImageList.get(position).getInt(ParseConstants.KEY_WINS) > 0) {
+            percent =  (float) ((double) mActiveImageList.get(position).getNumber("percent") * 100);
+//        } else {
+//            percent =  (float) ((int) mActiveImageList.get(position).getNumber("percent") * 100);
+//        }
+        holder.rankPercent.setText(String.format(mFormat, percent));
 
-
-//        holder.rankImage.setImageResource(mThumbIds[position]);
         return convertView;
     }
 

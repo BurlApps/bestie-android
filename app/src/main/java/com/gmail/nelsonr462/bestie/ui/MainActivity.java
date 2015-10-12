@@ -1,6 +1,7 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -18,12 +19,15 @@ import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
+import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
+import com.gmail.nelsonr462.bestie.receivers.BestieBroadcastReceiver;
 import com.parse.ConfigCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -31,6 +35,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private ParseRelation<ParseObject> mBatchRelation;
     protected ParseUser mCurrentUser;
     private LinearLayout mRootView;
-    private BestieRankFragment mBestieFragment;
-    private VoteFragment mVoteFragment;
+    public BestieRankFragment mBestieFragment;
+    public VoteFragment mVoteFragment;
     private Vibrator mVibrator;
+    public ViewPager mViewPager;
+    private int mActiveTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
             navigateToLogin();
             return;
         } else {
+            ParseInstallation.getCurrentInstallation().put(ParseConstants.KEY_USER, mCurrentUser);
+            ParseInstallation.getCurrentInstallation().saveInBackground();
             Log.i(TAG, mCurrentUser.getUsername());
             mCurrentUser.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
@@ -80,19 +90,16 @@ public class MainActivity extends AppCompatActivity {
                             ParseConfig.getInBackground(new ConfigCallback() {
                                 @Override
                                 public void done(ParseConfig parseConfig, ParseException e) {
+                                    mActiveTab = getIntent().getIntExtra("activeTab", 1);
                                     inflateTabLayout();
 
                                 }
                             });
-
                         }
                     });
-
                 }
             });
-
         }
-
     }
 
     private void inflateTabLayout() {
@@ -100,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
         MainFragmentPagerAdapter adapter =  new MainFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
 
         // Assigning ViewPager View and setting the adapter
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(2);
 
         // Assiging the Sliding Tab Layout View
         SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
@@ -117,25 +125,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
+        tabs.setViewPager(mViewPager);
 
         if(BestieConstants.ONBOARD_TAB_CHOICE != 0) {
-            pager.setCurrentItem(BestieConstants.ONBOARD_TAB_CHOICE);
+            mViewPager.setCurrentItem(BestieConstants.ONBOARD_TAB_CHOICE);
         } else {
-            pager.setCurrentItem(1);
+            mViewPager.setCurrentItem(mActiveTab);
         }
 
         mBestieFragment = (BestieRankFragment) adapter.getItem(2);
         mVoteFragment = (VoteFragment) adapter.getItem(1);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ParseConstants.isAppActive = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
+        ParseConstants.isAppActive = true;
     }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            mViewPager.setCurrentItem(0);
             return true;
         } else if (id == R.id.action_logout) {
             ParseUser.logOut();
@@ -197,6 +223,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void onEvent(BestieReadyEvent event) {
+        mViewPager.setCurrentItem(2);
     }
 
 }

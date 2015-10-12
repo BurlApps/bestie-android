@@ -1,14 +1,11 @@
 package com.gmail.nelsonr462.bestie.events;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
 
-/**
- * Created by nelson on 10/5/15.
- */
+
 public class ImageVotedEvent {
     public int mVoteCount;
     public boolean mFinished;

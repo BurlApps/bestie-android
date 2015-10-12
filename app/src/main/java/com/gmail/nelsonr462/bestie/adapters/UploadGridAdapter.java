@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.widget.ImageView;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
-import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -29,8 +27,6 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 
 public class UploadGridAdapter extends BaseAdapter {
@@ -75,9 +71,6 @@ public class UploadGridAdapter extends BaseAdapter {
             if(mImageList.size() < ParseConfig.getCurrentConfig().getInt(ParseConstants.KEY_UPLOAD_SHARED_LIMIT))
                 mImageList.add(mPlaceholderUri.toString());
         }
-
-
-
     }
 
     @Override

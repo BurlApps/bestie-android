@@ -1,7 +1,6 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -66,13 +65,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if(!isNetworkAvailable()) {
             connectionToast();
-        } /*else {
-            CreateUser();
-        }*/
+        }
 
         mVoteButton.setOnClickListener(loginListener(VOTE_BUTTON));
         mUploadButton.setOnClickListener(loginListener(UPLOAD_BUTTON));
-
 
     }
 
@@ -111,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                 BestieConstants.UPLOAD_ONBOARDING_ACTIVE = true;
                 BestieConstants.VOTE_ONBOARDING_ACTIVE = true;
                 BestieConstants.ONBOARD_TAB_CHOICE = buttonType;
-
 
             }
         };

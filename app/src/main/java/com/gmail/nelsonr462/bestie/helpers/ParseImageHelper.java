@@ -2,43 +2,38 @@ package com.gmail.nelsonr462.bestie.helpers;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
-import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
 import com.gmail.nelsonr462.bestie.events.ImageVotedEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
-import com.gmail.nelsonr462.bestie.ui.VoteFragment;
-import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
@@ -56,7 +51,6 @@ public class ParseImageHelper {
     private int mNextPair;
     private ArrayList<ParseObject> mParseImageObjects = new ArrayList<>();
     protected int mUriPosition;
-    private boolean mMinVotesReached;
 
     public ParseImageHelper(List<com.makeramen.roundedimageview.RoundedImageView> imageViewList,
                             Context context, RelativeLayout loadingLayout, RelativeLayout checkNowLayout,
@@ -101,12 +95,10 @@ public class ParseImageHelper {
                 }
 
                 for (int i = 0; i < list.size(); i++) {
-//                    if(!mParseImageObjects.contains(list.get(i))) {
-                        ParseFile image = list.get(i).getParseFile(ParseConstants.KEY_IMAGE);
-                        Uri imageUri = Uri.parse(image.getUrl());
-                        mImageUriList.add(imageUri);
-                        mParseImageObjects.add(list.get(i));
-//                    }
+                    ParseFile image = list.get(i).getParseFile(ParseConstants.KEY_IMAGE);
+                    Uri imageUri = Uri.parse(image.getUrl());
+                    mImageUriList.add(imageUri);
+                    mParseImageObjects.add(list.get(i));
                 }
                 Log.d(TAG, "IMAGE URI LIST SIZE:   " + mImageUriList.size());
                 for (int j = 0; j < mImageUriList.size(); j++) {
@@ -218,6 +210,70 @@ public class ParseImageHelper {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    public static void saveImage(ParseFile image) {
+        if (isExternalStorageAvailable()) {
+            // Get URI
+            // Get external storage directory
+            File mediaStorageDir = new File(Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    "Bestie");
+            // Create subdirectory
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.e(TAG, "Failed to create directory");
+                    return;
+                }
+            }
+            // Create a file name
+            // Create the file
+            File mediaFile;
+            Date now = new Date();
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(now);
+            String path = mediaStorageDir.getPath() + File.separator;
+            mediaFile = new File(path + "IMG_" + timestamp + ".jpg");
+
+            Log.d(TAG, "File: " + Uri.fromFile(mediaFile));
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(BestieRankFragment.mContext).setTitle("Save Error")
+                    .setMessage("There was an error saving the file")
+                    .setPositiveButton("Okay", null);
+
+            try {
+                byte[] file = image.getData();
+                FileOutputStream outputStream = new FileOutputStream(mediaFile);
+                outputStream.write(file);
+                outputStream.close();
+            } catch (ParseException e) {
+                alert.show();
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                alert.show();
+            } catch (IOException e) {
+                alert.show();
+                e.printStackTrace();
+            }
+
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(Uri.fromFile(mediaFile));
+            BestieRankFragment.mContext.sendBroadcast(mediaScanIntent);
+
+            new AlertDialog.Builder(BestieRankFragment.mContext).setTitle("Saved Bestie")
+                    .setMessage("Image saved successfully!")
+                    .setPositiveButton("Okay", null)
+                    .show();
+
+        }
+    }
+
+    private static boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if(state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

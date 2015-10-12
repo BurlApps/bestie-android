@@ -2,9 +2,7 @@ package com.gmail.nelsonr462.bestie.events;
 
 import com.parse.ParseObject;
 
-/**
- * Created by nelson on 10/5/15.
- */
+
 public class BatchUpdateEvent {
     public final ParseObject updatedBatch;
 

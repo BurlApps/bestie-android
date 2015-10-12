@@ -185,8 +185,25 @@
                 android:id="@+id/flag1"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:padding="5dp"
                 android:alpha=".8"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/voteOnboard1"
+                android:visibility="invisible"
+                android:background="@drawable/overlay_vote_onboard"
+                android:text="@string/vote_onboard_message"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
                 />
 
         </RelativeLayout>
@@ -239,6 +256,22 @@
                 android:layout_alignParentLeft="true"
                 android:padding="5dp"
                 android:alpha=".8"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/voteOnboard2"
+                android:visibility="invisible"
+                android:background="@drawable/overlay_vote_onboard"
+                android:text="@string/vote_onboard_message"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:shadowColor="@color/votePercentShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
                 />
 
         </RelativeLayout>
@@ -323,7 +356,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vote_onboard_message"
+            android:text="@string/upload_onboard_message"
             android:textSize="28sp"
             android:textColor="@color/bestieRed"
             android:gravity="center"

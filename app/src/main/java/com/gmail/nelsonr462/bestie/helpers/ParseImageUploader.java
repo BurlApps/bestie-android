@@ -16,13 +16,11 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
 public class ParseImageUploader {
-    private File mImageFile;
     private ParseConfig mParseConfig;
     ArrayList<ParseObject> mImageList;
 
@@ -85,8 +83,6 @@ public class ParseImageUploader {
             }
         });
 
-
-
     }
 
     public void newBatch(final ParseObject parseImage){
@@ -122,6 +118,5 @@ public class ParseImageUploader {
             }
         });
     }
-
 
 }

@@ -4,14 +4,12 @@ import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
-import com.gmail.nelsonr462.bestie.ui.VoteFragment;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 

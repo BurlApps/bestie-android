@@ -8,15 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextSwitcher;
 
-import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.events.OnboardLoadEvent;
 import com.gmail.nelsonr462.bestie.events.OnboardStopEvent;
 
 import de.greenrobot.event.EventBus;
 
-/**
- * Created by nelson on 10/8/15.
- */
+
 public class OnboardSlide extends Fragment{
     private static final String ARG_LAYOUT_RES_ID = "layoutResId";
     private View mView;
@@ -51,21 +48,11 @@ public class OnboardSlide extends Fragment{
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if(layoutResId == R.layout.onboarding_slide_1)
             EventBus.getDefault().post(new OnboardLoadEvent(layoutResId));
 
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

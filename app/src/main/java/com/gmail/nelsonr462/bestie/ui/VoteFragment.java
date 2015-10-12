@@ -54,12 +54,15 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     private RelativeLayout mRootLayout;
     private RelativeLayout mLoadingLayout;
     private RelativeLayout mCheckNowLayout;
+    private RelativeLayout mUploadOnboard;
     private LinearLayout mVotingLayout1;
     private LinearLayout mVotingLayout2;
     private List<RelativeLayout> mVotingImages = new ArrayList<>();
     private ArrayList<TextView> mPercentView = new ArrayList<>();
     private ArrayList<ImageButton> mFlags = new ArrayList<>();
     private ImageView mVoteCounter;
+    private TextView mVoteOnboard1;
+    private TextView mVoteOnboard2;
     private View mView;
     private Button mCheckNowButton;
     private ParseImageHelper mImagePuller;
@@ -119,6 +122,10 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mPercentView.add(1, (TextView) mView.findViewById(R.id.percentOverlay2));
         mPercentView.add(2, (TextView) mView.findViewById(R.id.percentOverlay3));
         mPercentView.add(3, (TextView) mView.findViewById(R.id.percentOverlay4));
+
+        mVoteOnboard1 = (TextView) mView.findViewById(R.id.voteOnboard1);
+        mVoteOnboard2 = (TextView) mView.findViewById(R.id.voteOnboard2);
+        mUploadOnboard = (RelativeLayout) mView.findViewById(R.id.voteOnboardScreen);
 
         setFlaggedClickListeners();
 
@@ -187,6 +194,10 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 }
 
                 mImagePuller.pullVoteImages(0);
+                if(BestieConstants.VOTE_ONBOARDING_ACTIVE) {
+                    mVoteOnboard1.setVisibility(View.VISIBLE);
+                    mVoteOnboard2.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -209,6 +220,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                if(BestieConstants.UPLOAD_ONBOARDING_ACTIVE && BestieConstants.FROM_FIRST_UPLOAD) {
+                    voteOnboarding();
+                    BestieConstants.UPLOAD_ONBOARDING_ACTIVE = false;
+                    BestieConstants.FROM_FIRST_UPLOAD = false;
+                }
 
             }
 
@@ -257,6 +273,12 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 Log.d(TAG, "Votes needed:  "+mVotesNeeded);
                 Log.d(TAG, "Screen Height:    "+mScreenHeight);
 
+                if(BestieConstants.VOTE_ONBOARDING_ACTIVE) {
+                    YoYo.with(Techniques.FadeOut).duration(200).playOn(mVoteOnboard1);
+                    YoYo.with(Techniques.FadeOut).duration(200).playOn(mVoteOnboard2);
+                    BestieConstants.VOTE_ONBOARDING_ACTIVE = false;
+                }
+
 
                 mIncrement =  (mVotesNeeded != 0)? mScreenHeight / mVotesNeeded : 0;
 
@@ -271,10 +293,10 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                 disableVoteImages(true);
                 startLayout.setEnabled(false);
                 endLayout.setEnabled(false);
-//                if (BestieConstants.ACTIVE_VOTE_COUNT) mVoteCount++;
 
                 percent1.setVisibility(View.VISIBLE);
                 percent2.setVisibility(View.VISIBLE);
+
                 YoYo.with(Techniques.FadeIn).duration(300).withListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -297,39 +319,11 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
                                 set.playTogether(
                                         Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
-                                                endLayout, "translationY", 1950, 0))/*,
-                                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
-                                                mVoteCounter, "translationY", mCounterPosition, -(mIncrement * mVoteCount)
-                                        ))*/
+                                                endLayout, "translationY", 1950, 0))
                                 );
                                 set.setDuration(BestieConstants.ANIMATION_DURATION);
                                 set.setStartDelay(300);
                                 set.start();
-//                                if (mVoteCount <= mVotesNeeded)
-//                                    mCounterPosition = -(mIncrement * mVoteCount);
-//                                if (mVoteCount > mVotesNeeded)
-//                                    mCounterPosition = -(mIncrement * mVotesNeeded);
-//
-//
-//                            /* RE-ENABLE FOR KEEPING VOTE COUNT BAR UP */
-//
-//                                if (mVoteCount >= mVotesNeeded && mUserBatch != null) {
-//                                    if (BestieConstants.ACTIVE_VOTE_COUNT && mShowSnack) {
-//                                        final Snackbar snackbar = Snackbar.make(v, "You've reached the minimum number of votes!", 5000);
-//                                        View snackbarView = snackbar.getView();
-//                                        snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
-//
-//                                        snackbar.setAction("Okay", new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View v) {
-//                                                snackbar.dismiss();
-//                                            }
-//                                        }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
-//                                        mShowSnack = false;
-//                                    }
-//                                    BestieConstants.ACTIVE_VOTE_COUNT = false;
-//                                } else BestieConstants.ACTIVE_VOTE_COUNT = true;
-
                             }
 
                             @Override
@@ -427,7 +421,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         return outRect.contains(x, y);
     }
 
-
     private void scaleOnTouch(MotionEvent event, RelativeLayout frame) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             frame.setScaleX(1.05f);
@@ -437,7 +430,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
             frame.setScaleY(1.0f);
         }
     }
-
 
     private void setFlagListeners(ArrayList<ImageButton> flags) {
 
@@ -517,8 +509,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
     }
 
     public void onEvent(BatchUpdateEvent event) {
-
-
         if(mUserBatch != null) {
             Log.d(TAG, "CURRENT VOTES:   " + mUserBatch.getInt(ParseConstants.KEY_USER_VOTES));
             Log.d(TAG, "NEW VOTES:   " + event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES));
@@ -595,8 +585,6 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         mTopImagePosition = mTopImagePosition + 2;
         mBottomImagePosition = mBottomImagePosition + 2;
         set.start();
-
-
     }
 
     private void setFlaggedClickListeners() {
@@ -607,6 +595,51 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
         setFlagListeners(mFlags);
 
+    }
+
+    public void voteOnboarding() {
+        mUploadOnboard.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.FadeOut).delay(7000).duration(300).playOn(mUploadOnboard);
+
+        AnimatorSet set = new AnimatorSet();
+
+        set.playTogether(
+                Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                        mVoteCounter, "translationY", 0, -2100
+                ))
+        );
+        set.setStartDelay(1000);
+        set.setDuration(5000);
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                AnimatorSet set = new AnimatorSet();
+
+                set.playTogether(
+                        Glider.glide(Skill.ExpoEaseOut, 800, ObjectAnimator.ofFloat(
+                                mVoteCounter, "translationY", -2100, 0
+                        ))
+                );
+                set.setDuration(1000);
+                set.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        set.start();
     }
 
 }

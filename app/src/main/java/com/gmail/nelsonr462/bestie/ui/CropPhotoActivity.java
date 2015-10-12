@@ -2,7 +2,6 @@ package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import java.io.IOException;
 
 public class CropPhotoActivity extends AppCompatActivity {
     private final String TAG = CropPhotoActivity.class.getSimpleName();
-    protected Uri mMediaUri;
 
     protected CropImageView mCropImageView;
     protected Button mCropButton;
@@ -59,8 +57,9 @@ public class CropPhotoActivity extends AppCompatActivity {
         mCropImageView.setHandleShowMode(CropImageView.ShowMode.SHOW_ALWAYS);
         mCropImageView.setGuideShowMode(CropImageView.ShowMode.SHOW_ON_TOUCH);
         mCropImageView.setCropMode(CropImageView.CropMode.RATIO_1_1);
-
-
+        mCropImageView.setInitialFrameScale(1.0f);
+        mCropImageView.setHandleSizeInDp(8);
+        mCropImageView.setTouchPaddingInDp(12);
 
         mCropButton.setOnClickListener(new View.OnClickListener() {
             @Override

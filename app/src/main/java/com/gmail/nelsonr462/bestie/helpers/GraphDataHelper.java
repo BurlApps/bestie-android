@@ -1,9 +1,7 @@
 package com.gmail.nelsonr462.bestie.helpers;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,19 +11,14 @@ import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-
-import java.text.Format;
 
 
 public class GraphDataHelper {
     private RelativeLayout mBatchViewLayout;
     private DecoView mBatchGraph;
     private TextView mCompletionPercentageText;
-    private ProgressBar mProgressBar;
+    private RelativeLayout mProgressBar;
 
     private ParseObject mActiveBatch;
 
@@ -55,7 +48,7 @@ public class GraphDataHelper {
                     mCompletionPercentageText = (TextView) v;
                     break;
                 case R.id.batchViewProgressBar:
-                    mProgressBar = (ProgressBar) v;
+                    mProgressBar = (RelativeLayout) v;
                     break;
             }
         }
@@ -70,6 +63,15 @@ public class GraphDataHelper {
     }
 
     public void setGraphData(float maxVotes, float userVotes, float votes) {
+        if(mUserVotes * mVotes == 0) {
+            mBatchGraph.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
+            // Show progress bar
+        } else {
+            mBatchGraph.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+
         final float calculatedGraphPosition =   ((userVotes/maxVotes < 1)? (userVotes / maxVotes) : 1) * (votes/maxVotes);
 
         mGraphPosition = (int) (calculatedGraphPosition * 100.0f);
@@ -115,6 +117,15 @@ public class GraphDataHelper {
     }
 
     public void updateGraph() {
+        if(mUserVotes * mVotes == 0) {
+            mBatchGraph.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
+            // Show progress bar
+        } else {
+            mBatchGraph.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+
         if((int) mVotes == mActiveBatch.get(ParseConstants.KEY_MAX_VOTES_BATCH) && (int) mUserVotes >= mActiveBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH)) {
             mBatchViewLayout.setVisibility(View.INVISIBLE);
         }

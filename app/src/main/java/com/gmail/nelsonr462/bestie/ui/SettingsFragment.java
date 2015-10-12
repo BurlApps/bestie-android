@@ -1,6 +1,5 @@
 package com.gmail.nelsonr462.bestie.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 public class SettingsFragment extends android.support.v4.app.Fragment {
 
     private View mView;
-    private ArrayList<ListView> mListViews = new ArrayList<>();
     private ListView mBestieList;
     private ListView mUserList;
     private ListView mLegalList;
@@ -42,7 +40,6 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         if(ParseUser.getCurrentUser() == null) {
-//            navigateToLogin();
             return mView;
         }
 
@@ -76,19 +73,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         title3.setText("Legal Stuff");
         mLegalList.addHeaderView(mHeaders.get(2), null, false);
 
-
-
         return mView;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void navigateToLogin() {

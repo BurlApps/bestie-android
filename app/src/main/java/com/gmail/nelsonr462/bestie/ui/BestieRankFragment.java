@@ -1,8 +1,6 @@
 package com.gmail.nelsonr462.bestie.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -20,6 +18,7 @@ import android.widget.TextView;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
+import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.BestieListAdapter;
@@ -27,12 +26,14 @@ import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.helpers.BatchActivator;
 import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.helpers.GraphDataHelper;
+import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -71,6 +72,10 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
     private Button mContinueButton;
 
     private final String mFormat =  "%.0f%%";
+
+
+    private final Handler h = new Handler();
+    private final int delay = 4000; //milliseconds
 
     public BestieRankFragment() {}
 
@@ -116,13 +121,12 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
 
         if(mCurrentUser == null) {
-//            navigateToLogin();
             return mView;
         }
 
-        if(mActiveBatchImages.size() > 0) {
-            checkForBatch();
-        } else {
+//        if(mActiveBatchImages.size() > 0) {
+//            checkForBatch();
+//        } else {
 
             mCurrentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                 @Override
@@ -163,6 +167,9 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                     query.findInBackground(new FindCallback<ParseObject>() {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
+
+                                            /*   ADD IN PROGRESS BAR HERE   */
+
                                             if (e != null) {
                                                 return;
                                             }
@@ -179,8 +186,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
                                                 RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
                                                 TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
-                                                float percent = ((float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_WINS) / (float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES)) * 100;
-                                                bestiePercent.setText(String.format(mFormat, percent));
+                                                setPercent(bestiePercent);
                                                 Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
                                                 ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
                                                 for (int i = 1; i < mActiveBatchImages.size(); i++) {
@@ -205,52 +211,23 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                 }
             });
-        }
-
-
-        final Handler h = new Handler();
-        final int delay = 4000; //milliseconds
-
-
-        h.postDelayed(new Runnable() {
-            public void run() {
-                if (mUserBatch != null) {
-                    mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject userBatch, ParseException e) {
-                            if (e != null) {
-                                Log.d(TAG, e.getMessage());
-                            }
-
-                                if (userBatch != null) {
-
-                                    if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0 && mActiveBatchImages.size() > 0 && mBatchView.getVisibility() == View.VISIBLE) {
-                                        RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
-                                        TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
-                                        float percent = ((float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_WINS) / (float) mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES)) * 100;
-                                        bestiePercent.setText(String.format(mFormat, percent));
-                                        Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
-                                        ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
-                                        for (int i = 1; i < mActiveBatchImages.size(); i++) {
-                                            rankedImages.add(mActiveBatchImages.get(i));
-                                        }
-                                        mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
-
-                                    }
-
-                                    EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
-
-                                    if(mGraphDataHelper != null) mGraphDataHelper.updateGraph();
-                            }
-                        }
-                    });
-                }
-                h.postDelayed(this, delay);
-            }
-        }, delay);
+//        }
 
 
         return mView;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        h.postDelayed(r, delay);
+    }
+
+    @Override
+    public void onPause() {
+        h.removeCallbacks(r);
+        super.onPause();
     }
 
     private void checkForBatch() {
@@ -262,7 +239,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) == 0) {
                 mAddPhotosLayout.setVisibility(View.VISIBLE);
-
             }
 
             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
@@ -273,7 +249,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                     rankedImages.add(mActiveBatchImages.get(i));
                 }
 
-
                 mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
             }
 
@@ -282,23 +257,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
             mAddPhotosLayout.setVisibility(View.VISIBLE);
             mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
         }
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    public void onAttach (Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private View.OnClickListener ButtonClickListener(final int buttonType) {
@@ -312,7 +270,6 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                 if(buttonType == 1) {
                     // Reset mActiveBatchImages and set new GridLayoutAdapter
                     // Remove current batch from user batch pointer field
-
                     mActiveBatchImages.clear();
                     mUploadGrid.setAdapter(new UploadGridAdapter(mContext, mActiveBatchImages));
                     BatchActivator.moveBatch();
@@ -327,11 +284,13 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                 } else if (buttonType == 2) {
                     // Save button
+                    ParseFile imageToSave = mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE);
+                    ParseImageHelper.saveImage(imageToSave);
+                    mVibrator.vibrate(100);
 
                 } else if(buttonType == 3) {
                     if(mUploadGrid.getAdapter().getCount() < 3) {
-//                        Snackbar.make(v, "Upload some images first!", Snackbar.LENGTH_LONG).show();
-
+                        // Check for valid upload count
                         final Snackbar snackbar = Snackbar.make(mView, "Upload some images first!", 5000);
                         View snackbarView = snackbar.getView();
                         snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
@@ -347,6 +306,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                     } else {
                         // Set batch as active and display graph
+                        MainActivity activity = (MainActivity) getActivity();
                         BatchActivator.activateBatch(true);
                         mGraphDataHelper = new GraphDataHelper(mBatchView);
                         mBatchView.setVisibility(View.VISIBLE);
@@ -357,6 +317,12 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                         );
                         set.setDuration(500);
                         set.start();
+
+                        // Onboarding activation
+                        if(BestieConstants.UPLOAD_ONBOARDING_ACTIVE) {
+                            BestieConstants.FROM_FIRST_UPLOAD = true;
+                            activity.mViewPager.setCurrentItem(1);
+                        }
                     }
                 } else if (buttonType == 4) {
                     // Continue voting button
@@ -368,13 +334,51 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         return onClickListener;
     }
 
-    private void navigateToLogin() {
-        Intent intent = new Intent(mView.getContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
 
+    private void setPercent(TextView textView) {
+        float percent;
+//        if( mActiveBatchImages.get(0).getInt(ParseConstants.KEY_VOTES) > 0) {
+            percent =  (float) ((double) mActiveBatchImages.get(0).getNumber("percent") * 100);
+//        } else {
+//            percent =  (float) ((int) mActiveBatchImages.get(0).getNumber("percent") * 100);
+//        }
+        textView.setText(String.format(mFormat, percent));
     }
 
+    private Runnable r = new Runnable() {
+        public void run() {
+            Log.d(TAG, "runnable active");
+            if (mUserBatch != null) {
+                mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject userBatch, ParseException e) {
+                        if (e != null) {
+                            Log.d(TAG, e.getMessage());
+                        }
 
+                        if (userBatch != null) {
+
+                            if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0 && mActiveBatchImages.size() > 0 && mBatchView.getVisibility() == View.VISIBLE) {
+                                RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                                TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
+                                setPercent(bestiePercent);
+                                Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
+                                ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
+                                for (int i = 1; i < mActiveBatchImages.size(); i++) {
+                                    rankedImages.add(mActiveBatchImages.get(i));
+                                }
+                                mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
+
+                            }
+
+                            EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
+
+                            if(mGraphDataHelper != null) mGraphDataHelper.updateGraph();
+                        }
+                    }
+                });
+            }
+            h.postDelayed(this, delay);
+        }
+    };
 }
