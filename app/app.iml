@@ -80,8 +80,10 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.bmarrdev/android-DecoView-charting/v0.9.4/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.paolorotolo/appintro/3.2.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.zzz40500/android-shapeLoadingView/1.0.3.2/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services/3.1.59/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.isseiaoki/simplecropview/1.0.8/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.makeramen/roundedimageview/2.2.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.6.4/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core-slh/3.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core/3.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-manipulation/3.1.0/jars" />
@@ -105,6 +107,7 @@
     <orderEntry type="library" exported="" name="library-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="roundedimageview-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="lib-core-slh-3.1.0" level="project" />
+    <orderEntry type="library" exported="" name="mixpanel-android-4.6.4" level="project" />
     <orderEntry type="library" exported="" name="Parse-1.10.1" level="project" />
     <orderEntry type="library" exported="" name="ParseFacebookUtilsV4-1.10.1" level="project" />
     <orderEntry type="library" exported="" name="ParseCrashReporting-1.10.1" level="project" />
@@ -118,6 +121,7 @@
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="lib-core-3.1.0" level="project" />
     <orderEntry type="library" exported="" name="appintro-3.2.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-3.1.59" level="project" />
     <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="library-1.1.3" level="project" />

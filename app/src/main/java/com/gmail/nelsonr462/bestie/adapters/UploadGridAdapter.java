@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.gmail.nelsonr462.bestie.ui.MainActivity;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -33,6 +35,7 @@ public class UploadGridAdapter extends BaseAdapter {
     private final String TAG = UploadGridAdapter.class.getSimpleName();
     private Context mContext;
     private int mUploadLimit;
+    private Button mFindBestieButton;
     UploadGridAdapter mAdapter = this;
     Uri mPlaceholderUri;
 
@@ -48,6 +51,7 @@ public class UploadGridAdapter extends BaseAdapter {
     // Constructor
     public UploadGridAdapter(Context c, ArrayList<ParseObject> activeImages) {
         mContext = c;
+        mFindBestieButton = (Button) ((MainActivity)mContext).findViewById(R.id.findNewBestieButton);
         mActiveImageList = activeImages;
         mPlaceholderUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
                 + "://" + mContext.getResources().getResourcePackageName(R.drawable.add_placeholder)
@@ -61,6 +65,8 @@ public class UploadGridAdapter extends BaseAdapter {
                 mImageList.add(image.getUrl());
             }
         }
+
+        mFindBestieButton.setVisibility((mActiveImageList.size() < 2)? View.INVISIBLE: View.VISIBLE );
 
         boolean shared = (boolean) ParseUser.getCurrentUser().get(ParseConstants.KEY_SHARED);
         mUploadLimit = ParseConfig.getCurrentConfig().getInt((!shared)? ParseConstants.KEY_UPLOAD_LIMIT : ParseConstants.KEY_UPLOAD_SHARED_LIMIT);

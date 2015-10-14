@@ -17,14 +17,19 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         mVoteButton.setOnClickListener(loginListener(VOTE_BUTTON));
         mUploadButton.setOnClickListener(loginListener(UPLOAD_BUTTON));
 
+        BestieApplication.mMixpanel.track("Mobile.Onboard.Selection");
+
     }
 
     private View.OnClickListener loginListener(final int buttonType) {
@@ -108,6 +115,15 @@ public class LoginActivity extends AppCompatActivity {
                 BestieConstants.VOTE_ONBOARDING_ACTIVE = true;
                 BestieConstants.ONBOARD_TAB_CHOICE = buttonType;
 
+                JSONObject props = new JSONObject();
+                try {
+                    props.put("Next", (buttonType == 1)? "Vote" : "Upload");
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+
+                BestieApplication.mMixpanel.track("Mobile.Onboard.Finished", props);
+
             }
         };
     }
@@ -127,8 +143,26 @@ public class LoginActivity extends AppCompatActivity {
                         mProgressBar.setVisibility(View.INVISIBLE);
                         if (e != null) {
                             Log.d(TAG, "PARSE LOGIN:     Login failed");
+                            BestieApplication.mMixpanel.track("Mobile.User.Failed Authentication");
                         } else {
                             Log.d(TAG, "PARSE LOGIN:     Login success");
+                            JSONObject props = new JSONObject();
+                            try {
+                                props.put("Gender", ParseUser.getCurrentUser().getString(ParseConstants.KEY_GENDER));
+                                props.put("Interested", ParseUser.getCurrentUser().getString(ParseConstants.KEY_INTERESTED));
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+
+                            BestieApplication.mMixpanel.registerSuperProperties(props);
+                            BestieApplication.mMixpanel.track("Mobile.User.Registered");
+                            MixpanelAPI.People people = BestieApplication.mMixpanel.getPeople();
+                            people.identify(ParseUser.getCurrentUser().getObjectId());
+                            people.set("ID", ParseUser.getCurrentUser().getObjectId());
+                            people.set("Interested", ParseUser.getCurrentUser().get(ParseConstants.KEY_INTERESTED));
+                            people.set("Gender", ParseUser.getCurrentUser().get(ParseConstants.KEY_GENDER));
+
+                            people.initPushHandling(getString(R.string.google_sender_id));
                             // Integrate choice of vote or upload
                             navigateToMain();
                         }

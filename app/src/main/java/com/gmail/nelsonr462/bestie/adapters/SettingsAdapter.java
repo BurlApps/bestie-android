@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
@@ -108,6 +109,8 @@ public class SettingsAdapter extends BaseAdapter{
                         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out Bestie!");
                         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                         mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+                        BestieApplication.mMixpanel.getPeople().set("Shared", true);
                     }
                 });
             }
@@ -212,6 +215,7 @@ public class SettingsAdapter extends BaseAdapter{
                currentUser.saveInBackground(new SaveCallback() {
                    @Override
                    public void done(ParseException e) {
+                       BestieApplication.mMixpanel.getPeople().set("Interested", currentUser.get(ParseConstants.KEY_INTERESTED));
                        holder.settingsDescription.setText(currentUser.getString(ParseConstants.KEY_INTERESTED));
                        notifyDataSetChanged();
                        VoteFragment voteFragment = (VoteFragment) ((MainActivity) mContext)

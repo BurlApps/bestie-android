@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v7.app.NotificationCompat;
 
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
@@ -30,6 +31,7 @@ public class BestieBroadcastReceiver extends ParsePushBroadcastReceiver {
     protected void onPushReceive(Context context, Intent intent) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         mParseConfig = ParseConfig.getCurrentConfig();
+
 
         JSONObject data = getDataFromIntent(intent);
 

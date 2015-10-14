@@ -2,6 +2,8 @@ package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,8 +33,12 @@ public class CropPhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crop_photo);
 
+        Drawable back = getResources().getDrawable(R.mipmap.ic_chevron_left_white_24dp);
+        assert back!=null;
+        back.setColorFilter(getResources().getColor(R.color.bestieRed), PorterDuff.Mode.MULTIPLY);
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
         toolbar.setVisibility(View.VISIBLE);
+        toolbar.setNavigationIcon(back);
         setSupportActionBar(toolbar);
 
         assert  getSupportActionBar() != null;

@@ -8,11 +8,26 @@ android {
         applicationId "com.gmail.nelsonr462.bestie"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 9
-        versionName "0.09"
+        versionCode 10
+        versionName "1.0"
     }
     buildTypes {
+        debug {
+            resValue "string", "parse_app_id", "q1NZZSGYNxaYIQq5dDNkMlD407fmm2Hq6BoXBzu4"
+            resValue "string", "parse_client_key", "aA6IKoTDyboREj5gNfWQ2PasrmaaRYtMTUlugje0"
+            resValue "string", "mixpanel_key", "ae9f71c91262dc1c018c2b75aa5af8c3"
+            resValue "string", "google_sender_id", "650055566970"
+
+
+        }
+
         release {
+            resValue "string", "parse_app_id", "2umHhGkMh7Gm6dU8rRVgHSPzbW5xOymXzenDx2XC"
+            resValue "string", "parse_client_key", "hs2lKU3eqPPRzzqNVriWyEiUyuXu9OCiv4lw3SCw"
+            resValue "string", "mixpanel_key", "00301a443b72f402d307c4ca9c8c22fe"
+            resValue "string", "google_sender_id", "810668043810"
+
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -45,6 +60,9 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.github.paolorotolo:appintro:3.2.0'
     compile 'com.parse.bolts:bolts-android:1.+'
+
+    compile "com.mixpanel.android:mixpanel-android:4.6.4"
+    compile "com.google.android.gms:play-services:3.1+"
 
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'

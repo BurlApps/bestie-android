@@ -187,10 +187,15 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:id="@+id/addPhotosText"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:typeface="monospace"
             android:text="@string/add_photos_message"
             android:textColor="@color/bestieMessageText"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="28sp"
             />
 
         <Button

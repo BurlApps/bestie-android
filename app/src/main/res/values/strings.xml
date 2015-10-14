@@ -41,7 +41,7 @@
 
 
     <!-- Bestie Fragment -->
-    <string name="add_photos_message">Add at least two photos of you</string>
+    <string name="add_photos_message">Add at least two photos\nof you to find the best one.\n\nTo get your results, help the\ncrowd find their Bestie.</string>
     <string name="find_selfie_button">Find your best selfie</string>
     <string name="bestie_check_back_message">Check back here for your Bestie\'s progress when you\'re done voting</string>
     <string name="continue_voting_button">Back To Voting</string>
@@ -79,10 +79,7 @@
 
     <!--  Multi-use Strings  -->
     <string name="percent_placeholder">--%</string>
-
-
-
-
+    <string name="bestie_max_votes_reached_message">Yay! Bestie in progress, we’ll notify you when it’s done</string>
 
 
 </resources>

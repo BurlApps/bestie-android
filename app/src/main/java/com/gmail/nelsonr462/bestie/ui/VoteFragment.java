@@ -24,6 +24,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
@@ -278,6 +279,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     YoYo.with(Techniques.FadeOut).duration(200).playOn(mVoteOnboard1);
                     YoYo.with(Techniques.FadeOut).duration(200).playOn(mVoteOnboard2);
                     BestieConstants.VOTE_ONBOARDING_ACTIVE = false;
+                    BestieApplication.mMixpanel.track("Mobile.Voting Tutorial.Completed");
                 }
 
 
@@ -486,7 +488,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
         if (mVoteCount >= mVotesNeeded && mUserBatch != null) {
             if (BestieConstants.ACTIVE_VOTE_COUNT && mShowSnack) {
-                final Snackbar snackbar = Snackbar.make(mVoteCounter, "You've reached the minimum number of votes!", 5000);
+                final Snackbar snackbar = Snackbar.make(mVoteCounter, R.string.bestie_max_votes_reached_message, 5000);
                 View snackbarView = snackbar.getView();
                 snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
 
@@ -641,6 +643,27 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                         ))
                 );
                 set.setDuration(1000);
+                set.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        BestieApplication.mMixpanel.track("Mobile.Bars Tutorial Completed");
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
                 set.start();
             }
 

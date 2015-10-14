@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.github.paolorotolo.appintro.AppIntro2;
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.OnboardSlide;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.OnboardLoadEvent;
@@ -57,6 +58,7 @@ public class OnboardActivity extends AppIntro2 {
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        BestieApplication.mMixpanel.track("Mobile.Onboard.Welcome");
     }
 
     @Override

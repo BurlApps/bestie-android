@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
@@ -21,6 +22,7 @@ import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.parse.ConfigCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -33,6 +35,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator mVibrator;
     public ViewPager mViewPager;
     private int mActiveTab;
+//    private MixpanelAPI mMixpanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                                 public void done(ParseConfig parseConfig, ParseException e) {
                                     mActiveTab = getIntent().getIntExtra("activeTab", 1);
                                     inflateTabLayout();
+
+
 
                                 }
                             });
@@ -163,6 +171,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        BestieApplication.mMixpanel.flush();
+        super.onDestroy();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             ParseUser.logOut();
                             BestieRankFragment.mActiveBatchImages.clear();
+                            BestieApplication.mMixpanel.track("Mobile.User.Logout");
+                            BestieApplication.mMixpanel.reset();
                             navigateToLogin();
                         }
                     })
@@ -229,13 +244,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
                     mVibrator.vibrate(300);
+                    BestieApplication.mMixpanel.getPeople().set("Shared", true);
                 }
             });
         }
     }
 
     public void onEvent(BestieReadyEvent event) {
-        mViewPager.setCurrentItem(2);
-    }
+        final Snackbar snackbar = Snackbar.make(mRootView, "Your Bestie is ready!", 5000);
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
+
+        snackbar.setAction("Okay", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(2);
+                snackbar.dismiss();
+            }
+        }).setActionTextColor(getResources().getColor(R.color.bestieYellow)).show();
+        mVibrator.vibrate(300);    }
 
 }

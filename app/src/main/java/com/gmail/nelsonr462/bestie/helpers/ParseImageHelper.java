@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
@@ -179,6 +180,8 @@ public class ParseImageHelper {
                         Log.d(TAG, e.getMessage());
 
                     if (o != null) {
+                        BestieApplication.mMixpanel.track("Mobile.Set.Voted");
+                        BestieApplication.mMixpanel.getPeople().increment("Votes", 1);
                         if(BestieRankFragment.mUserBatch.getBoolean(ParseConstants.KEY_ACTIVE)) {
                             EventBus.getDefault().post(new ImageVotedEvent(o));
                         }
@@ -262,6 +265,8 @@ public class ParseImageHelper {
                     .setMessage("Image saved successfully!")
                     .setPositiveButton("Okay", null)
                     .show();
+
+            BestieApplication.mMixpanel.track("Mobile.User.Save");
 
         }
     }

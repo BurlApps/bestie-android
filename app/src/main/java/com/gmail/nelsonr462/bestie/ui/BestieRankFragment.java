@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.daimajia.easing.Glider;
 import com.daimajia.easing.Skill;
+import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.BestieConstants;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
@@ -192,6 +193,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
 
                                                 mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
+                                                BestieApplication.mMixpanel.track("Mobile.Batch.Results");
                                             }
 
                                             mUploadGrid.setAdapter(new UploadGridAdapter(getActivity(), mActiveBatchImages));
@@ -338,7 +340,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                     rankedImages.add(mActiveBatchImages.get(i));
                                 }
                                 mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
-
+                                BestieApplication.mMixpanel.track("Mobile.Batch.Results");
                             }
 
                             EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
