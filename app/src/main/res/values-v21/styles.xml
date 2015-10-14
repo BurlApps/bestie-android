@@ -5,5 +5,7 @@
         <!-- no action bar theme-->
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="android:colorEdgeEffect">@color/bestieYellow</item>
+        <item name="android:typeface">serif</item>
+
     </style>
 </resources>

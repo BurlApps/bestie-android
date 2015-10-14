@@ -9,7 +9,4 @@
     android:background="@android:color/white"
     tools:context="com.gmail.nelsonr462.bestie.ui.OnboardActivity">
 
-
-
-
 </RelativeLayout>

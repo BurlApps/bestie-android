@@ -25,6 +25,9 @@ public class ParseConstants {
     public static final String KEY_SHARE_MESSAGE = "shareMessage";
     public static final String KEY_HOST = "host";
     public static final String KEY_USER = "user";
+    public static final String KEY_TERMS_URL = "termsURL";
+    public static final String KEY_PRIVACY_URL = "privacyURL";
+    public static final String KEY_PERCENT = "percent";
 
     /* CLASSES */
     public static final String CLASS_BATCH = "Batch";

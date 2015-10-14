@@ -4,6 +4,7 @@ package com.gmail.nelsonr462.bestie.helpers;
 import android.widget.Toast;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
+import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
@@ -43,7 +44,7 @@ public class ParseImageUploader {
                     @Override
                     public void done(ParseException e) {
                         if(e != null) {
-                            Toast.makeText(BestieRankFragment.mContext, "Image save failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BestieRankFragment.mContext, R.string.image_save_failed_message, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         parseImage.put(ParseConstants.KEY_CREATOR, ParseUser.getCurrentUser());
@@ -55,9 +56,8 @@ public class ParseImageUploader {
                             @Override
                             public void done(ParseException e) {
                                 BestieRankFragment.mActiveBatchImages.add(parseImage);
-                                BestieRankFragment.mUploadGrid.setAdapter(
-                                        new UploadGridAdapter(BestieRankFragment.mContext,
-                                                BestieRankFragment.mActiveBatchImages));
+                                BestieRankFragment.mUploadGrid.setAdapter(new UploadGridAdapter(BestieRankFragment.mContext,
+                                        BestieRankFragment.mActiveBatchImages));
 
                                 if(BestieRankFragment.mUserBatch == null ||
                                         BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_MAX_VOTES_BATCH) == BestieRankFragment.mUserBatch.getInt(ParseConstants.KEY_VOTES)) {
@@ -98,13 +98,12 @@ public class ParseImageUploader {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Toast.makeText(BestieRankFragment.mContext, "Image save failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BestieRankFragment.mContext, R.string.upload_failed_message, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 parseImage.put(ParseConstants.KEY_BATCH, newBatch);
                 parseImage.saveInBackground();
                 BestieRankFragment.mUserBatch = newBatch;
-//                BestieRankFragment.mUserBatch.saveInBackground();
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
                     @Override

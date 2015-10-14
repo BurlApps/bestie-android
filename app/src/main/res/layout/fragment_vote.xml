@@ -5,7 +5,7 @@
                 android:id="@+id/rootLayout"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="com.gmail.nelsonr462.bestie.ui.VoteFragment"
-                android:background="#2196F3">
+                android:background="@color/bestieBlue">
 
     <ImageView
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/test_selfie"
+                android:src="@drawable/placeholder"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
@@ -53,7 +53,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/overlay_vote"
                 android:id="@+id/percentOverlay3"
-                android:text="100%"
+                android:typeface="monospace"
+                android:text="@string/percent_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:shadowColor="@color/votePercentShadow"
@@ -71,6 +72,7 @@
                 android:id="@+id/flag3"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:padding="5dp"
                 android:alpha=".8"
                 />
@@ -93,7 +95,7 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/test_selfie"
+                android:src="@drawable/placeholder"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:riv_corner_radius="10dp"
@@ -105,7 +107,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/overlay_vote"
                 android:id="@+id/percentOverlay4"
-                android:text="100%"
+                android:typeface="monospace"
+                android:text="@string/percent_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:shadowColor="@color/votePercentShadow"
@@ -123,6 +126,7 @@
                 android:id="@+id/flag4"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:padding="5dp"
                 android:alpha=".8"
                 />
@@ -154,7 +158,7 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/test_selfie"
+                android:src="@drawable/placeholder"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
@@ -167,7 +171,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/overlay_vote"
                 android:id="@+id/percentOverlay1"
-                android:text="100%"
+                android:typeface="monospace"
+                android:text="@string/percent_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:shadowColor="@color/votePercentShadow"
@@ -224,7 +229,7 @@
             <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/test_selfie"
+                android:src="@drawable/placeholder"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:riv_corner_radius="10dp"
@@ -236,7 +241,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/overlay_vote"
                 android:id="@+id/percentOverlay2"
-                android:text="100%"
+                android:typeface="monospace"
+                android:text="@string/percent_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
                 android:shadowColor="@color/votePercentShadow"
@@ -254,6 +260,7 @@
                 android:id="@+id/flag2"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:padding="5dp"
                 android:alpha=".8"
                 />
@@ -293,6 +300,7 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/bestieBlue"
         android:textSize="22sp"
+        android:typeface="monospace"
         android:textStyle="bold"
         android:text="@string/versus_circle_text"
         android:gravity="center"/>
@@ -325,7 +333,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:includeFontPadding="true"
-            android:text="We're out of pictures! \n\nPlease check back later!"
+            android:text="@string/out_of_pictures_message"
             android:textSize="16sp"
             android:textColor="#a4a4a4"
             />
@@ -333,7 +341,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Check now!"
+            android:text="@string/check_now_button"
+            android:typeface="monospace"
             android:textColor="@android:color/white"
             android:background="@drawable/bestie_red_button"
             android:paddingLeft="20dp"

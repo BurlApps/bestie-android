@@ -13,7 +13,7 @@
         android:layout_marginBottom="-50dp"
         android:id="@+id/onboard_4_text"
         android:textColor="@color/bestieRed"
-        android:text="...and see if it \nmatches the crowd's"
+        android:text="@string/onboard_slide_4_header"
         android:textSize="25sp"
         android:gravity="center"
 

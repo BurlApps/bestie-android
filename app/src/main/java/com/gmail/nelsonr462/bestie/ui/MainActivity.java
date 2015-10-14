@@ -1,7 +1,7 @@
 package com.gmail.nelsonr462.bestie.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -21,10 +21,10 @@ import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
-import com.gmail.nelsonr462.bestie.receivers.BestieBroadcastReceiver;
 import com.parse.ConfigCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         mRootView = (LinearLayout) findViewById(R.id.mainRootView);
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -164,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -177,9 +178,18 @@ public class MainActivity extends AppCompatActivity {
             mViewPager.setCurrentItem(0);
             return true;
         } else if (id == R.id.action_logout) {
-            ParseUser.logOut();
-            BestieRankFragment.mActiveBatchImages.clear();
-            navigateToLogin();
+            new android.support.v7.app.AlertDialog.Builder(this).setTitle("Delete account")
+                    .setMessage("Are you sure you want to delete everything?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ParseUser.logOut();
+                            BestieRankFragment.mActiveBatchImages.clear();
+                            navigateToLogin();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
             return true;
         }
 
@@ -203,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(requestCode == BestieConstants.SHARE_REQUEST) {
-            Toast.makeText(this, "Content shared!", Toast.LENGTH_SHORT).show();
             mCurrentUser.put(ParseConstants.KEY_SHARED, true);
             mCurrentUser.saveInBackground(new SaveCallback() {
                 @Override

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 
 public class UploadGridAdapter extends BaseAdapter {
+    private final String TAG = UploadGridAdapter.class.getSimpleName();
     private Context mContext;
     private int mUploadLimit;
     UploadGridAdapter mAdapter = this;
@@ -49,9 +50,9 @@ public class UploadGridAdapter extends BaseAdapter {
         mContext = c;
         mActiveImageList = activeImages;
         mPlaceholderUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                + "://" + mContext.getResources().getResourcePackageName(R.drawable.add_placeholder_small)
-                + '/' + mContext.getResources().getResourceTypeName(R.drawable.add_placeholder_small)
-                + '/' + mContext.getResources().getResourceEntryName(R.drawable.add_placeholder_small) );
+                + "://" + mContext.getResources().getResourcePackageName(R.drawable.add_placeholder)
+                + '/' + mContext.getResources().getResourceTypeName(R.drawable.add_placeholder)
+                + '/' + mContext.getResources().getResourceEntryName(R.drawable.add_placeholder) );
 
 
         if(mActiveImageList.size() > 0) {
@@ -63,9 +64,6 @@ public class UploadGridAdapter extends BaseAdapter {
 
         boolean shared = (boolean) ParseUser.getCurrentUser().get(ParseConstants.KEY_SHARED);
         mUploadLimit = ParseConfig.getCurrentConfig().getInt((!shared)? ParseConstants.KEY_UPLOAD_LIMIT : ParseConstants.KEY_UPLOAD_SHARED_LIMIT);
-
-        Log.d("UPLOAD LIMIT:  ","LIMIT  =  "+mUploadLimit);
-
 
         if(mImageList.size() <= mUploadLimit || mImageList.size() == 0) {
             if(mImageList.size() < ParseConfig.getCurrentConfig().getInt(ParseConstants.KEY_UPLOAD_SHARED_LIMIT))
@@ -119,18 +117,17 @@ public class UploadGridAdapter extends BaseAdapter {
                         choosePhotoIntent.setType("image/*");
                         ((Activity) mContext).startActivityForResult(choosePhotoIntent, BestieConstants.PICK_PHOTO_REQUEST );
                     } else {
-                        new AlertDialog.Builder(mContext).setTitle("Upload limit reached!")
-                                .setMessage("Share Bestie to increase your upload limit to 10 photos!")
+                        new AlertDialog.Builder(mContext).setTitle(mContext.getString(R.string.upload_limit_reached_title))
+                                .setMessage(mContext.getString(R.string.increase_upload_limit_message))
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                         sharingIntent.setType("text/plain");
                                         String shareBody = ParseConfig.getCurrentConfig().getString(ParseConstants.KEY_SHARE_MESSAGE);
-                                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out Bestie!");
-                                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                                        ((Activity)mContext).startActivityForResult(Intent.createChooser(sharingIntent, "Share via"), BestieConstants.SHARE_REQUEST);
-                                       // Share intent here
+                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out Bestie!");
+                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                                        ((Activity) mContext).startActivityForResult(Intent.createChooser(sharingIntent, "Share via"), BestieConstants.SHARE_REQUEST);
                                     }
                                 })
                                 .setNegativeButton("No", null)
@@ -140,11 +137,12 @@ public class UploadGridAdapter extends BaseAdapter {
             });
         }
 
-        Picasso.with(mContext).load(mImageList.get(position)).into(holder.gridImage);
+        Picasso.with(mContext).load(mImageList.get(position)).placeholder(R.drawable.placeholder).into(holder.gridImage);
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mImageList.size() == mUploadLimit && !mImageList.contains(mPlaceholderUri.toString())) mImageList.add(mPlaceholderUri.toString());
+                if (mImageList.size() == mUploadLimit && !mImageList.contains(mPlaceholderUri.toString()))
+                    mImageList.add(mPlaceholderUri.toString());
                 mImageList.remove(position);
                 mAdapter.notifyDataSetChanged();
 

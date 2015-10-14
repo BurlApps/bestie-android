@@ -1,32 +1,88 @@
 <resources>
+    <!-- Activity/System Strings -->
     <string name="app_name">Bestie</string>
     <string name="facebook_app_id">1659437797634703</string>
-
     <string name="action_settings">Settings</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="login_error_message">Please make sure you enter a username and password</string>
-    <string name="login_error_title">Oops!</string>
-    <string name="signup_error_message">Please make sure you enter a username, password, and email address!</string>
-    <string name="signup_error_title">Oops!</string>
+    <string name="title_activity_onboard">OnboardActivity</string>
 
-    <string name="title_activity_add_photos">Add Photos</string>
-    <string name="title_activity_crop_photo">Crop Photo</string>
-    <string name="versus_circle_text">VS</string>
-    <string name="title_activity_legal_view">Legal WebView</string>
-    <string name="add_photos_message">Add at least two photos of you</string>
-    <string name="find_selfie_button">Find your best selfie</string>
 
+    <!-- Onboarding Activity -->
+    <string name="onboarding_slide1_part1">Find your best photo to</string>
+    <string name="onboarding_slide1_part2">post on</string>
+    <string name="onboard_slide_1_textswithcer">Instagram</string>
+    <string name="onboard_slide_2_header">What\'s your bestie?\nUpload and find out!</string>
+    <string name="onboard_slide_3_header">Give your opinion on \nother people\'s photos…</string>
+    <string name="onboard_slide_4_header">…and see if it \nmatches the crowd\'s</string>
+    <string name="start_voting_button">Start Voting</string>
+    <string name="onboard_find_bestie_button">Find My Bestie</string>
+    <string name="onboard_want_to_see">I want to see…</string>
+    <string name="onboard_i_am">I am…</string>
+    <string name="bestie_logo_text">Bestie</string>
+
+
+    <!-- Settings Fragment -->
     <string-array name="interested_choices">
         <item>Men</item>
         <item>Women</item>
         <item>Both</item>
     </string-array>
-    <string name="title_activity_onboard">OnboardActivity</string>
-    <string name="onboarding_slide1_part1">Find your best photo to</string>
-    <string name="onboarding_slide1_part2">post on</string>
+
+
+    <!-- Vote Fragment -->
+    <string name="versus_circle_text">VS</string>
     <string name="upload_onboard_message">To get your bestie,\nhelp others find theirs! \n\nTap the better photo\n to fill the progress bar</string>
     <string name="vote_onboard_message">Tap the better \nphoto</string>
+    <string name="out_of_pictures_message">We\'re out of pictures! \n\nPlease check back later!</string>
+    <string name="check_now_button">Check now!</string>
+
+
+
+
+    <!-- Bestie Fragment -->
+    <string name="add_photos_message">Add at least two photos of you</string>
+    <string name="find_selfie_button">Find your best selfie</string>
     <string name="bestie_check_back_message">Check back here for your Bestie\'s progress when you\'re done voting</string>
     <string name="continue_voting_button">Back To Voting</string>
+    <string name="bestie_loading_message">Collecting results…\nVote to get your bestie!</string>
+    <string name="bestie_graph_complete">Complete</string>
+    <string name="bestie_graph_percentage">0%</string>
+    <string name="bestie_start_over_button">Start Over</string>
+    <string name="bestie_save_button">Save</string>
+    <string name="bestie_card_footer">like this photo of you!</string>
+    <string name="bestie_card_header">Your Bestie!</string>
+
+
+
+    <!-- Crop photo Activity -->
+    <string name="title_activity_crop_photo">Crop Photo</string>
+    <string name="rotate_button">Rotate</string>
+    <string name="crop_button">Crop</string>
+
+
+
+    <!-- WebView Activity -->
+    <string name="title_activity_legal_view">Legal WebView</string>
+
+
+    <!-- Alert Dialog Strings -->
+    <string name="image_save_failed_message">Image save failed!</string>
+    <string name="upload_failed_message">Image upload failed!</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete everything?</string>
+    <string name="delete_account_title">Delete account</string>
+    <string name="upload_limit_reached_title">Upload limit reached!</string>
+    <string name="increase_upload_limit_message">Share Bestie to increase your upload limit to 10 photos!</string>
+    <string name="flag_picture_title">Flag picture</string>
+    <string name="flag_picture_message">Please confirm this photo is spam or inappropriate.</string>
+
+
+    <!--  Multi-use Strings  -->
+    <string name="percent_placeholder">--%</string>
+
+
+
+
+
+
 </resources>

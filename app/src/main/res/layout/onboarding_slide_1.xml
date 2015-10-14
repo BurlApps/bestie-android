@@ -31,6 +31,7 @@
             android:textSize="25sp"
             android:text="@string/onboarding_slide1_part2"
             android:paddingRight="5dp"
+            android:paddingEnd="5dp"
             />
 
         <TextSwitcher
@@ -39,7 +40,7 @@
             android:textColor="#A6A6A6"
             android:id="@+id/textSwitcher"
             android:textSize="25sp"
-            android:text="Instagram"
+            android:text="@string/onboard_slide_1_textswithcer"
             />
 
     </LinearLayout>

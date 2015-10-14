@@ -8,6 +8,7 @@
     <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar" >
         <!-- no action bar theme-->
         <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="android:typeface">serif</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">

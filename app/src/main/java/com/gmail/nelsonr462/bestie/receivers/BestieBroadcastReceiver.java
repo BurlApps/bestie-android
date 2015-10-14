@@ -4,20 +4,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
-import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
 import com.gmail.nelsonr462.bestie.ui.MainActivity;
 import com.parse.ParseConfig;
-import com.parse.ParseInstallation;
 import com.parse.ParsePushBroadcastReceiver;
-import com.parse.PushService;
 
 import org.json.JSONException;
 import org.json.JSONObject;

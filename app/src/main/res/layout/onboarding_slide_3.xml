@@ -12,7 +12,7 @@
         android:layout_marginBottom="-50dp"
         android:id="@+id/onboard_3_text"
         android:textColor="@color/bestieRed"
-        android:text="Give your opinion on \nother people's photos..."
+        android:text="@string/onboard_slide_3_header"
         android:textSize="25sp"
         android:gravity="center"
 

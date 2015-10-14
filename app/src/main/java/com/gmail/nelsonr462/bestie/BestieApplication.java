@@ -2,6 +2,7 @@ package com.gmail.nelsonr462.bestie;
 
 import android.app.Application;
 
+import com.gmail.nelsonr462.bestie.helpers.FontOverride;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseFacebookUtils;
@@ -18,6 +19,10 @@ public class BestieApplication extends Application {
         Parse.initialize(this, "q1NZZSGYNxaYIQq5dDNkMlD407fmm2Hq6BoXBzu4", "aA6IKoTDyboREj5gNfWQ2PasrmaaRYtMTUlugje0");
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParseFacebookUtils.initialize(getApplicationContext());
+
+        FontOverride.setDefaultFont(this, "SERIF", "fonts/Bariol_Regular.ttf");
+        FontOverride.setDefaultFont(this, "MONOSPACE", "fonts/Bariol_Bold.ttf");
+
     }
 
 }

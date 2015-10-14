@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:id="@+id/rankPercent"
         android:background="@color/darkShadowOverlay"
-        android:text="100%"
+        android:text="@string/percent_placeholder"
         android:textSize="35sp"
         android:textColor="@android:color/white"
         android:gravity="center"

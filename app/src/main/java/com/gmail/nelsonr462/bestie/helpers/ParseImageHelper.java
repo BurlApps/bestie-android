@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
+import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
 import com.gmail.nelsonr462.bestie.events.ImageVotedEvent;
 import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
@@ -191,11 +192,9 @@ public class ParseImageHelper {
 
     public void flagImage(int imagePosition, final View view) {
         final ParseObject flaggedImage = mParseImageObjects.get(imagePosition);
-        Log.d(TAG, "FLAGGED STATUS:   "+flaggedImage.getBoolean(ParseConstants.KEY_FLAGGED));
-
-        new AlertDialog.Builder(mContext).setTitle("Flag picture")
-                .setMessage("Are you sure you want to flag this photo?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(mContext).setTitle(mContext.getString(R.string.flag_picture_title))
+                .setMessage(mContext.getString(R.string.flag_picture_message))
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(view, "Flagged picture", Snackbar.LENGTH_LONG).show();
@@ -208,7 +207,7 @@ public class ParseImageHelper {
                         });
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton("Cancel", null)
                 .show();
     }
 

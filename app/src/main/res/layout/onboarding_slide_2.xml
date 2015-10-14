@@ -11,7 +11,7 @@
         android:layout_marginBottom="-50dp"
         android:id="@+id/onboard_2_text"
         android:textColor="#A6A6A6"
-        android:text="What's your bestie?\nUpload and find out!"
+        android:text="@string/onboard_slide_2_header"
         android:textSize="25sp"
         android:gravity="center"
 

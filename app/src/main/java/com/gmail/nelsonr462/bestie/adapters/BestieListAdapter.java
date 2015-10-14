@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gmail.nelsonr462.bestie.ParseConstants;
@@ -63,11 +62,13 @@ public class BestieListAdapter extends BaseAdapter{
 
         Picasso.with(mContext).load(mActiveImageList.get(position).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(holder.rankImage);
         float percent;
-//        if( mActiveImageList.get(position).getInt(ParseConstants.KEY_WINS) > 0) {
-            percent =  (float) ((double) mActiveImageList.get(position).getNumber("percent") * 100);
-//        } else {
-//            percent =  (float) ((int) mActiveImageList.get(position).getNumber("percent") * 100);
-//        }
+        String zeroCheck = mActiveImageList.get(position).get(ParseConstants.KEY_PERCENT)+"";
+        if (zeroCheck.equals("0")) {
+            percent = 0;
+        } else {
+            percent = (float) ((double) mActiveImageList.get(position).getNumber(ParseConstants.KEY_PERCENT) * 100);
+        }
+
         holder.rankPercent.setText(String.format(mFormat, percent));
 
         return convertView;

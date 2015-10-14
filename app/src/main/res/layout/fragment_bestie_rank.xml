@@ -30,28 +30,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save"
+            android:typeface="monospace"
+            android:text="@string/bestie_save_button"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:id="@+id/shareButton"
             android:background="@drawable/bestie_blue_button"
             android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp"
             android:layout_marginBottom="15dp"
             />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Start Over"
+            android:typeface="monospace"
+            android:text="@string/bestie_start_over_button"
             android:textSize="16sp"
             android:shadowColor="#00000000"
-
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:id="@+id/startOverButton"
             android:background="@drawable/bestie_red_button"
             android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             android:layout_marginBottom="15dp"
             />
 
@@ -82,7 +86,7 @@
             android:id="@+id/completionPercentage"
             android:textSize="60sp"
             android:textStyle="bold"
-            android:text="0%"
+            android:text="@string/bestie_graph_percentage"
             android:paddingBottom="22dp"
             />
         <TextView
@@ -92,7 +96,7 @@
             android:layout_centerHorizontal="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="Complete"
+            android:text="@string/bestie_graph_complete"
             android:layout_marginTop="-22dp"
             />
 
@@ -103,12 +107,22 @@
             android:id="@+id/batchViewProgressBar"
             android:background="@android:color/white">
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
+            <com.mingle.widget.LoadingView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="visible"/>
+                android:id="@+id/shapeLoadingView"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shapeLoadingView"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:text="@string/bestie_loading_message"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
 
         </RelativeLayout>
 
@@ -130,6 +144,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
+            android:typeface="monospace"
             android:background="@drawable/bestie_blue_button"
             android:id="@+id/continueVotingButton"
             android:text="@string/continue_voting_button"
@@ -181,7 +196,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:typeface="monospace"
             android:text="@string/find_selfie_button"
             android:textSize="16sp"
             android:paddingLeft="40dp"

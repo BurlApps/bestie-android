@@ -29,15 +29,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bestie_blue_button"
-            android:text="Rotate"
+            android:text="@string/rotate_button"
             android:textColor="@android:color/white"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="15dp"
             android:id="@+id/rotateButton"/>
 
@@ -45,11 +47,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bestie_red_button"
-            android:text="Crop"
+            android:text="@string/crop_button"
             android:textColor="@android:color/white"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="15dp"
             android:id="@+id/cropButton"/>
 

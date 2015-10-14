@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -231,8 +233,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
                 for (int i = 0; i < mVotingImages.size(); i++) {
-                    mVotingImages.get(i).setScaleX(1.0f);
-                    mVotingImages.get(i).setScaleY(1.0f);
+                    scaleView(mVotingImages.get(i), 1.0f, 1.0f);
                     mVotingImages.get(i).setEnabled(true);
                 }
             }
@@ -389,12 +390,12 @@ public class VoteFragment extends android.support.v4.app.Fragment {
                     }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     frame2.setEnabled(true);
-                    frame1.setScaleX(1.0f);
-                    frame1.setScaleY(1.0f);
+                    scaleView(frame1, 1.05f, 1.0f);
+                    scaleView(frame1, 1.05f, 1.0f);
                 } else if (inViewInBounds(frame2, x, y) && !isFlagTouched(mFlags, x, y)) {
                     frame2.setEnabled(true);
-                    frame1.setScaleX(1.0f);
-                    frame1.setScaleY(1.0f);
+                    scaleView(frame1, 1.05f, 1.0f);
+                    scaleView(frame1, 1.05f, 1.0f);
                 }
                 return false;
             }
@@ -423,13 +424,27 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
     private void scaleOnTouch(MotionEvent event, RelativeLayout frame) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            frame.setScaleX(1.05f);
-            frame.setScaleY(1.05f);
+            scaleView(frame, 1.0f, 1.05f);
+            scaleView(frame, 1.0f, 1.05f);
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            frame.setScaleX(1.0f);
-            frame.setScaleY(1.0f);
+            scaleView(frame, 1.05f, 1.0f);
+            scaleView(frame, 1.05f, 1.0f);
         }
+
     }
+
+
+    public void scaleView(View v, float startScale, float endScale) {
+        Animation anim = new ScaleAnimation(
+                startScale, endScale, // Start and end values for the X axis scaling
+                startScale, endScale, // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        anim.setFillAfter(true); // Needed to keep the result of the animation
+        anim.setDuration(150);
+        v.startAnimation(anim);
+    }
+
 
     private void setFlagListeners(ArrayList<ImageButton> flags) {
 
