@@ -3,12 +3,14 @@ package com.gmail.nelsonr462.bestie.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.gmail.nelsonr462.bestie.helpers.ParseImageUploader;
 import com.gmail.nelsonr462.bestie.R;
@@ -44,11 +46,20 @@ public class CropPhotoActivity extends AppCompatActivity {
         assert  getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitleTextColor(getResources().getColor(R.color.tabsScrollColor));
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Bariol_Regular.ttf");
+
+        TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setTypeface(typeface);
 
         mCropImageView = (CropImageView) findViewById(R.id.cropImageView);
         mCropButton = (Button) findViewById(R.id.cropButton);
         mRotateButton = (Button) findViewById(R.id.rotateButton);
+        mRotateButton.setTypeface(typeface);
+        mCropButton.setTypeface(typeface);
+
 
         Intent cropIntent = getIntent();
 

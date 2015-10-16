@@ -41,6 +41,10 @@
     @butterknife.* <methods>;
 }
 
+-keepclassmembers class ** {
+    public void onEvent(**);
+}
+
 
 -keepattributes *Annotation*
 -keepattributes Signature
@@ -48,9 +52,14 @@
 -keep class com.squareup.** { *; }
 
 
--dontwarn com.facebook.android.BuildConfig
-
+-dontwarn com.parse.**
+-dontwarn com.mixpanel.**
+-dontwarn com.nhaarman.**
 -dontwarn rx.**
+
+-keep public class com.daimajia.**
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
 
 -dontwarn okio.**
 

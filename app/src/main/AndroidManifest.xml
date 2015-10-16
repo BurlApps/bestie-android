@@ -42,16 +42,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppThemeNoAction" >
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+
 
         <!-- Main Activity -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoAction" >
+            android:theme="@style/AppThemeNoAction"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,6 +68,18 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+        <receiver
+                  android:name="com.parse.GcmBroadcastReceiver"
+                  android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.gmail.nelsonr462.bestie" />
+            </intent-filter>
+        </receiver>
+
         <!-- Custom Push Notification Receiver -->
         <receiver
             android:name=".receivers.BestieBroadcastReceiver"
@@ -83,7 +94,7 @@
 
         <receiver
             android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action
                     android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -92,16 +103,7 @@
                 <category android:name="com.gmail.nelsonr462.bestie" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.gmail.nelsonr462.bestie" />
-            </intent-filter>
-        </receiver>
 
         <!-- Welcome Activity -->
 
@@ -111,11 +113,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoAction" >
         </activity>
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".ui.CropPhotoActivity"
             android:label="@string/title_activity_crop_photo"
@@ -144,6 +141,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gmail.nelsonr462.bestie.ui.MainActivity" />
         </activity>
+        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
+                  android:theme="@style/com_mixpanel_android_SurveyActivityTheme"/>
     </application>
 
 </manifest>

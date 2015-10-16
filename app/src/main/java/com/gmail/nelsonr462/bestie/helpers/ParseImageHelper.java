@@ -53,6 +53,7 @@ public class ParseImageHelper {
     private int mNextPair;
     private ArrayList<ParseObject> mParseImageObjects = new ArrayList<>();
     protected int mUriPosition;
+    private final String mFormat =  "%.0f%%";
 
     public ParseImageHelper(List<com.makeramen.roundedimageview.RoundedImageView> imageViewList,
                             Context context, RelativeLayout loadingLayout, RelativeLayout checkNowLayout,
@@ -122,9 +123,8 @@ public class ParseImageHelper {
     public void loadImagesIntoViews() {
         int i = 0;
         while(i < mImageUriList.size() && i < mImageViewList.size()) {
-            Picasso.with(mContext).load(mImageUriList.get(i)).into(mImageViewList.get(i));
-            float percent = ((float) mParseImageObjects.get(i).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(i).getInt(ParseConstants.KEY_VOTES))*100;
-            mPercentViews.get(i).setText((int) percent + "%");
+            Picasso.with(mContext).load(mImageUriList.get(i)).placeholder(R.drawable.placeholder).into(mImageViewList.get(i));
+            setPercent(mPercentViews.get(i), mUriPosition);
             mUriPosition++;
             mLoadingLayout.setVisibility(View.INVISIBLE);
             i++;
@@ -142,15 +142,13 @@ public class ParseImageHelper {
         }
 
         if(mUriPosition < mImageUriList.size()) {
-            Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 0 : 2));
-            float percent = ((float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_VOTES))*100;
-            mPercentViews.get((nextPair == 0) ? 0 : 2).setText((int) percent + "%");
+            Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).placeholder(R.drawable.placeholder).into(mImageViewList.get((nextPair == 0) ? 0 : 2));
+            setPercent(mPercentViews.get((nextPair == 0) ? 0 : 2), mUriPosition);
             mUriPosition++;
         }
         if (mUriPosition < mImageUriList.size()) {
-            Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).into(mImageViewList.get((nextPair == 0) ? 1 : 3));
-            float percent = ((float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_WINS) / (float) mParseImageObjects.get(mUriPosition).getInt(ParseConstants.KEY_VOTES))*100;
-            mPercentViews.get((nextPair == 0) ? 1 : 3).setText((int) percent + "%");
+            Picasso.with(mContext).load(mImageUriList.get(mUriPosition)).placeholder(R.drawable.placeholder).into(mImageViewList.get((nextPair == 0) ? 1 : 3));
+            setPercent(mPercentViews.get((nextPair == 0) ? 1 : 3), mUriPosition);
             mUriPosition++;
         }
 
@@ -175,12 +173,12 @@ public class ParseImageHelper {
             ParseCloud.callFunctionInBackground(ParseConstants.SET_VOTED, params, new FunctionCallback<Object>() {
                 @Override
                 public void done(Object o, ParseException e) {
+                    BestieApplication.mMixpanel.track("Mobile.Set.Voted");
                     Log.d(TAG, "RETURNED:  IMAGES VOTED ");
                     if (e != null)
                         Log.d(TAG, e.getMessage());
 
                     if (o != null) {
-                        BestieApplication.mMixpanel.track("Mobile.Set.Voted");
                         BestieApplication.mMixpanel.getPeople().increment("Votes", 1);
                         if(BestieRankFragment.mUserBatch.getBoolean(ParseConstants.KEY_ACTIVE)) {
                             EventBus.getDefault().post(new ImageVotedEvent(o));
@@ -278,6 +276,18 @@ public class ParseImageHelper {
         } else {
             return false;
         }
+    }
+
+    private void setPercent(TextView textView, int position) {
+        float percent;
+        String zeroCheck = mParseImageObjects.get(position).get("percent")+"";
+        if (zeroCheck.equals("0")) {
+            percent = 0;
+        } else {
+            percent = (float) ((double) mParseImageObjects.get(position).getNumber("percent") * 100);
+        }
+
+        textView.setText(String.format(mFormat, percent));
     }
 
 }

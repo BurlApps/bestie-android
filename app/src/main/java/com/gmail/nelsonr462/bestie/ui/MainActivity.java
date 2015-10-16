@@ -2,11 +2,13 @@ package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.adapters.MainFragmentPagerAdapter;
 import com.gmail.nelsonr462.bestie.adapters.UploadGridAdapter;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
+import com.gmail.nelsonr462.bestie.helpers.FontOverride;
 import com.gmail.nelsonr462.bestie.helpers.SlidingTabLayout;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.parse.ConfigCallback;
@@ -56,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator mVibrator;
     public ViewPager mViewPager;
     private int mActiveTab;
-//    private MixpanelAPI mMixpanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
                                 public void done(ParseConfig parseConfig, ParseException e) {
                                     mActiveTab = getIntent().getIntExtra("activeTab", 1);
                                     inflateTabLayout();
-
-
-
                                 }
                             });
                         }
@@ -233,11 +232,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void done(ParseException e) {
                     BestieRankFragment.mUploadGrid.setAdapter(new UploadGridAdapter(BestieRankFragment.mContext, BestieRankFragment.mActiveBatchImages));
-                    final Snackbar snackbar = Snackbar.make(mRootView, "Upload limit increased!", 5000);
+                    Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Bariol_Regular.ttf");
+                    Typeface boldTypeface = Typeface.createFromAsset(getAssets(), "fonts/Bariol_Bold.ttf");
+                    SpannableStringBuilder snackString = FontOverride.setCustomFont("Upload limit increased!", typeface);
+                    SpannableStringBuilder buttonString = FontOverride.setCustomFont("Okay", boldTypeface);
+
+
+                    final Snackbar snackbar = Snackbar.make(mRootView, snackString, 5000);
                     View snackbarView = snackbar.getView();
                     snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
 
-                    snackbar.setAction("Okay", new View.OnClickListener() {
+                    snackbar.setAction(buttonString, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             snackbar.dismiss();
@@ -251,11 +256,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onEvent(BestieReadyEvent event) {
-        final Snackbar snackbar = Snackbar.make(mRootView, "Your Bestie is ready!", 5000);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Bariol_Regular.ttf");
+        Typeface boldTypeface = Typeface.createFromAsset(getAssets(), "fonts/Bariol_Bold.ttf");
+        SpannableStringBuilder snackString = FontOverride.setCustomFont("Your Bestie is ready!", typeface);
+        SpannableStringBuilder buttonString = FontOverride.setCustomFont("Okay", boldTypeface);
+
+
+        final Snackbar snackbar = Snackbar.make(mRootView, snackString, 5000);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
 
-        snackbar.setAction("Okay", new View.OnClickListener() {
+
+        snackbar.setAction(buttonString, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(2);

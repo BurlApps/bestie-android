@@ -6,7 +6,6 @@ import com.gmail.nelsonr462.bestie.helpers.FontOverride;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
-import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 
 
@@ -26,7 +25,6 @@ public class BestieApplication extends Application {
         ParseCrashReporting.enable(this);
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
         ParseInstallation.getCurrentInstallation().saveInBackground();
-        ParseFacebookUtils.initialize(getApplicationContext());
 
         FontOverride.setDefaultFont(this, "SERIF", "fonts/Bariol_Regular.ttf");
         FontOverride.setDefaultFont(this, "MONOSPACE", "fonts/Bariol_Bold.ttf");

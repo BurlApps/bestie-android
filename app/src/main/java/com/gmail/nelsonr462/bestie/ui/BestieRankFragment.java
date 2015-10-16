@@ -1,6 +1,7 @@
 package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -43,6 +44,7 @@ import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -98,11 +100,14 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
         mContext = getActivity();
 
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Bariol_Bold.ttf");
+
         /* Set Add Photos Layout */
         mAddPhotosLayout = (RelativeLayout) mView.findViewById(R.id.addPhotosBestieLayout);
         mUploadGrid = (GridView) mView.findViewById(R.id.photoGridView);
         mFindBestieButton = (Button) mView.findViewById(R.id.findNewBestieButton);
         mFindBestieButton.setOnClickListener(ButtonClickListener(3));
+        mFindBestieButton.setTypeface(typeface);
 
         /* Set Batch Completion Graph View */
         mBatchView = (RelativeLayout) mView.findViewById(R.id.batchView);
@@ -113,10 +118,13 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
         mStartOverButton = (Button) mView.findViewById(R.id.startOverButton);
         mStartOverButton.setOnClickListener(ButtonClickListener(1));
+        mStartOverButton.setTypeface(typeface);
         mShareButton = (Button) mView.findViewById(R.id.shareButton);
         mShareButton.setOnClickListener(ButtonClickListener(2));
+        mShareButton.setTypeface(typeface);
         mContinueButton = (Button) mView.findViewById(R.id.continueVotingButton);
         mContinueButton.setOnClickListener(ButtonClickListener(4));
+        mContinueButton.setTypeface(typeface);
 
         /* CONNECT UPLOAD GRID TO PARSE HERE */
         mCurrentUser = ParseUser.getCurrentUser();
@@ -177,8 +185,10 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
 
                                             }
 
-                                            for (int i = 0; i < list.size(); i++) {
-                                                mActiveBatchImages.add(list.get(i));
+                                            if(mActiveBatchImages.size() == 0) {
+                                                for (int i = 0; i < list.size(); i++) {
+                                                    mActiveBatchImages.add(list.get(i));
+                                                }
                                             }
 
                                             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0) {
@@ -228,6 +238,12 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         h.removeCallbacks(r);
         super.onPause();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
 
     private View.OnClickListener ButtonClickListener(final int buttonType) {
         View.OnClickListener onClickListener;

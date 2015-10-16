@@ -2,10 +2,13 @@ package com.gmail.nelsonr462.bestie.ui;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +34,8 @@ import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.BatchUpdateEvent;
 import com.gmail.nelsonr462.bestie.events.ImageFlaggedEvent;
 import com.gmail.nelsonr462.bestie.events.ImageVotedEvent;
+import com.gmail.nelsonr462.bestie.helpers.CustomTypefaceSpan;
+import com.gmail.nelsonr462.bestie.helpers.FontOverride;
 import com.gmail.nelsonr462.bestie.helpers.ParseImageHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nineoldandroids.animation.Animator;
@@ -488,11 +493,18 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
         if (mVoteCount >= mVotesNeeded && mUserBatch != null) {
             if (BestieConstants.ACTIVE_VOTE_COUNT && mShowSnack) {
-                final Snackbar snackbar = Snackbar.make(mVoteCounter, R.string.bestie_max_votes_reached_message, 5000);
+
+                Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Bariol_Regular.ttf");
+                Typeface boldTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Bariol_Bold.ttf");
+                SpannableStringBuilder snackString = FontOverride.setCustomFont(getString(R.string.bestie_max_votes_reached_message), typeface);
+                SpannableStringBuilder buttonString = FontOverride.setCustomFont("Okay", boldTypeface);
+
+
+                final Snackbar snackbar = Snackbar.make(mVoteCounter, snackString, 5000);
                 View snackbarView = snackbar.getView();
                 snackbarView.setBackgroundColor(getResources().getColor(R.color.bestieBlue));
 
-                snackbar.setAction("Okay", new View.OnClickListener() {
+                snackbar.setAction(buttonString, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         snackbar.dismiss();
@@ -679,6 +691,8 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         });
         set.start();
     }
+
+
 
 }
 

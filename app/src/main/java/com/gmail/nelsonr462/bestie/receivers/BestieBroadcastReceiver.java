@@ -11,6 +11,7 @@ import com.gmail.nelsonr462.bestie.BestieApplication;
 import com.gmail.nelsonr462.bestie.ParseConstants;
 import com.gmail.nelsonr462.bestie.R;
 import com.gmail.nelsonr462.bestie.events.BestieReadyEvent;
+import com.gmail.nelsonr462.bestie.ui.BestieRankFragment;
 import com.gmail.nelsonr462.bestie.ui.MainActivity;
 import com.parse.ParseConfig;
 import com.parse.ParsePushBroadcastReceiver;
@@ -48,6 +49,7 @@ public class BestieBroadcastReceiver extends ParsePushBroadcastReceiver {
         Intent mainIntent = new Intent(context, MainActivity.class);
         mainIntent.putExtra("activeTab", 2);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent notifyPIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -58,11 +60,11 @@ public class BestieBroadcastReceiver extends ParsePushBroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle("Bestie");
         builder.setContentText(text);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.mipmap.ic_notification_duck);
         builder.setContentIntent(notifyPIntent);
         builder.setAutoCancel(true);
 
-        notificationManager.notify(TAG, 0, builder.build());
+        if(!ParseConstants.isAppActive) notificationManager.notify(TAG, 0, builder.build());
 
         // Check if app is active
 
@@ -80,7 +82,6 @@ public class BestieBroadcastReceiver extends ParsePushBroadcastReceiver {
     protected void onPushOpen(Context context, Intent intent) {
         super.onPushOpen(context, intent);
         // Define intent
-
         Intent mainIntent = new Intent(context, MainActivity.class);
         mainIntent.putExtra("activeTab", 2);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

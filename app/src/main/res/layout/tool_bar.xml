@@ -5,5 +5,17 @@
         android:background="@color/ColorPrimary"
         android:elevation="2dp"
         android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
-        />
+       >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Crop Photo"
+        android:gravity="center_vertical"
+        android:id="@+id/toolbar_title"
+        android:textSize="22sp"
+        android:textColor="@color/bestieRed"/>
+
+
+</android.support.v7.widget.Toolbar>
 
