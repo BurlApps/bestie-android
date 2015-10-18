@@ -663,7 +663,7 @@ public class VoteFragment extends android.support.v4.app.Fragment {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        BestieApplication.mMixpanel.track("Mobile.Bars Tutorial Completed");
+                        BestieApplication.mMixpanel.track("Mobile.Bars Tutorial.Completed");
                     }
 
                     @Override

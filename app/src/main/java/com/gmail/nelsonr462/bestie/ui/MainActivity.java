@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
+        BestieApplication.mMixpanel.track("Mobile.App.Close");
         super.onStop();
     }
 

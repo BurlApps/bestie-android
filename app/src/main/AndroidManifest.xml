@@ -41,7 +41,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppThemeNoAction" >
+        android:theme="@style/AppThemeNoAction"
+        android:largeHeap="true">
 
 
         <!-- Main Activity -->
@@ -143,6 +144,9 @@
         </activity>
         <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
                   android:theme="@style/com_mixpanel_android_SurveyActivityTheme"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="eec69c0a769d5d2dba93c9698908e8b9c733b461" />
     </application>
 
 </manifest>

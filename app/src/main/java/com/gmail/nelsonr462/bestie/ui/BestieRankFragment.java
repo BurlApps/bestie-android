@@ -326,6 +326,8 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
         String zeroCheck = mActiveBatchImages.get(0).get("percent")+"";
         if (zeroCheck.equals("0")) {
             percent = 0;
+        } else if(zeroCheck.equals("1")){
+            percent = 100.0f;
         } else {
             percent = (float) ((double) mActiveBatchImages.get(0).getNumber("percent") * 100);
         }
@@ -339,7 +341,7 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
             if (mUserBatch != null) {
                 mUserBatch.fetchInBackground(new GetCallback<ParseObject>() {
                     @Override
-                    public void done(ParseObject userBatch, ParseException e) {
+                    public void done(final ParseObject userBatch, ParseException e) {
                         if (e != null) {
                             Log.d(TAG, e.getMessage());
                         }
@@ -347,19 +349,36 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                         if (userBatch != null) {
 
                             if (mUserBatch.get(ParseConstants.KEY_ACTIVE) == false && mUserBatch.getInt(ParseConstants.KEY_VOTES) > 0 && mActiveBatchImages.size() > 0 && mBatchView.getVisibility() == View.VISIBLE) {
-                                RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
-                                TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
-                                setPercent(bestiePercent);
-                                Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
-                                ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
-                                for (int i = 1; i < mActiveBatchImages.size(); i++) {
-                                    rankedImages.add(mActiveBatchImages.get(i));
-                                }
-                                mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
-                                BestieApplication.mMixpanel.track("Mobile.Batch.Results");
+                                mBatchImageRelation = mUserBatch.getRelation(ParseConstants.KEY_BATCH_IMAGE_RELATION);
+
+                                ParseQuery<ParseObject> query = mBatchImageRelation.getQuery();
+                                query.addDescendingOrder(ParseConstants.KEY_SCORE);
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        mActiveBatchImages.clear();
+
+                                        for (int i = 0; i < list.size(); i++) {
+                                            mActiveBatchImages.add(list.get(i));
+                                        }
+
+                                        RoundedImageView theBestie = (RoundedImageView) mBestieHeader.findViewById(R.id.theBestiePic);
+                                        TextView bestiePercent = (TextView) mBestieHeader.findViewById(R.id.bestiePercent);
+                                        setPercent(bestiePercent);
+                                        Picasso.with(getActivity()).load(mActiveBatchImages.get(0).getParseFile(ParseConstants.KEY_IMAGE).getUrl()).into(theBestie);
+                                        ArrayList<ParseObject> rankedImages = new ArrayList<ParseObject>();
+                                        for (int i = 1; i < mActiveBatchImages.size(); i++) {
+                                            rankedImages.add(mActiveBatchImages.get(i));
+                                        }
+                                        mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
+                                        BestieApplication.mMixpanel.track("Mobile.Batch.Results");
+                                        EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
+                                    }
+                                });
+
+
                             }
 
-                            EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
 
                             if(mGraphDataHelper != null) mGraphDataHelper.updateGraph();
                         }

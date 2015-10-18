@@ -59,6 +59,7 @@
 
 -keep public class com.daimajia.**
 -keep public class com.google.android.gms.**
+-keep public class com.parse.**
 -dontwarn com.google.android.gms.**
 
 -dontwarn okio.**

@@ -280,9 +280,11 @@ public class ParseImageHelper {
 
     private void setPercent(TextView textView, int position) {
         float percent;
-        String zeroCheck = mParseImageObjects.get(position).get("percent")+"";
+        String zeroCheck = mParseImageObjects.get(position).get("percent") + "";
         if (zeroCheck.equals("0")) {
             percent = 0;
+        } else if(zeroCheck.equals("1")){
+            percent = 100.0f;
         } else {
             percent = (float) ((double) mParseImageObjects.get(position).getNumber("percent") * 100);
         }

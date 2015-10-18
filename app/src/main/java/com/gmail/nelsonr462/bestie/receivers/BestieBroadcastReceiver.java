@@ -39,7 +39,7 @@ public class BestieBroadcastReceiver extends ParsePushBroadcastReceiver {
         String text = "";
 
         try {
-            text = data.getString("message");
+            text = data.getString("alert");
         } catch (JSONException e) {
             e.printStackTrace();
         }
