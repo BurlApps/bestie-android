@@ -26,6 +26,9 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -155,7 +158,7 @@ public class ParseImageHelper {
         mNextPair = (mNextPair == 0)? 1 : 0;
     }
 
-    public void setImageVoted(int imagePosition) {
+    public void setImageVoted(final int imagePosition) {
         Log.d(TAG, "WIN POSITION:  "+imagePosition);
         Log.d(TAG, "LIST SIZE:   "+mParseImageObjects.size());
         // Increment votes, wins/losses
@@ -173,7 +176,15 @@ public class ParseImageHelper {
             ParseCloud.callFunctionInBackground(ParseConstants.SET_VOTED, params, new FunctionCallback<Object>() {
                 @Override
                 public void done(Object o, ParseException e) {
-                    BestieApplication.mMixpanel.track("Mobile.Set.Voted");
+
+                    JSONObject props = new JSONObject();
+                    try {
+                        props.put("Position", (imagePosition%2 == 0)? "Top" : "Bottom");
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    BestieApplication.mMixpanel.track("Mobile.Set.Voted", props);
                     Log.d(TAG, "RETURNED:  IMAGES VOTED ");
                     if (e != null)
                         Log.d(TAG, e.getMessage());

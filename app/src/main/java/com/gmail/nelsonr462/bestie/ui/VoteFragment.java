@@ -541,12 +541,12 @@ public class VoteFragment extends android.support.v4.app.Fragment {
         if(mUserBatch != null) {
             Log.d(TAG, "CURRENT VOTES:   " + mUserBatch.getInt(ParseConstants.KEY_USER_VOTES));
             Log.d(TAG, "NEW VOTES:   " + event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES));
-
-            if (mVoteCount != event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES)) {
-                mUserBatch = event.updatedBatch;
-                updateBatch();
-            }
-        } else {
+//
+//            if (mVoteCount != event.updatedBatch.getInt(ParseConstants.KEY_USER_VOTES)) {
+//                mUserBatch = event.updatedBatch;
+//                updateBatch();
+//            }
+//        } else {
             mUserBatch = event.updatedBatch;
             updateBatch();
         }

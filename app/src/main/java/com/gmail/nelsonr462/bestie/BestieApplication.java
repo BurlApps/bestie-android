@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.ndk.CrashlyticsNdk;
 import com.gmail.nelsonr462.bestie.helpers.FontOverride;
+import com.gmail.nelsonr462.bestie.helpers.MyLifecycleHandler;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
@@ -25,7 +26,7 @@ public class BestieApplication extends Application {
         Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         mMixpanel = MixpanelAPI.getInstance(this, getString(R.string.mixpanel_key));
         mMixpanel.identify(mMixpanel.getDistinctId());
-        mMixpanel.track("Mobile.App.Open");
+//        mMixpanel.track("Mobile.App.Open");
 
 
         Parse.enableLocalDatastore(this);
@@ -35,6 +36,7 @@ public class BestieApplication extends Application {
 
         FontOverride.setDefaultFont(this, "SERIF", "fonts/Bariol_Regular.ttf");
         FontOverride.setDefaultFont(this, "MONOSPACE", "fonts/Bariol_Bold.ttf");
+        registerActivityLifecycleCallbacks(new MyLifecycleHandler());
     }
 
 }

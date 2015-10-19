@@ -372,13 +372,13 @@ public class BestieRankFragment extends android.support.v4.app.Fragment {
                                         }
                                         mRankedPictureList.setAdapter(new BestieListAdapter(mContext, rankedImages));
                                         BestieApplication.mMixpanel.track("Mobile.Batch.Results");
-                                        EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
                                     }
                                 });
 
 
                             }
 
+                            EventBus.getDefault().post(new BatchUpdateEvent(userBatch));
 
                             if(mGraphDataHelper != null) mGraphDataHelper.updateGraph();
                         }

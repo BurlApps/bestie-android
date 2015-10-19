@@ -66,7 +66,7 @@ public class UploadGridAdapter extends BaseAdapter {
             }
         }
 
-        mFindBestieButton.setVisibility((mActiveImageList.size() < 2)? View.INVISIBLE: View.VISIBLE );
+        mFindBestieButton.setVisibility((mActiveImageList.size() < 2)? View.INVISIBLE : View.VISIBLE );
 
         boolean shared = (boolean) ParseUser.getCurrentUser().get(ParseConstants.KEY_SHARED);
         mUploadLimit = ParseConfig.getCurrentConfig().getInt((!shared)? ParseConstants.KEY_UPLOAD_LIMIT : ParseConstants.KEY_UPLOAD_SHARED_LIMIT);

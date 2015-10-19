@@ -168,12 +168,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         BestieApplication.mMixpanel.track("Mobile.App.Close");
+        BestieApplication.mMixpanel.flush();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        BestieApplication.mMixpanel.flush();
         super.onDestroy();
     }
 
