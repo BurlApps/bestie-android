@@ -26,8 +26,8 @@ android {
         applicationId "com.gmail.nelsonr462.bestie"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.06"
+        versionCode 17
+        versionName "1.07"
         signingConfig signingConfigs.config
     }
     buildTypes {

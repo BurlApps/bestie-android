@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                             ParseUser.logOut();
                             BestieRankFragment.mActiveBatchImages.clear();
                             BestieApplication.mMixpanel.track("Mobile.User.Logout");
+                            BestieApplication.mMixpanel.flush();
                             BestieApplication.mMixpanel.reset();
                             navigateToLogin();
                         }

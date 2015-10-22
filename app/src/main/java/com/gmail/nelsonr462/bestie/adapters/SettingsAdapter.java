@@ -157,6 +157,8 @@ public class SettingsAdapter extends BaseAdapter{
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         ParseUser.logOut();
+                                        BestieApplication.mMixpanel.track("Mobile.User.Logout");
+                                        BestieApplication.mMixpanel.flush();
                                         BestieRankFragment.mActiveBatchImages.clear();
                                         ((MainActivity) mContext).navigateToLogin();
                                     }

@@ -50,28 +50,28 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         // Lists
         mBestieList = (ListView) mView.findViewById(R.id.bestieListView);
         SettingsAdapter bAdapter = new SettingsAdapter(mView.getContext(), 0);
-        mBestieList.setAdapter(bAdapter);
         TextView title1 = (TextView) mHeaders.get(0).getChildAt(0);
         title1.setText("Bestie");
         mBestieList.addHeaderView(mHeaders.get(0), null, false);
+        mBestieList.setAdapter(bAdapter);
 
 
 
         mUserList = (ListView) mView.findViewById(R.id.userListView);
         SettingsAdapter uAdapter = new SettingsAdapter(mView.getContext(), 1);
-        mUserList.setAdapter(uAdapter);
         TextView title2 = (TextView) mHeaders.get(1).getChildAt(0);
         title2.setText("User Information");
         mUserList.addHeaderView(mHeaders.get(1), null, false);
+        mUserList.setAdapter(uAdapter);
 
 
 
         mLegalList = (ListView) mView.findViewById(R.id.legalListView);
         SettingsAdapter lAdapter = new SettingsAdapter(mView.getContext(), 2);
-        mLegalList.setAdapter(lAdapter);
         TextView title3 = (TextView) mHeaders.get(2).getChildAt(0);
         title3.setText("Legal Stuff");
         mLegalList.addHeaderView(mHeaders.get(2), null, false);
+        mLegalList.setAdapter(lAdapter);
 
         return mView;
     }
