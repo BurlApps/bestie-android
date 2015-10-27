@@ -65,6 +65,8 @@ public class BestieListAdapter extends BaseAdapter{
         String zeroCheck = mActiveImageList.get(position).get(ParseConstants.KEY_PERCENT)+"";
         if (zeroCheck.equals("0")) {
             percent = 0;
+        } else if (zeroCheck.equals("1")) {
+            percent = 100.0f;
         } else {
             percent = (float) ((double) mActiveImageList.get(position).getNumber(ParseConstants.KEY_PERCENT) * 100);
         }
