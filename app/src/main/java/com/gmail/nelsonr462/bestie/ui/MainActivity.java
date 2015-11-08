@@ -101,7 +101,26 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void done(ParseConfig parseConfig, ParseException e) {
                                     mActiveTab = getIntent().getIntExtra("activeTab", 1);
-                                    inflateTabLayout();
+
+                                    /* FINAL UPDATE (SUNSET) BEGIN */
+
+                                    new android.support.v7.app.AlertDialog.Builder(MainActivity.this).setTitle("Sorry!")
+                                            .setMessage("We are no longer able to maintain this app, " +
+                                                    "and we are sad to say that we must shut it down." +
+                                                    " Thanks for giving us a try!")
+                                            .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    BestieApplication.mMixpanel.flush();
+                                                    BestieApplication.mMixpanel.reset();
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
+                                    /* FINAL UPDATE END */
+
+                                    /* Uncomment to reactivate */
+//                                    inflateTabLayout();
                                 }
                             });
                         }
